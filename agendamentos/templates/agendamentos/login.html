@@ -1,0 +1,18 @@
+<!-- login_template.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login</title>
+</head>
+<body>
+    <h1>Faça o login</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="usuario">Usuário:</label>
+        <input type="text" name="usuario" required><br>
+        <label for="senha">Senha:</label>
+        <input type="password" name="senha" required><br>
+        <input type="submit" value="Entrar">
+    </form>
+</body>
+</html>

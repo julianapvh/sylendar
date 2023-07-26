@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -37,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'agendamentos',
+    'tcc_django',
     'django.contrib.staticfiles',
    
 ]
@@ -54,10 +56,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'tcc_django.urls'
 
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'agendamentos', 'templates')],  # Caminho para o diretório de templates do aplicativo "agendamentos"
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -76,16 +79,19 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# settings.py
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tcc_django_bd',
-        'USER': 'postgres',
-        'PASSWORD': 'Pantera@10',
-        'HOST': 'localhost',  # Ou o endereço do servidor do banco de dados PostgreSQL
-        'PORT': '5432',          # Porta do banco de dados (opcional, deixe vazio para usar a porta padrão)
+        'NAME': 'tcc_django_bd',  # Nome do banco de dados
+        'USER': 'postgres',       # Usuário do banco de dados
+        'PASSWORD': 'Pantera@10',  # Senha do banco de dados
+        'HOST': 'localhost',      # Host do banco de dados
+        'PORT': '5432',           # Porta do banco de dados
     }
 }
+
 
 
 # Password validation

@@ -1,0 +1,25 @@
+<!-- agendamentos/templates/agendamentos/agendar_equipamento.html -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agendar Equipamento</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/agendamentos.css' %}">
+</head>
+<body>
+    <header>
+        <h1>My Django App - Agendamentos</h1>
+    </header>
+    <main>
+        <!-- Your content here -->
+        <form method="post">
+            {% csrf_token %}
+            <!-- Your form fields here -->
+            <input type="submit" value="Submit">
+        </form>
+    </main>
+</body>
+</html>

@@ -1,0 +1,19 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agendar Cliente</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'agendamentos.css' %}">
+</head>
+<body>
+    <div class="container">
+        <h1>Agendar Cliente</h1>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit" value="Agendar">
+        </form>
+    </div>
+</body>
+</html>

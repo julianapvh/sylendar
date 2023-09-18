@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Agendar Equipamentos</title>
+</head>
+<body>
+    <h1>Agendar Equipamentos</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="equipamento">Selecione um equipamento:</label>
+        <select name="equipamento" required>
+            <option value="" disabled selected>Selecione um equipamento</option>
+            {% for equipamento in equipamentos_disponiveis %}
+                <option value="{{ equipamento }}">{{ equipamento }}</option>
+            {% endfor %}
+        </select><br><br>
+        <label for="data">Data:</label>
+        <input type="date" name="data" required><br><br>
+        <label for="hora">Hora:</label>
+        <input type="time" name="hora" required><br><br>
+        <input type="submit" value="Agendar">
+    </form>
+    <h2>Agendamentos Agendados:</h2>
+    <ul>
+        {% for data in datas_agendadas %}
+            <li>{{ data }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

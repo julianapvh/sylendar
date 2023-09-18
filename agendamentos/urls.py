@@ -1,20 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
-from agendamentos import views
-from agendamentos.views import home, agendar_equipamento
-from django.conf import settings
-from django.conf.urls.static import static
-
-
-app_name = 'Agendamento'
 
 urlpatterns = [
+    path('', include('agendamentos.urls')),  # Adicione esta linha
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    path('agendar/', agendar_equipamento, name='agendar_equipamento'),
-    path('agendar/cliente/', views.agendar_cliente, name='agendar_cliente'),
-    path('agendar/cliente/success/', views.agendar_cliente_success, name='agendar_cliente_success'),
+    path('login/', include('login_app.urls')),
+    path('cliente/', include('cliente_app.urls')),
+    path('cancelar/<int:agendamento_id>/', include('cancelar_app.urls')),
+    path('historico/', include('historico_app.urls')),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

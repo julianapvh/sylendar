@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Histórico de Agendamentos</title>
+</head>
+<body>
+    <h1>Histórico de Agendamentos</h1>
+    <ul>
+        {% for agendamento in historico %}
+            <li>{{ agendamento }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

@@ -1,64 +1,43 @@
 from django.shortcuts import render, redirect
-from .forms import AgendamentoForm, LoginForm
-from .models import Equipamento
+from django.contrib import messages
+from .models import Agendamento
+from datetime import datetime
 
-def agendar_cliente(request):
+def realizar_login(request):
     if request.method == 'POST':
-        form = AgendamentoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('agendamentos:agendar_cliente_success')
-    else:
-        form = AgendamentoForm()
+        usuario = request.POST['usuario']
+        senha = request.POST['senha']
+        
+        # Coloque aqui a lógica de login do seu sistema, e redirecione para a página do cliente em caso de sucesso
+        if login_successful:
+            return redirect('cliente')
+        else:
+            messages.error(request, 'Erro ao realizar o login.')
 
-    return render(request, 'clientes/agendar_cliente.html', {'form': form})
+    return render(request, 'login.html')
 
-def home(request):
-    # Verificar se o usuário já está autenticado
+def cliente(request):
+    equipamentos_disponiveis = []  # Carregue os equipamentos do seu banco de dados
+    datas_agendadas = []  # Carregue as datas agendadas do seu banco de dados
     
-   
-    if request.user.is_authenticated:
-        # Aqui você pode redirecionar para a página inicial ou outra página após o login
-        return redirect('pagina_inicial')
-
     if request.method == 'POST':
-        form = AgendamentoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('agendamentos:agendar_cliente_success')
-    else:
-        form = AgendamentoForm()
+        equipamento = request.POST['equipamento']
+        data = request.POST['data']
+        hora = request.POST['hora']
+        
+        # Coloque aqui a lógica para adicionar um agendamento no seu banco de dados
+        if agendamento_successful:
+            messages.success(request, 'Agendamento adicionado com sucesso.')
+        else:
+            messages.error(request, 'Erro ao adicionar o agendamento.')
 
-    return render(request, 'agendamentos/agendar_cliente.html', {'form': form})
+    return render(request, 'cliente.html', {'equipamentos_disponiveis': equipamentos_disponiveis, 'datas_agendadas': datas_agendadas})
 
-def agendar_cliente_success(request):
-    # Add any logic or data processing here if needed
-    return render(request, 'agendamentos/agendar_cliente_success.html')
+def cancelar_agendamento(request, agendamento_id):
+    # Coloque aqui a lógica para cancelar um agendamento no seu banco de dados
+    messages.success(request, 'Agendamento cancelado com sucesso.')
+    return redirect('cliente')
 
-def agendar_equipamento(request):
-    if request.method == 'POST':
-        form = AgendamentoForm(request.POST)
-        if form.is_valid():
-            equipamento = form.cleaned_data['equipamento']
-            data_hora = form.cleaned_data['data_hora']
-
-            # Verificar se o equipamento está disponível na data/hora escolhida
-            if equipamento.disponivel:
-                # Salvar o agendamento no banco de dados
-                equipamento.disponivel = False  # Marcar o equipamento como indisponível
-                equipamento.save()
-
-                # Aqui você pode adicionar qualquer outra lógica relacionada ao agendamento, se necessário
-                # Por exemplo, enviar um e-mail de confirmação, notificar o usuário, etc.
-
-                return redirect('home')  # Redirecionar o usuário de volta para a página inicial
-
-    else:
-        form = AgendamentoForm()
-
-    return render(request, 'agendamentos/agendar_equipamento.html', {'form': form})
-
-
-def agendar_cliente_success(request):
-    # Adicione qualquer lógica ou processamento de dados aqui, se necessário
-    return render(request, 'agendamentos/agendar_cliente_success.html')
+def historico_agendamentos(request):
+    historico = Agendamento.objects.all()  # Carregue o histórico de agendamentos do seu banco de dados
+    return render(request, 'historico.html', {'historico': historico})

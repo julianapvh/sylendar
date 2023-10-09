@@ -139,3 +139,21 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    # Outros backends de autenticação, se necessário
+]
+
+AUTH_USER_MODEL = 'agendamentos.CustomUser'
+
+LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
+
+LOGIN_REDIRECT_URL = 'agendamentos:index'  # Substitua 'nome_do_app' pela página desejada
+
+LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
+
+
+
+

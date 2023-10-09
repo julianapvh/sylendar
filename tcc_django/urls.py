@@ -1,9 +1,7 @@
-from django.urls import path
-
-from agendamentos import views
-
+from django.contrib import admin
+from django.urls import path, include
 
 urlpatterns = [
-    path('', views.index, name='home'),
-    # Outras rotas do aplicativo aqui...
+    path('admin/', admin.site.urls),
+    path('', include('agendamentos.urls')),  # Use o nome do aplicativo correto
 ]

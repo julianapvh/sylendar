@@ -1,12 +1,7 @@
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 from . import views
 
 urlpatterns = [
-    path('', include('agendamentos.urls')),  # Adicione esta linha
-    path('admin/', admin.site.urls),
-    path('login/', include('login_app.urls')),
-    path('cliente/', include('cliente_app.urls')),
-    path('cancelar/<int:agendamento_id>/', include('cancelar_app.urls')),
-    path('historico/', include('historico_app.urls')),
+    path('', views.index, name='index'),
+    path('agendamento/adicionar/', views.adicionar_agendamento, name='adicionar_agendamento'),
 ]

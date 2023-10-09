@@ -2,19 +2,14 @@ from django.db import models
 
 class Equipamento(models.Model):
     nome = models.CharField(max_length=100)
-    descricao = models.TextField()
-    disponivel = models.BooleanField(default=True)
+    # Outros campos do equipamento
 
-    def __str__(self):
-        return self.nome
-        
 class Agendamento(models.Model):
-    
-   
-# Your fields here
-    # For example:
-    client_name = models.CharField(max_length=100)
-    appointment_date = models.DateTimeField()
+    cliente_nome = models.CharField(max_length=100)
+    cliente_cpf = models.CharField(max_length=14)
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)
+    data = models.DateField()
+    hora = models.TimeField()
 
     def __str__(self):
-        return self.client_name
+        return f"{self.cliente_nome} - {self.equipamento} - {self.data} - {self.hora}"

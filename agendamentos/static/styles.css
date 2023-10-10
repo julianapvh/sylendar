@@ -1,76 +1,105 @@
 /* Reset de estilos */
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  /* Estilos gerais */
-  body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
-    color: #333;
-  }
-  
-  .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  h1 {
-    font-size: 36px;
-    margin-bottom: 20px;
-  }
-  
-  p {
-    font-size: 18px;
-    line-height: 1.6;
-    margin-bottom: 10px;
-  }
-  
-  /* Estilos do formulário */
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  input[type="text"],
-  input[type="password"] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  /* Estilos do cabeçalho e rodapé */
-  header {
-    background-color: #007BFF;
-    padding: 10px 0;
-  }
-  
-  header h1 {
-    color: #fff;
-    text-align: center;
-  }
-  
-  footer {
-    background-color: #007BFF;
-    color: #fff;
-    text-align: center;
-    padding: 10px 0;
-  }
-  
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Estilos gerais */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.login-form {
+  background-color: #ffffff;
+  border-radius: 5px;
+  padding: 20px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 300px;
+  text-align: center;
+}
+
+h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  font-size: 14px;
+}
+
+input[type="submit"] {
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+input[type="submit"]:hover {
+  background-color: #0056b3;
+}
+
+/* Estilize o formulário de login */
+.login-form {
+  background-color: #007BFF; /* Cor de fundo do formulário - Azul */
+  color: #fff; /* Cor do texto do formulário - Branco */
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1); /* Sombra para o formulário */
+  width: 300px;
+  text-align: center;
+}
+
+/* Estilize os elementos do formulário */
+.login-form label {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 5px;
+  color: #fff; /* Cor do texto das labels - Branco */
+}
+
+.login-form input[type="text"],
+.login-form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.login-form input[type="submit"] {
+  background-color: #0056b3; /* Cor de fundo do botão de login ao passar o mouse - Azul mais escuro */
+  color: #fff; /* Cor do texto do botão de login - Branco */
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.login-form input[type="submit"]:hover {
+  background-color: #007BFF; /* Cor de fundo do botão de login ao passar o mouse - Azul */
+}
+

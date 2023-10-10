@@ -17,6 +17,7 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -26,9 +27,8 @@ SECRET_KEY = 'django-insecure-wd@4*7v-tyx^l=q#ian5a-p_b#e85&0on^&b71%af2*dv_r%-e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['example.com', 'www.example.com', '192.168.1.1']
-ALLOWED_HOSTS = ['127.0.0.1']
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+
 
 
 
@@ -65,7 +65,7 @@ ROOT_URLCONF = 'tcc_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'agendamentos', 'templates')],  # Caminho para o diretório de templates do aplicativo "agendamentos"
+        'DIRS': [os.path.join(BASE_DIR, 'agendamentos/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,6 +77,7 @@ TEMPLATES = [
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'tcc_django.wsgi.application'
 
@@ -133,7 +134,12 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -150,7 +156,7 @@ AUTH_USER_MODEL = 'agendamentos.CustomUser'
 
 LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
 
-LOGIN_REDIRECT_URL = 'agendamentos:index'  # Substitua 'nome_do_app' pela página desejada
+LOGIN_REDIRECT_URL = 'agendamentos:home'  # Substitua 'nome_do_app' pela página desejada
 
 LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
 

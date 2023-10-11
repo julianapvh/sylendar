@@ -22,14 +22,15 @@
                 <input type="submit" value="Login">
             </form>
 
-            {% if user.is_authenticated %}
-                <p>Bem-vindo, {{ user.username }}!</p>
-                <a href="{% url 'home' %}">Ir para a página inicial</a>
-                <!-- Outros conteúdos da página após o login -->
-            {% else %}
-                <!-- Conteúdo adicional para os usuários não autenticados, se necessário -->
-            {% endif %}
+                {% if user.is_authenticated %}
+        <p>Bem-vindo, {{ user.username }}!</p>
+        <a href="{% url 'home' %}">Ir para a página inicial</a>
+        <!-- Outros conteúdos da página após o login -->
+    {% else %}
+        <!-- Conteúdo adicional para os usuários não autenticados, se necessário -->
+    {% endif %}
+    
+            </div>
         </div>
-    </div>
-</body>
-</html>
+    </body>
+    </html>

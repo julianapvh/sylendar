@@ -163,3 +163,4 @@ LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela pág
 
 
 
+AUTH_USER_MODEL = 'agendamentos.CustomUser'

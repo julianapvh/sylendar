@@ -100,4 +100,4 @@ def login_setic():
 
     
 #¨¨¨---___     EXECUÇÃO      ___---¨¨¨ 
-login_setic()
+#login_setic()

@@ -106,6 +106,7 @@ def login_view(request):
 def login_custom(request):
     if request.method == 'POST':
         # Chame a função de login personalizada
+        #print("X")
         resultado = login_setic()
         if resultado == "Sucesso":  # Personalize isso com base no retorno da sua função de login
             return HttpResponse("Login bem-sucedido")

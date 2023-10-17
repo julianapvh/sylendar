@@ -1,11 +1,28 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Janela do Cliente</title>
+    <title>Sistema de Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+
 <body>
-    <h1>Janela do Cliente</h1>
-    <!-- Conteúdo da janela do cliente aqui -->
+    <div class="container_cliente">
+        <div class="cliente-form">
+            <h1>Agendamentos</h1>
+            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar um Equipamento</a>
+            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
+            
+            <footer>
+                <p>&copy; 2023 Sistema de Agendamentos</p>
+            </footer>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
+
 </html>

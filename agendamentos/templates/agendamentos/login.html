@@ -6,28 +6,25 @@
 <head>
     <title>Página de Login</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-
 </head>
 
 <body>
     <div class="container">
         <div class="login-form">
-            <h1>Sistema de Agendamentos</h1>
+            <h1>Login</h1>
             <form method="post" action="{% url 'index' %}">
                 {% csrf_token %}
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required><br><br>
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required><br><br>
+                <input type="text" id="username" name="username" placeholder="Usuário" required>
+                <input type="password" id="password" name="password" placeholder="Senha" required>
                 <input type="submit" value="Login">
             </form>
 
             {% if error_message %}
             <p>{{ error_message }}</p>
             {% endif %}
-
         </div>
     </div>
 </body>
 
 </html>
+

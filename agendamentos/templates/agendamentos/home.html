@@ -4,28 +4,35 @@
 <html>
 
 <head>
-    <title>Página de Login</title>
+    <title>Sistema de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-
 </head>
 
 <body>
-    <div class="container">
-        <div class="login-form">
-            <h1>Sistema de Agendamentos</h1>
+    <div class="container_home">
+        <div class="home-form">
+            <h1>Bem-vindo ao Sistema de Agendamentos</h1>
             <form method="post" action="{% url 'home' %}">
                 {% csrf_token %}
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required><br><br>
-                <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required><br><br>
-                <input type="submit" value="Login">
+                <label for="cliente">:</label>
+                <input type="submit" value="Ir para a página do cliente">
+                <label for="agendar">:</label>
+                <input type="submit" value="Agendar um Equipamento">
+                <label for="historico">:</label>
+                <input type="submit" value="Histórico">
             </form>
-
+            <section>
+                <h2>Sobre o Sistema</h2>
+                <p>
+                    Este é o sistema de agendamentos. Você pode usar esta plataforma para agendar compromissos, verificar seu histórico de agendamentos e muito mais.
+                </p>
+            </section>
+            <footer>
+                <p>&copy; 2023 Sistema de Agendamentos</p>
+            </footer>
             {% if error_message %}
             <p>{{ error_message }}</p>
             {% endif %}
-
         </div>
     </div>
 </body>

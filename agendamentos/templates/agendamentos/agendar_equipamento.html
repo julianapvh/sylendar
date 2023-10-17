@@ -1,25 +1,34 @@
-<!-- agendamentos/templates/agendamentos/agendar_equipamento.html -->
-
 {% load static %}
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Agendar Equipamento</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'css/agendamentos.css' %}">
+    <title>Sistema de Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+
 <body>
-    <header>
-        <h1>My Django App - Agendamentos</h1>
-    </header>
-    <main>
-        <!-- Your content here -->
-        <form method="post">
-            {% csrf_token %}
-            <!-- Your form fields here -->
-            <input type="submit" value="Submit">
-        </form>
-    </main>
+    <div class="container_agendar_equipamento">
+        <div class="agendar_equipamento-form">
+            <h1>Agendar Equipamento</h1>
+            <a href="{% url 'cliente' %}" class="nav-link">Agendar</a>
+            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Alterar</a>
+            <a href="{% url 'historico' %}" class="nav-link">Excluir</a>
+            <section>
+                <h2>Sobre o Sistema</h2>
+                <p>
+                    Este é o sistema de agendamentos. Você pode usar esta plataforma para agendar compromissos, verificar seu histórico de agendamentos e muito mais.
+                </p>
+            </section>
+            <footer>
+                <p>&copy; 2023 Sistema de Agendamentos</p>
+            </footer>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
+
 </html>

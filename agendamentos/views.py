@@ -91,3 +91,14 @@ def index(request):
     
 def home(request):   
     return render(request, 'agendamentos\home.html')
+    
+    
+    
+def cliente(request):
+    return render(request, 'agendamentos\cliente.html')
+    
+def agendar_equipamento(request):
+    return render(request, 'agendamentos\agendar_equipamento.html')
+    
+def historico(request):
+    return render(request, 'agendamentos\historico.html')

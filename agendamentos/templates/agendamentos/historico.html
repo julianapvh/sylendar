@@ -1,11 +1,27 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Histórico de Agendamentos</title>
+    <title>Histórico de Equipamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+
 <body>
-    <h1>Histórico de Agendamentos</h1>
-    <!-- Tabela ou lista de agendamentos aqui -->
+    <div class="container_historico">
+        <div class="historico-form">
+            <h1>Histórico de Equipamentos</h1>
+            <a href="{% url 'cliente' %}" class="nav-link">Ver Histórico</a>
+            
+            <footer>
+                <p>&copy; 2023 Sistema de Agendamentos</p>
+            </footer>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
 </body>
+
 </html>

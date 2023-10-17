@@ -1,12 +1,33 @@
+{% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Página Inicial</title>
+    <title>Página de Login</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+
 </head>
+
 <body>
-    <h1>Bem-vindo à Página Inicial</h1>
-    <p>Esta é a página principal do seu sistema. Você pode adicionar conteúdo e funcionalidades adicionais aqui.</p>
-    <a href="{% url 'logout' %}">Sair</a>  <!-- Adicione um link para a página de logout, se desejar. -->
+    <div class="container">
+        <div class="login-form">
+            <h1>Sistema de Agendamentos</h1>
+            <form method="post" action="{% url 'home' %}">
+                {% csrf_token %}
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" required><br><br>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" required><br><br>
+                <input type="submit" value="Login">
+            </form>
+
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+
+        </div>
+    </div>
 </body>
+
 </html>

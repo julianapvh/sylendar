@@ -2,35 +2,32 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Página de Login</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 
 </head>
+
 <body>
     <div class="container">
         <div class="login-form">
             <h1>Sistema de Agendamentos</h1>
-            <form method="post">
+            <form method="post" action="{% url 'index' %}">
                 {% csrf_token %}
                 <label for="username">Usuário:</label>
-                <input type="text" name="username" id="username">
-
+                <input type="text" id="username" name="username" required><br><br>
                 <label for="password">Senha:</label>
-                <input type="password" name="password" id="password">
-
+                <input type="password" id="password" name="password" required><br><br>
                 <input type="submit" value="Login">
             </form>
 
-                {% if user.is_authenticated %}
-        <p>Bem-vindo, {{ user.username }}!</p>
-        <a href="{% url 'home' %}">Ir para a página inicial</a>
-        <!-- Outros conteúdos da página após o login -->
-    {% else %}
-        <!-- Conteúdo adicional para os usuários não autenticados, se necessário -->
-    {% endif %}
-    
-            </div>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+
         </div>
-    </body>
-    </html>
+    </div>
+</body>
+
+</html>

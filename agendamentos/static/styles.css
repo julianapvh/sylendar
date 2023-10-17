@@ -104,6 +104,16 @@ body {
   width: 300px;
 }
 
+.btn_separado {
+  background-color: #3498db; /* Cor de fundo dos botões */
+  color: #fff; /* Cor do texto dos botões */
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px 0; /* Espaçamento entre botões */
+}
+
 .cliente-form h1 {
   color: #3498db; /* Cor do título */
   font-size: 24px;

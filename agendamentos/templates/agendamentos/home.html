@@ -12,10 +12,10 @@
     <div class="container_home">
         <div class="home-form">
             <h1>Bem-vindo ao Sistema de Agendamentos</h1>
+            <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Cliente</button></a>
             <form method="post" action="{% url 'home' %}">
                 {% csrf_token %}
                 <label for="cliente">:</label>
-                <input type="submit" value="Ir para a página do cliente">
                 <label for="agendar">:</label>
                 <input type="submit" value="Agendar um Equipamento">
                 <label for="historico">:</label>

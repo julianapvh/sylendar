@@ -13,14 +13,11 @@
         <div class="cliente-form">
             <h1>Agendamentos</h1>
             <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar um Equipamento</a>
-            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
+            <a href="{% url 'cliente' %}" class="nav-link">Histórico</a>
             
             <footer>
                 <p>&copy; 2023 Sistema de Agendamentos</p>
             </footer>
-            {% if error_message %}
-            <p>{{ error_message }}</p>
-            {% endif %}
         </div>
     </div>
 </body>

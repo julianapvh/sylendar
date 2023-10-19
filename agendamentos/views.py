@@ -1,5 +1,6 @@
 # imports
 from django.shortcuts import render
+from django.contrib import messages
 
 
 # funções de apoio
@@ -70,6 +71,10 @@ def login_sauron(usuario,senha):
 
 # views de agendamento
 def index(request):
+    error_message = None
+    instruction_message = None
+    
+    
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
@@ -81,13 +86,14 @@ def index(request):
         #print(f"Login realizado com sucesso!\nNome: {nome}\nCPF: {cpf}\n\n")
 
         # Verifique se o usuário e a senha são "teste"
-        if nome != "" and cpf != "" and nome != None and cpf != None:
-            #return render(request, 'agendamentos\login.html',{f'error_message': f"Login realizado com sucesso!  Nome: {nome}  CPF: {cpf} "})
-            return render(request, 'agendamentos\home.html')
+        if nome != "" and cpf != "" and nome is not None and cpf is not None:
+            request.session['username'] = nome  # Salve o nome do usuário na sessão
+            return render(request, 'agendamentos/home.html')
         else:
-            return render(request, 'agendamentos\login.html', {'error_message': 'Credenciais inválidas'})
+            messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
+            return render(request, 'agendamentos/login.html')
 
-    return render(request, 'agendamentos\login.html',{'error_message': 'Insira usuário e senha'})
+    return render(request, 'agendamentos/login.html')
     
 def home(request):   
     return render(request, 'agendamentos\home.html')

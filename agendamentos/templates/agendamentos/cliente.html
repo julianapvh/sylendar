@@ -13,7 +13,8 @@
         <div class="cliente-form">
             <h1>Agendamentos</h1>
             <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar um Equipamento</a>
-            <a href="{% url 'cliente' %}" class="nav-link">Histórico</a>
+            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
+            <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Painel Administrativo</button></a>
             
             <footer>
                 <p>&copy; 2023 Sistema de Agendamentos</p>

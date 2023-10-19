@@ -1,0 +1,25 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Sistema de Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="container_cliente">
+        <div class="cliente-form">
+            <h1>Painel Administrativo</h1>
+            <a href="{% url 'cadastrar_equipamento' %}" class="nav-link">Cadastrar um Equipamento</a>
+            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
+            
+            <footer>
+                <p>&copy; 2023 Sistema de Agendamentos</p>
+            </footer>
+        </div>
+    </div>
+</body>
+
+</html>

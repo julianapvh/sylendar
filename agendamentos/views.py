@@ -104,7 +104,7 @@ def historico(request):
     return render(request, 'agendamentos\historico.html')
     
 def administrador(request):
-    return render(request, 'administrador')
+    return render(request, 'agendamentos/administrador.html')
     
 def cadastrar_equipamentos(request):
-    return render(request, 'cadastrar_equipamento')
+    return render(request, 'agendamentos\cadastrar_equipamento.html')

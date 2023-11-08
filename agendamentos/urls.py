@@ -11,4 +11,7 @@ urlpatterns = [
     path('historico/', views.historico, name='historico'),
     path('administrador/', views.administrador, name='administrador'),
     path('cadastrar_equipamento/', views.cadastrar_equipamentos, name='cadastrar_equipamento'),
+    path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
+    path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
+    
 ]

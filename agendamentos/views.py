@@ -1,6 +1,8 @@
 # imports
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
+from .models import Equipamento
+from .forms import EquipamentoForm
 
 
 # funções de apoio
@@ -113,4 +115,29 @@ def administrador(request):
     return render(request, 'agendamentos/administrador.html')
     
 def cadastrar_equipamentos(request):
-    return render(request, 'agendamentos\cadastrar_equipamento.html')
+    if request.method == 'POST':
+        form = EquipamentoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('cadastrar_equipamento')  # Redireciona de volta para a página de cadastro
+    else:
+        form = EquipamentoForm()
+
+    return render(request, 'cadastrar_equipamento.html', {'form': form})
+    
+def editar_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+
+    if request.method == 'POST':
+        form = EquipamentoForm(request.POST, instance=equipamento)
+        if form.is_valid():
+            form.save()
+            return redirect('editar_equipamento')
+
+    form = EquipamentoForm(instance=equipamento)
+    return render(request, 'editar_equipamento.html', {'form': form, 'equipamento': equipamento})
+    
+def excluir_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    equipamento.delete()
+    return redirect('excluir_equipamento')  # Redireciona de volta para a página de exclusão

@@ -4,23 +4,24 @@ from django.utils import timezone
 
 class Equipamento(models.Model):
     nome = models.CharField(max_length=100)
-    
-    # Outros campos do equipamento
+
+class Usuario(AbstractUser):
+    nome = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    senha = models.CharField(max_length=128)
+    telefone = models.CharField(max_length=15)
+    endereco = models.CharField(max_length=200)
+    data_nascimento = models.DateField()
+
+    def __str__(self):
+        return self.nome
 
 class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)
     cliente_cpf = models.CharField(max_length=11, default="00000000000")
-    equipamento = models.CharField(max_length=100, default="Equipamento Padrão")
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  # Foreign key to Equipamento
     data = models.DateTimeField(default=timezone.now)
     hora = models.TimeField()
-
-class Usuario(models.Model):
-    nome = models.CharField(max_length=100)
-    email = models.EmailField(unique=True)
-    senha = models.CharField(max_length=128)
-
-    def __str__(self):
-        return self.nome
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):

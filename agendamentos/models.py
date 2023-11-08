@@ -6,7 +6,6 @@ from django.contrib.auth.models import Permission
 
 class Equipamento(models.Model):
     nome = models.CharField(max_length=100)
-    preco = models.DecimalField(max_digits=10, decimal_places=2, default=0.0)
     descricao = models.CharField(max_length=100)
     fabricante = models.CharField(max_length=50)
     data_aquisicao = models.DateField(default=timezone.now)
@@ -67,3 +66,11 @@ class CustomUser(AbstractUser):
         blank=True,
         related_name='customuser_set',  # Use a different name for the reverse relation
     )
+
+
+
+
+
+######################################------------MODIFICAÇÕES---------------###################################################
+
+

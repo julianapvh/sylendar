@@ -10,4 +10,8 @@ class AgendamentoForm(forms.ModelForm):
 class EquipamentoForm(forms.ModelForm):
     class Meta:
         model = Equipamento
-        fields = ['nome', 'descricao', 'fabricante', 'data_aquisicao', 'preco']
+        fields = ['nome', 'descricao', 'fabricante', 'data_aquisicao']
+######################################------------MODIFICAÇÕES---------------###################################################
+
+
+

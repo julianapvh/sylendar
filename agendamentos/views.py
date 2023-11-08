@@ -3,6 +3,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Equipamento
 from .forms import EquipamentoForm
+from django.http import HttpResponse, HttpResponseForbidden
+from django.contrib.auth.models import User
 
 
 # funções de apoio
@@ -69,8 +71,6 @@ def login_sauron(usuario,senha):
 
     #___---¨¨¨ Início da execução ¨¨¨---___
     return(valida_acesso_sauron(usuario, senha))
-
-
 # views de agendamento
 def index(request):
     error_message = None
@@ -98,10 +98,7 @@ def index(request):
     return render(request, 'agendamentos/login.html')
     
 def home(request):   
-    return render(request, 'agendamentos\home.html')
-    
-    
-    
+    return render(request, 'agendamentos\home.html')    
 def cliente(request):
     return render(request, 'agendamentos\cliente.html')
     
@@ -114,7 +111,7 @@ def historico(request):
 def administrador(request):
     return render(request, 'agendamentos/administrador.html')
     
-def cadastrar_equipamentos(request):
+#def cadastrar_equipamentos(request):
     if request.method == 'POST':
         form = EquipamentoForm(request.POST)
         if form.is_valid():
@@ -137,7 +134,50 @@ def editar_equipamento(request, equipamento_id):
     form = EquipamentoForm(instance=equipamento)
     return render(request, 'editar_equipamento.html', {'form': form, 'equipamento': equipamento})
     
-def excluir_equipamento(request, equipamento_id):
+#def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
     equipamento.delete()
     return redirect('excluir_equipamento')  # Redireciona de volta para a página de exclusão
+    
+    
+######################################------------MODIFICAÇÕES---------------###################################################
+
+def listar_equipamentos(request):
+    equipamentos = Equipamento.objects.all()
+    return render(request, 'agendamentos/equipamentos_list.html', {'equipamentos': equipamentos})
+
+def cadastrar_equipamento(request):
+  if request.method == "POST":
+    nome = request.POST["nome"]
+    descricao = request.POST["descricao"]
+    equipamento = Equipamento(nome=nome, descricao=descricao)
+    equipamento.save()
+
+    # Verifica se o usuário tem permissão para cadastrar um equipamento
+    if request.user.has_perm("equipamentos.add_equipamento"):
+      return HttpResponse("Equipamento cadastrado com sucesso!")
+    else:
+      return HttpResponseForbidden()
+  else:
+    return render(request, "agendamentos/cadastrar_equipamento.html")
+    
+
+def gerenciar_equipamentos(request):
+    equipamentos = Equipamento.objects.all()
+    return render(request, 'agendamentos/gerenciar_equipamentos.html', {'equipamentos': equipamentos})
+
+def excluir_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    equipamento.delete()
+    return redirect('gerenciar_equipamentos')
+
+def alterar_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    if request.method == 'POST':
+        form = EquipamentoForm(request.POST, instance=equipamento)
+        if form.is_valid():
+            form.save()
+            return redirect('gerenciar_equipamentos')
+    else:
+        form = EquipamentoForm(instance=equipamento)
+    return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})

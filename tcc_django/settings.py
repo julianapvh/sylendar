@@ -89,12 +89,12 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tcc_django_bd',  # Nome do banco de dados
-        'USER': 'postgres',       # Usuário do banco de dados
-        'PASSWORD': 'Pantera@10',  # Senha do banco de dados
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'db_agendamentos',  # Nome do banco de dados
+        'USER': 'django',       # Usuário do banco de dados
+        'PASSWORD': '12345678',  # Senha do banco de dados
         'HOST': 'localhost',      # Host do banco de dados
-        'PORT': '5432',           # Porta do banco de dados
+        'PORT': '3306',           # Porta do banco de dados
     }
 }
 
@@ -122,11 +122,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
+
+USE_L10N = True
 
 USE_TZ = True
 

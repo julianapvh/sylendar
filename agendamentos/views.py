@@ -115,24 +115,21 @@ def administrador(request):
         equipamento_id = request.POST['equipamento_id']
 
         # Excluir o equipamento
-        equipamento = Equipamento.objects.get(pk=equipamento_id)
+        equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
         equipamento.delete()
 
         # Redirecionar o usuário para a página do administrador
         return redirect('administrador')
 
     else:
-        # Obter uma lista de todos os equipamentos
+        # Puxar todos os equipamentos do banco de dados
         equipamentos = Equipamento.objects.all()
 
-        return render(request, 'agendamentos/administrador.html', {
-            'equipamentos': equipamentos,
-            'links': [
-                {'url': 'visualizar_equipamentos/', 'label': 'Visualizar Equipamentos'},
-                {'url': 'cadastrar_equipamento/', 'label': 'Cadastrar Equipamento'},
-                {'url': 'editar_equipamento/<int:equipamento_id>/', 'label': 'Editar Equipamento'},
-            ]
-        })
+        # Filtrar os equipamentos que têm o nome "Computador"
+        equipamentos = equipamentos.filter(nome_equipamento="Computador")
+
+        return render(request, 'agendamentos/administrador.html', {'equipamentos': equipamentos})
+
     
 def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)

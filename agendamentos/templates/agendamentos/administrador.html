@@ -1,9 +1,10 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
+    <meta charset="UTF-8">
     <title>Sistema de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
@@ -12,12 +13,34 @@
     <div class="container_cliente">
         <div class="cliente-form">
             <h1>Painel Administrativo</h1>
-            
-            <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
-            <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Editar um Equipamento</button></a>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Excluir um Equipamento</button></a>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
-            
+
+            <ul>
+                <li><a href="{% url 'cadastrar_equipamento' %}">Cadastrar um Equipamento</a></li>
+                <li><a href="{% url 'editar_equipamento' %}">Editar um Equipamento</a></li>
+                <li><a href="{% url 'excluir_equipamento' %}">Excluir um Equipamento</a></li>
+            </ul>
+
+            <h1>Lista de Equipamentos</h1>
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for equipamento in equipamentos %}
+                        <tr>
+                            <td>{{ equipamento.nome_equipamento }}</td>
+                            <td>{{ equipamento.descricao }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{% url 'cadastrar_equipamento' %}">Cadastrar Equipamento</a>
+
             <footer>
                 <p>&copy; 2023 Sistema de Agendamentos</p>
             </footer>

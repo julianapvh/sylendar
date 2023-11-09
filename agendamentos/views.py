@@ -71,7 +71,7 @@ def login_sauron(usuario,senha):
 
     #___---¨¨¨ Início da execução ¨¨¨---___
     return(valida_acesso_sauron(usuario, senha))
-# views de agendamento
+
 def index(request):
     error_message = None
     instruction_message = None
@@ -99,6 +99,7 @@ def index(request):
     
 def home(request):   
     return render(request, 'agendamentos\home.html')    
+
 def cliente(request):
     return render(request, 'agendamentos\cliente.html')
     
@@ -109,30 +110,51 @@ def historico(request):
     return render(request, 'agendamentos\historico.html')
     
 def administrador(request):
-    return render(request, 'agendamentos/administrador.html')
-    
-#def cadastrar_equipamentos(request):
     if request.method == 'POST':
-        form = EquipamentoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('cadastrar_equipamento')  # Redireciona de volta para a página de cadastro
-    else:
-        form = EquipamentoForm()
+        # Obter o ID do equipamento a ser excluído
+        equipamento_id = request.POST['equipamento_id']
 
-    return render(request, 'cadastrar_equipamento.html', {'form': form})
+        # Excluir o equipamento
+        equipamento = Equipamento.objects.get(pk=equipamento_id)
+        equipamento.delete()
+
+        # Redirecionar o usuário para a página do administrador
+        return redirect('administrador')
+
+    else:
+        # Obter uma lista de todos os equipamentos
+        equipamentos = Equipamento.objects.all()
+
+        return render(request, 'agendamentos/administrador.html', {
+            'equipamentos': equipamentos,
+            'links': [
+                {'url': 'visualizar_equipamentos/', 'label': 'Visualizar Equipamentos'},
+                {'url': 'cadastrar_equipamento/', 'label': 'Cadastrar Equipamento'},
+                {'url': 'editar_equipamento/<int:equipamento_id>/', 'label': 'Editar Equipamento'},
+            ]
+        })
     
 def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
     if request.method == 'POST':
-        form = EquipamentoForm(request.POST, instance=equipamento)
-        if form.is_valid():
-            form.save()
-            return redirect('editar_equipamento')
+        # Obter os dados do formulário
+        nome_equipamento = request.POST['nome_equipamento']
+        descricao = request.POST['descricao']
 
-    form = EquipamentoForm(instance=equipamento)
-    return render(request, 'editar_equipamento.html', {'form': form, 'equipamento': equipamento})
+        # Validar os dados do formulário
+
+        # Salvar as alterações
+        equipamento.nome_equipamento = nome_equipamento
+        equipamento.descricao = descricao
+        equipamento.save()
+
+        # Redirecionar o usuário para a página de gerenciamento de equipamentos
+        return redirect('administrador')
+
+    else:
+        # Renderizar o formulário de edição do equipamento
+        return render(request, 'agendamentos/editar_equipamento.html', {'equipamento': equipamento})
     
 #def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -142,25 +164,56 @@ def editar_equipamento(request, equipamento_id):
     
 ######################################------------MODIFICAÇÕES---------------###################################################
 
-def listar_equipamentos(request):
+#def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
-    return render(request, 'agendamentos/equipamentos_list.html', {'equipamentos': equipamentos})
+    return render(request, 'agendamentos/visualizar_equipamentos.html', {'equipamentos': equipamentos})
 
 def cadastrar_equipamento(request):
-  if request.method == "POST":
-    nome = request.POST["nome"]
-    descricao = request.POST["descricao"]
-    equipamento = Equipamento(nome=nome, descricao=descricao)
-    equipamento.save()
+    if request.method == 'POST':
+        # Verifica se o campo nome_equipamento está preenchido.
+        if 'nome_equipamento' not in request.POST:
+            # O campo nome_equipamento não foi preenchido.
+            messages.error(request, 'O campo nome_equipamento é obrigatório.')
+            return render(request, 'agendamentos/cadastrar_equipamento.html')
 
-    # Verifica se o usuário tem permissão para cadastrar um equipamento
-    if request.user.has_perm("equipamentos.add_equipamento"):
-      return HttpResponse("Equipamento cadastrado com sucesso!")
+        # Obter os dados do formulário
+        nome_equipamento = request.POST['nome_equipamento']
+        descricao = request.POST['descricao']
+
+        # Validar o campo nome_equipamento
+        if not nome_equipamento.isalnum():
+            # O campo nome_equipamento não contém apenas letras e números.
+            messages.error(request, 'O campo nome_equipamento deve conter apenas letras e números.')
+            return render(request, 'agendamentos/cadastrar_equipamento.html')
+
+        # Criar um novo equipamento
+        equipamento = Equipamento(nome_equipamento=nome_equipamento, descricao=descricao)
+
+        # Verifica se o equipamento foi salvo com sucesso.
+        sucesso = equipamento.save()
+
+        if sucesso:
+            # Define a mensagem de sucesso.
+            mensagem = 'O equipamento foi salvo com sucesso.'
+        else:
+            # Define a mensagem de erro.
+            mensagem = 'O equipamento não foi salvo.'
+
+        # Redireciona o usuário para a página de listagem de equipamentos.
+        return redirect('visualizar_equipamentos', {'mensagem': mensagem})
+
     else:
-      return HttpResponseForbidden()
-  else:
-    return render(request, "agendamentos/cadastrar_equipamento.html")
-    
+        return render(request, 'agendamentos/cadastrar_equipamento.html')
+
+def excluir_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+
+    if request.method == 'POST':
+        equipamento.delete()
+        return redirect('administrador')
+
+    else:
+        return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
 
 def gerenciar_equipamentos(request):
     equipamentos = Equipamento.objects.all()

@@ -1,0 +1,17 @@
+{% load static %}
+
+
+{% extends 'agendamentos/base.html' %}
+
+{% block content %}
+
+<h1>Excluir Equipamento</h1>
+
+<p>Você tem certeza que deseja excluir o equipamento {{ equipamento.nome_equipamento }}?</p>
+
+<form action="{% url 'excluir_equipamento' equipamento.pk %}" method="post">
+    {% csrf_token %}
+    <button type="submit">Excluir Equipamento</button>
+</form>
+
+{% endblock %}

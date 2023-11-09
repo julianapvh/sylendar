@@ -90,9 +90,9 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_agendamentos',  # Nome do banco de dados
+        'NAME': 'bd_agendamentos',  # Nome do banco de dados
         'USER': 'django',       # Usuário do banco de dados
-        'PASSWORD': '12345678',  # Senha do banco de dados
+        'PASSWORD': '@siosa',  # Senha do banco de dados
         'HOST': 'localhost',      # Host do banco de dados
         'PORT': '3306',           # Porta do banco de dados
     }

@@ -167,37 +167,36 @@ def editar_equipamento(request, equipamento_id):
 
 def cadastrar_equipamento(request):
     if request.method == 'POST':
-        # Verifica se o campo nome_equipamento está preenchido.
-        if 'nome_equipamento' not in request.POST:
-            # O campo nome_equipamento não foi preenchido.
-            messages.error(request, 'O campo nome_equipamento é obrigatório.')
-            return render(request, 'agendamentos/cadastrar_equipamento.html')
-
         # Obter os dados do formulário
-        nome_equipamento = request.POST['nome_equipamento']
-        descricao = request.POST['descricao']
+        nome_equipamento = request.POST.get('nome')  # Ajuste o nome do campo conforme o formulário HTML
+        descricao = request.POST.get('descricao')  # Nome do campo no formulário HTML
+
+        # Verificar se os campos obrigatórios estão preenchidos
+        if not nome_equipamento:
+            # O campo nome_equipamento não foi preenchido.
+            messages.error(request, 'O campo nome é obrigatório.')
+            return render(request, 'agendamentos/cadastrar_equipamento.html')
 
         # Validar o campo nome_equipamento
         if not nome_equipamento.isalnum():
             # O campo nome_equipamento não contém apenas letras e números.
-            messages.error(request, 'O campo nome_equipamento deve conter apenas letras e números.')
+            messages.error(request, 'O campo nome deve conter apenas letras e números.')
             return render(request, 'agendamentos/cadastrar_equipamento.html')
 
-        # Criar um novo equipamento
-        equipamento = Equipamento(nome_equipamento=nome_equipamento, descricao=descricao)
+        try:
+            # Criar um novo equipamento
+            equipamento = Equipamento(nome_equipamento=nome_equipamento, descricao=descricao)
+            equipamento.save()
 
-        # Verifica se o equipamento foi salvo com sucesso.
-        sucesso = equipamento.save()
-
-        if sucesso:
-            # Define a mensagem de sucesso.
+            # Define a mensagem de sucesso
             mensagem = 'O equipamento foi salvo com sucesso.'
-        else:
-            # Define a mensagem de erro.
-            mensagem = 'O equipamento não foi salvo.'
 
-        # Redireciona o usuário para a página de listagem de equipamentos.
-        return redirect('visualizar_equipamentos', {'mensagem': mensagem})
+            # Redireciona o usuário para a página de listagem de equipamentos com a mensagem
+            return redirect('visualizar_equipamentos', mensagem=mensagem)
+        except Exception as e:
+            # Se ocorrer um erro ao salvar, exibe uma mensagem de erro
+            messages.error(request, f'O equipamento não foi salvo. Erro: {e}')
+            return render(request, 'agendamentos/cadastrar_equipamento.html')
 
     else:
         return render(request, 'agendamentos/cadastrar_equipamento.html')
@@ -213,7 +212,9 @@ def excluir_equipamento(request, equipamento_id):
         return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
 
 def gerenciar_equipamentos(request):
-    equipamentos = Equipamento.objects.all()
+    equipamentos = Equipamento.objects.all()  # Obtém todos os equipamentos do banco de dados
+
+    # Renderiza a página 'gerenciar_equipamentos.html' e passa os equipamentos para o contexto do template
     return render(request, 'agendamentos/gerenciar_equipamentos.html', {'equipamentos': equipamentos})
 
 def excluir_equipamento(request, equipamento_id):
@@ -231,3 +232,5 @@ def alterar_equipamento(request, equipamento_id):
     else:
         form = EquipamentoForm(instance=equipamento)
     return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
+    
+    

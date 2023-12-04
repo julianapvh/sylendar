@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Gerenciar Equipamentos</title>
+</head>
+<body>
+    <h1>Lista de Equipamentos</h1>
+    <ul>
+        {% for equipamento in equipamentos %}
+            <li>{{ equipamento.nome_equipamento }} - {{ equipamento.descricao }}</li>
+            <!-- Aqui você pode exibir outros detalhes do equipamento conforme necessário -->
+        {% endfor %}
+    </ul>
+</body>
+</html>

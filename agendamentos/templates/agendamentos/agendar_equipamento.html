@@ -4,23 +4,32 @@
 <html>
 
 <head>
-    <title>Sistema de Agendamentos</title>
+    <title>Agendar Equipamento</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 
 <body>
-    <div class="container_agendar_equipamento">
-        <div class="agendar_equipamento-form">
+    <div class="container_historico">
+        <div class="historico-form">
             <h1>Agendar Equipamento</h1>
-            <a href="{% url 'cliente' %}" class="nav-link">Agendar</a>
-            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Alterar</a>
-            <a href="{% url 'historico' %}" class="nav-link">Excluir</a>
-            <section>
-                <h2>Sobre o Sistema</h2>
-                <p>
-                    Este é o sistema de agendamentos. Você pode usar esta plataforma para agendar compromissos, verificar seu histórico de agendamentos e muito mais.
-                </p>
-            </section>
+            <form method="post" action="{% url 'adicionar_agendamento' %}">
+                {% csrf_token %}
+                <label for="equipamento">Selecione o Equipamento:</label>
+                <select name="equipamento" id="equipamento">
+                    {% for equipamento in equipamentos %}
+                        <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="data">Data:</label>
+                <input type="date" name="data" id="data">
+                <br>
+                <label for="hora">Hora:</label>
+                <input type="time" name="hora" id="hora">
+                <br>
+                <input type="submit" value="Agendar">
+            </form>
+            
             <footer>
                 <p>&copy; 2023 Sistema de Agendamentos</p>
             </footer>

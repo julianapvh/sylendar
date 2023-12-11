@@ -1,7 +1,8 @@
 # imports
+import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
-from .models import Equipamento
+from .models import Agendamento, Equipamento
 from .forms import EquipamentoForm
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
@@ -104,7 +105,9 @@ def cliente(request):
     return render(request, 'agendamentos\cliente.html')
     
 def agendar_equipamento(request):
-    return render(request, 'agendamentos\agendar_equipamento.html')
+    equipamentos = Equipamento.objects.all()
+    context = {'equipamentos': equipamentos}
+    return render(request, 'agendamentos/agendar_equipamento.html', context)
     
 def historico(request):
     return render(request, 'agendamentos\historico.html')
@@ -130,7 +133,42 @@ def administrador(request):
 
         return render(request, 'agendamentos/administrador.html', {'equipamentos': equipamentos})
 
-    
+def adicionar_agendamento(request):
+    if request.method == 'POST':
+        equipamento_id = request.POST['equipamento']
+        data = request.POST['data']
+        hora = request.POST['hora']
+        
+        # Conversão da string de data e hora para objetos do tipo datetime
+        data_agendamento = datetime.strptime(data, '%Y-%m-%d')
+        hora_agendamento = datetime.strptime(hora, '%H:%M').time()
+        
+        # Verificação de disponibilidade do equipamento na data e hora especificadas
+        equipamento = Equipamento.objects.get(pk=equipamento_id)
+        agendamentos_conflitantes = Agendamento.objects.filter(
+            equipamento=equipamento,
+            data=data_agendamento,
+            hora=hora_agendamento
+        )
+        
+        if agendamentos_conflitantes.exists():
+            # Se existir um agendamento conflitante, retorne uma mensagem de erro
+            messages.error(request, 'Já existe um agendamento para este equipamento nesta data e hora.')
+            return redirect('agendamentos/falha_agendamento.html')  # Redirecione para a página de erro ou para o formulário de agendamento
+        else:
+            # Se não houver conflito, crie o novo agendamento
+            novo_agendamento = Agendamento(
+                equipamento=equipamento,
+                data=data_agendamento,
+                hora=hora_agendamento
+            )
+            novo_agendamento.save()
+            messages.success(request, 'Agendamento realizado com sucesso.')
+            return redirect('agendamentos/sucesso_agendamento.html')  # Redirecione para a página de sucesso ou para a lista de agendamentos
+    else:
+        # Se a requisição não for POST, retorne o formulário vazio ou a página inicial
+        return render(request, 'agendamentos/agendar_equipamento.html')
+        
 def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 

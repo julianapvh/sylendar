@@ -11,4 +11,5 @@ urlpatterns = [
     path('historico/', views.historico, name='historico'),
     path('administrador/', views.administrador, name='administrador'),
     path('cadastrar_equipamento/', views.cadastrar_equipamento, name='cadastrar_equipamento'),
+    path('agendamentos/adicionar_agendamento', views.adicionar_agendamento, name='adicionar_agendamento'),
 ]

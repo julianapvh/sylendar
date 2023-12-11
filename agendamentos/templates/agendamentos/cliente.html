@@ -15,7 +15,7 @@
             <h1>Agendamentos</h1>
             <p>Logado: {{ request.session.username }}</p>
             <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Meus Agendamentos</button></a>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Agendar Equipamento</button></a>
+            <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
             <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Cancelar Agendamento</button></a>
             <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
             <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>

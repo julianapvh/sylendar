@@ -18,5 +18,6 @@ urlpatterns = [
     path('administrador/', views.administrador, name='administrador'),
     path('administrador/visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('administrador/editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
+    path('agendamentos/adicionar_agendamento', views.adicionar_agendamento, name='adicionar_agendamento'),
     
 ]

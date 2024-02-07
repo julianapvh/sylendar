@@ -16,8 +16,13 @@
 
             <ul>
                 <li><a href="{% url 'cadastrar_equipamento' %}">Cadastrar um Equipamento</a></li>
-                <li><a href="{% url 'editar_equipamento' %}">Editar um Equipamento</a></li>
+                <li><a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar um Equipamento</a></li>
                 <li><a href="{% url 'excluir_equipamento' %}">Excluir um Equipamento</a></li>
+                
+                {% for equipamento in equipamentos %}
+                    <li><a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a></li>
+                    <li><a href="{% url 'excluir_equipamento' equipamento_id=equipamento.id %}">Excluir Equipamento {{ equipamento.id }}</a></li>
+                {% endfor %}
             </ul>
 
             <h1>Lista de Equipamentos</h1>

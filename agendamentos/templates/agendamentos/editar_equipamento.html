@@ -9,7 +9,8 @@
 <form action="{% url 'editar_equipamento' equipamento.pk %}" method="post">
     {% csrf_token %}
 
-    <div class="form-group">
+    <div class="container_cliente">
+        <div class="cliente-form">
         <label for="nome_equipamento">Nome do Equipamento</label>
         <input type="text" class="form-control" id="nome_equipamento" name="nome_equipamento" value="{{ equipamento.nome_equipamento }}">
     </div>

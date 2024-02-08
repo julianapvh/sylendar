@@ -114,14 +114,11 @@ def historico(request):
     
     
 def administrador(request):
+
     return render(request, 'agendamentos\\administrador.html')
-    
-    
-    
-    
-    
-    ### Está função foi desativada por um erro que eu ainda não descobri qual é
-    
+     
+        
+### Está função foi desativada por um erro que eu ainda não descobri qual é  
 """def administrador(request):
     if request.method == 'POST':
         # Obter o ID do equipamento a ser excluído

@@ -112,7 +112,17 @@ def agendar_equipamento(request):
 def historico(request):
     return render(request, 'agendamentos\historico.html')
     
+    
 def administrador(request):
+    return render(request, 'agendamentos\\administrador.html')
+    
+    
+    
+    
+    
+    ### Está função foi desativada por um erro que eu ainda não descobri qual é
+    
+"""def administrador(request):
     if request.method == 'POST':
         # Obter o ID do equipamento a ser excluído
         equipamento_id = request.POST['equipamento_id']
@@ -131,7 +141,7 @@ def administrador(request):
         # Filtrar os equipamentos que têm o nome "Computador"
         equipamentos = equipamentos.filter(nome_equipamento="Computador")
 
-        return render(request, 'agendamentos/administrador.html', {'equipamentos': equipamentos})
+        return render(request, 'agendamentos/administrador.html', {'equipamentos': equipamentos})"""
 
 def adicionar_agendamento(request):
     if request.method == 'POST':

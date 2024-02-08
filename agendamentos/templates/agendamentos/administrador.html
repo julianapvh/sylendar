@@ -15,7 +15,7 @@
             <h1>Painel Administrativo</h1>
 
             <ul>
-                <li><a href="{% url 'cadastrar_equipamento' %}">Cadastrar um Equipamento</a></li>
+                <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
           
                 {% for equipamento in equipamentos %}
                     <li><a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a></li>
@@ -34,7 +34,7 @@
             </table>
 
             <footer>
-                <p>&copy; 2023 Sistema de Agendamentos</p>
+                <p>&copy; 2024 Sistema de Agendamentos</p>
             </footer>
         </div>
     </div>

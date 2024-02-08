@@ -1,0 +1,34 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Listar Equipamentos Disponíveis</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="container_listar_equipamentos">
+        <div class="listar-equipamentos-form">
+            <h1>Listar Equipamentos Disponíveis</h1>
+            <a href="{% url 'meus_agendamentos' %}" class="nav-link">Meus Agendamentos</a>
+            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar Equipamento</a>
+            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
+            <!-- Display the list of available equipment here -->
+            <ul>
+                <!-- Example list item -->
+                <li>Equipamento 1</li>
+                <li>Equipamento 2</li>
+                <!-- Add more list items dynamically based on available equipment -->
+            </ul>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Sistema de Agendamentos</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Cancelar Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="container_cancelar_agendamentos">
+        <div class="cancelar-agendamentos-form">
+            <h1>Cancelar Agendamentos</h1>
+            <a href="{% url 'meus_agendamentos' %}" class="nav-link">Meus Agendamentos</a>
+            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar Equipamento</a>
+            <a href="{% url 'listar_equipamentos' %}" class="nav-link">Listar Equipamentos Disponíveis</a>
+            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
+            <form action="{% url 'cancelar_agendamentos' %}" method="post">
+                {% csrf_token %}
+                <!-- Add your cancel appointment form fields here -->
+                <!-- For example, you might have a dropdown to select the appointment to cancel -->
+                <label for="appointment_id">Selecione o agendamento a ser cancelado:</label>
+                <select name="appointment_id" id="appointment_id">
+                    <!-- Options for appointments to cancel -->
+                </select>
+                <button type="submit" class="btn-cancelar">Cancelar Agendamento</button>
+            </form>
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Sistema de Agendamentos</p>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,37 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Meus Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="container_meus_agendamentos">
+        <div class="meus-agendamentos-form">
+            <h1>Meus Agendamentos</h1>
+            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar Equipamento</a>
+            <a href="{% url 'listar_equipamentos' %}" class="nav-link">Listar Equipamentos Disponíveis</a>
+            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
+            
+            <!-- Lista de agendamentos do usuário -->
+            <ul>
+                {% for agendamento in agendamentos %}
+                <li>{{ agendamento }}</li>
+                {% empty %}
+                <li>Você não possui nenhum agendamento.</li>
+                {% endfor %}
+            </ul>
+            
+            {% if error_message %}
+            <p>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2023 Sistema de Agendamentos</p>
+    </footer>
+</body>
+
+</html>

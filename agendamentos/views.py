@@ -112,6 +112,18 @@ def agendar_equipamento(request):
 def historico(request):
     return render(request, 'agendamentos\historico.html')
     
+def meus_agendamentos(request):
+    # Your view logic here
+    return render(request, 'agendamentos\\meus_agendamentos.html')
+    
+def agendar_equipamento(request):
+    return render(request, 'agendamentos\\agendar_equipamento.html')
+    
+def cancelar_agendamentos(request):
+    return render(request, 'agendamentos\\cancelar_agendamentos.html')
+    
+def listar_equipamentos(request):
+    return render(request, 'agendamentos\\listar_equipamentos.html')
     
 def administrador(request):
 
@@ -277,5 +289,9 @@ def alterar_equipamento(request, equipamento_id):
     else:
         form = EquipamentoForm(instance=equipamento)
     return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
+    
+    
+    
+
     
     

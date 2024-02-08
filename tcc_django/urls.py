@@ -13,4 +13,8 @@ urlpatterns = [
     path('cadastrar_equipamento/', views.cadastrar_equipamento, name='cadastrar_equipamento'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),  # Add this line
     path('agendamentos/adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
+    path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
+    path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
+    path('cancelar_agendamentos/', views.cancelar_agendamentos, name='cancelar_agendamentos'),
+    path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
 ]

@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 
@@ -11,10 +12,10 @@
     <div class="container_cliente">
         <div class="cliente-form">
             <h1>Meus Agendamentos</h1>
-            <a href="{% url 'agendar_equipamento' %}" class="nav-link">Agendar Equipamento</a>
-            <a href="{% url 'listar_equipamentos' %}" class="nav-link">Listar Equipamentos Disponíveis</a>
-            <a href="{% url 'historico' %}" class="nav-link">Histórico</a>
-            
+            <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
+            <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar equipamentos disponiveis</button></a>
+            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
+            <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Voltar</button></a>
             <!-- Lista de agendamentos do usuário -->
             <ul>
                 {% for agendamento in agendamentos %}

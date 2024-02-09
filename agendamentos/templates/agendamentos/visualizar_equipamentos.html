@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html>
 
@@ -7,17 +9,12 @@
 </head>
 
 <body>
+    <div class="container_cliente">
+        <div class="cliente-form">
     <h1>Visualizar Equipamentos</h1>
 
-    <a href="/administrador/">Voltar</a>
+    <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Voltar</button></a>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Nome</th>
-                <th>Descrição</th>
-            </tr>
-        </thead>
         <tbody>
             {% for equipamento in equipamentos %}
                 <tr>

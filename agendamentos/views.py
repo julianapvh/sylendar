@@ -99,10 +99,10 @@ def index(request):
     return render(request, 'agendamentos/login.html')
     
 def home(request):   
-    return render(request, 'agendamentos\home.html')    
+    return render(request, 'agendamentos\\home.html')    
 
 def cliente(request):
-    return render(request, 'agendamentos\cliente.html')
+    return render(request, 'agendamentos\\cliente.html')
     
 def agendar_equipamento(request):
     equipamentos = Equipamento.objects.all()
@@ -110,7 +110,7 @@ def agendar_equipamento(request):
     return render(request, 'agendamentos/agendar_equipamento.html', context)
     
 def historico(request):
-    return render(request, 'agendamentos\historico.html')
+    return render(request, 'agendamentos\\historico.html')
     
 def meus_agendamentos(request):
     # Your view logic here
@@ -122,8 +122,9 @@ def agendar_equipamento(request):
 def cancelar_agendamentos(request):
     return render(request, 'agendamentos\\cancelar_agendamentos.html')
     
-def listar_equipamentos(request):
-    return render(request, 'agendamentos\\listar_equipamentos.html')
+def visualizar_equipamentos(request):
+    equipamentos = Equipamento.objects.all()
+    return render(request, 'agendamentos\\visualizar_equipamentos.html', {'equipamentos': equipamentos})
     
 def administrador(request):
 
@@ -225,8 +226,8 @@ def editar_equipamento(request, equipamento_id):
 def cadastrar_equipamento(request):
     if request.method == 'POST':
         # Obter os dados do formulário
-        nome_equipamento = request.POST.get('nome')  # Ajuste o nome do campo conforme o formulário HTML
-        descricao = request.POST.get('descricao')  # Nome do campo no formulário HTML
+        nome_equipamento = request.POST.get('nome_equipamento')  # Corrigido para corresponder ao campo no HTML
+        descricao = request.POST.get('descricao')
 
         # Verificar se os campos obrigatórios estão preenchidos
         if not nome_equipamento:
@@ -246,10 +247,10 @@ def cadastrar_equipamento(request):
             equipamento.save()
 
             # Define a mensagem de sucesso
-            mensagem = 'O equipamento foi salvo com sucesso.'
+            messages.success(request, 'O equipamento foi salvo com sucesso.')
 
-            # Redireciona o usuário para a página de listagem de equipamentos com a mensagem
-            return redirect('visualizar_equipamentos', mensagem=mensagem)
+            # Redireciona o usuário para a página de visualização de equipamentos
+            return redirect('visualizar_equipamentos')
         except Exception as e:
             # Se ocorrer um erro ao salvar, exibe uma mensagem de erro
             messages.error(request, f'O equipamento não foi salvo. Erro: {e}')

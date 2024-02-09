@@ -155,14 +155,11 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 AUTH_USER_MODEL = 'agendamentos.CustomUser'
+AUTH_USER_MODEL = 'agendamentos.Usuario'
+
 
 LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
 
 LOGIN_REDIRECT_URL = 'agendamentos:home'  # Substitua 'nome_do_app' pela página desejada
 
 LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
-
-
-
-
-AUTH_USER_MODEL = 'agendamentos.CustomUser'

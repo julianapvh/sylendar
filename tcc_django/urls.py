@@ -16,5 +16,5 @@ urlpatterns = [
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
     path('cancelar_agendamentos/', views.cancelar_agendamentos, name='cancelar_agendamentos'),
-    path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
+    path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
 ]

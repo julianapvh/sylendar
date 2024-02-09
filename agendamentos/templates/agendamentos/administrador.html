@@ -16,6 +16,8 @@
 
             <ul>
                 <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'home' %}><button class="btn_separado">Voltar</button></a>
+                
           
                 {% for equipamento in equipamentos %}
                     <li><a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a></li>

@@ -261,24 +261,18 @@ def cadastrar_equipamento(request):
 
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
 
-    if request.method == 'POST':
-        equipamento.delete()
-        return redirect('administrador')
-
-    else:
-        return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
-
+def confirmar_exclusao_equipamento(request, equipamento_id):
+    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    equipamento.delete()
+    return redirect('gerenciar_equipamentos')
+    
 def gerenciar_equipamentos(request):
     equipamentos = Equipamento.objects.all()  # Obtém todos os equipamentos do banco de dados
 
     # Renderiza a página 'gerenciar_equipamentos.html' e passa os equipamentos para o contexto do template
     return render(request, 'agendamentos/gerenciar_equipamentos.html', {'equipamentos': equipamentos})
-
-def excluir_equipamento(request, equipamento_id):
-    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
-    equipamento.delete()
-    return redirect('gerenciar_equipamentos')
 
 def alterar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)

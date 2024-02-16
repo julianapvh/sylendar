@@ -1,26 +1,23 @@
 {% load static %}
 
-{% extends 'agendamentos/base.html' %}
-
-{% block content %}
-
-<h1>Editar Equipamento</h1>
-
-<form action="{% url 'editar_equipamento' equipamento.pk %}" method="post">
-    {% csrf_token %}
-
-    <div class="container_cliente">
-        <div class="cliente-form">
-        <label for="nome_equipamento">Nome do Equipamento</label>
-        <input type="text" class="form-control" id="nome_equipamento" name="nome_equipamento" value="{{ equipamento.nome_equipamento }}">
-    </div>
-
-    <div class="form-group">
-        <label for="descricao">Descrição</label>
-        <textarea class="form-control" id="descricao" name="descricao">{{ equipamento.descricao }}</textarea>
-    </div>
-
-    <button type="submit">Salvar Alterações</button>
-</form>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Equipamento</title>
+</head>
+<body>
+    <h1>Editar Equipamento</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="nome_equipamento">Nome do Equipamento:</label><br>
+        <input type="text" id="nome_equipamento" name="nome_equipamento" value="{{ equipamento.nome_equipamento }}"><br><br>
+        
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao">{{ equipamento.descricao }}</textarea><br><br>
+        
+        <button type="submit">Salvar Alterações</button>
+    </form>
+</body>
+</html>

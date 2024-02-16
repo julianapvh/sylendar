@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
+from agendamentos.views import excluir_equipamento
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -12,7 +13,6 @@ urlpatterns = [
     path('administrador/editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
     path('equipamentos_list/', views.listar_equipamentos, name='equipamentos_list'),
     path('cadastrar_equipamento/', views.cadastrar_equipamento, name='cadastrar_equipamento'),
-    path('gerenciar_equipamentos/', views.visualizar_equipamentos, name='gerenciar_equipamentos'),
     path('administrador/excluir_equipamento/<int:equipamento_id>/', views.excluir_equipamento, name='excluir_equipamento'),
     path('alterar_equipamento/<int:equipamento_id>/', views.alterar_equipamento, name='alterar_equipamento'),
     path('administrador/', views.administrador, name='administrador'),
@@ -23,6 +23,12 @@ urlpatterns = [
     path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
     path('cancelar_agendamentos/', views.cancelar_agendamentos, name='cancelar_agendamentos'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
+    path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
+    path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
+    path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
+    path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
+    path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
+
     
     
     

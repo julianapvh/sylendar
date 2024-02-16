@@ -6,6 +6,7 @@ from .models import Agendamento, Equipamento
 from .forms import EquipamentoForm
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
+from django.urls import reverse_lazy
 
 
 # funções de apoio
@@ -123,8 +124,13 @@ def cancelar_agendamentos(request):
     return render(request, 'agendamentos\\cancelar_agendamentos.html')
     
 def visualizar_equipamentos(request):
+    equipamentos = Equipamento.objects.all().order_by('nome')  # Ordenar os equipamentos pelo nome
+    return render(request, 'agendamentos/visualizar_equipamentos.html', {'equipamentos': equipamentos})
+
+    
+def listar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
-    return render(request, 'agendamentos\\visualizar_equipamentos.html', {'equipamentos': equipamentos})
+    return render(request, 'agendamentos/listar_equipamentos.html', {'equipamentos': equipamentos})    
     
 def administrador(request):
 
@@ -193,28 +199,25 @@ def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
     if request.method == 'POST':
-        # Obter os dados do formulário
-        nome_equipamento = request.POST['nome_equipamento']
-        descricao = request.POST['descricao']
-
-        # Validar os dados do formulário
-
-        # Salvar as alterações
-        equipamento.nome_equipamento = nome_equipamento
-        equipamento.descricao = descricao
-        equipamento.save()
-
-        # Redirecionar o usuário para a página de gerenciamento de equipamentos
-        return redirect('administrador')
-
+        # Instanciar o formulário com os dados submetidos
+        formulario = editar_equipamento(request.POST, instance=equipamento)
+        if formulario.is_valid():
+            # Salvar os dados do formulário no objeto equipamento
+            formulario.save()
+            # Retornar uma resposta de sucesso
+            return HttpResponse("Equipamento editado com sucesso")
+        # Se o formulário não for válido, renderizar o formulário novamente com os erros
     else:
-        # Renderizar o formulário de edição do equipamento
-        return render(request, 'agendamentos/editar_equipamento.html', {'equipamento': equipamento})
+        # Se o método for GET, renderizar o formulário de edição com os dados do equipamento
+        formulario = editar_equipamento(instance=equipamento)
     
-#def excluir_equipamento(request, equipamento_id):
-    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+    # Renderizar o formulário de edição
+    return render(request, 'agendamentos/editar_equipamento.html', {'formulario': formulario})
+    
+def excluir_equipamento(request, equipamento_id):
+    equipamento = Equipamento.objects.get(pk=equipamento_id)
     equipamento.delete()
-    return redirect('excluir_equipamento')  # Redireciona de volta para a página de exclusão
+    return redirect('visualizar_equipamentos')
     
     
 ######################################------------MODIFICAÇÕES---------------###################################################
@@ -226,7 +229,7 @@ def editar_equipamento(request, equipamento_id):
 def cadastrar_equipamento(request):
     if request.method == 'POST':
         # Obter os dados do formulário
-        nome_equipamento = request.POST.get('nome_equipamento')  # Corrigido para corresponder ao campo no HTML
+        nome_equipamento = request.POST.get('nome_equipamento')
         descricao = request.POST.get('descricao')
 
         # Verificar se os campos obrigatórios estão preenchidos
@@ -235,15 +238,9 @@ def cadastrar_equipamento(request):
             messages.error(request, 'O campo nome é obrigatório.')
             return render(request, 'agendamentos/cadastrar_equipamento.html')
 
-        # Validar o campo nome_equipamento
-        if not nome_equipamento.isalnum():
-            # O campo nome_equipamento não contém apenas letras e números.
-            messages.error(request, 'O campo nome deve conter apenas letras e números.')
-            return render(request, 'agendamentos/cadastrar_equipamento.html')
-
         try:
             # Criar um novo equipamento
-            equipamento = Equipamento(nome_equipamento=nome_equipamento, descricao=descricao)
+            equipamento = Equipamento(nome=nome_equipamento, descricao=descricao)
             equipamento.save()
 
             # Define a mensagem de sucesso
@@ -259,9 +256,25 @@ def cadastrar_equipamento(request):
     else:
         return render(request, 'agendamentos/cadastrar_equipamento.html')
 
+
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
-    return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
+
+    if request.method == 'POST':
+        try:
+            # Excluir o equipamento
+            equipamento.delete()
+            # Define a mensagem de sucesso
+            messages.success(request, 'O equipamento foi excluído com sucesso.')
+            # Redireciona o usuário para a página de gerenciamento de equipamentos
+            return redirect('gerenciar_equipamentos')
+        except Exception as e:
+            # Se ocorrer um erro ao excluir, exibe uma mensagem de erro
+            messages.error(request, f'O equipamento não foi excluído. Erro: {e}')
+            # Redireciona o usuário de volta para a página de excluir equipamento
+            return redirect('excluir_equipamento', equipamento_id=equipamento_id)
+    else:
+        return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
 
 def confirmar_exclusao_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)

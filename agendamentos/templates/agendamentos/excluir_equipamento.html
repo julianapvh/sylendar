@@ -1,17 +1,32 @@
 {% load static %}
 
-
-{% extends 'agendamentos/base.html' %}
-
-{% block content %}
-
-<h1>Excluir Equipamento</h1>
-
-<p>Você tem certeza que deseja excluir o equipamento {{ equipamento.nome_equipamento }}?</p>
-
-<form action="{% url 'excluir_equipamento' equipamento.pk %}" method="post">
-    {% csrf_token %}
-    <button type="submit">Excluir Equipamento</button>
-</form>
-
-{% endblock %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excluir Equipamento</title>
+    <!-- Adicione o link para o seu arquivo CSS aqui -->
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <div class="container_excluir_equipamento">
+        <div class="excluir_equipamento-form">
+            <h1>Excluir Equipamento</h1>
+            <p>Tem certeza que deseja excluir o equipamento "{{ equipamento.nome }}"?</p>
+            <form action="{% url 'excluir_equipamento' equipamento_id=equipamento.id %}" method="POST">
+                {% csrf_token %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="{% if message.tags %}{{ message.tags }}{% else %}alert{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <input type="submit" value="Excluir">
+                <a href="{% url 'listar_equipamentos' %}">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

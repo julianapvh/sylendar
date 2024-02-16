@@ -9,14 +9,15 @@
 </head>
 
 <body>
-    {% if mensagem %}
-        <p class="alert alert-success">{{ mensagem }}</p>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
     {% endif %}
 
     <div class="container_cliente">
         <div class="cliente-form">
             <h1>Cadastro</h1>
-            <a class="btn_separado" href="{% url 'cadastrar_equipamento' %}"><button class="btn_separado">Cadastrar</button></a>
 
             <form action="{% url 'cadastrar_equipamento' %}" method="post">
               {% csrf_token %}
@@ -31,7 +32,6 @@
               <button type="submit" class="btn btn-primary">Salvar</button>
           </form>
           
-
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>
             </footer>

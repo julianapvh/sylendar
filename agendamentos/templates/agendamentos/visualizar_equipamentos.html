@@ -1,30 +1,78 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
-    <title>Visualizar Equipamentos</title>
+    <meta charset="UTF-8">
+    <title>Sistema de Agendamentos - Equipamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px; /* Ajuste o valor conforme necessário */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #3490db;
+            color: white;
+        }
+        
+        .botao-voltar {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .botao-voltar:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
 </head>
 
 <body>
-    <div class="container_cliente">
-        <div class="cliente-form">
-    <h1>Visualizar Equipamentos</h1>
+    <div class="container_home">
+        <div class="home-form">
+        <h2>Equipamentos Disponíveis</h2>
 
-    <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Voltar</button></a>
-
-        <tbody>
-            {% for equipamento in equipamentos %}
+        <table>
+            <thead>
                 <tr>
-                    <td>{{ equipamento.nome_equipamento }}</td>
-                    <td>{{ equipamento.descricao }}</td>
+                    <th>ID do Equipamento</th>
+                    <th>Nome do Equipamento</th>
+                    <th>Descrição</th>
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
+            </thead>
+            <tbody>
+                {% for equipamento in equipamentos %}
+                    <tr>
+                        <td>{{ equipamento.id }}</td>
+                        <td>{{ equipamento.nome }}</td>
+                        <td>{{ equipamento.descricao }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+         <!-- Botão de voltar para a página de administrador -->
+         <a href="{% url 'administrador' %}" class="botao-voltar">Voltar</a>
+    </div>
+    
+    
 </body>
 
 </html>

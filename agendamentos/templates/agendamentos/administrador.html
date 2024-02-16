@@ -7,6 +7,16 @@
     <meta charset="UTF-8">
     <title>Sistema de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <script>
+        function abrirModal(id) {
+            document.getElementById('modal-confirmacao').style.display = 'block';
+            document.getElementById('equipamento_id').value = id;
+        }
+
+        function fecharModal() {
+            document.getElementById('modal-confirmacao').style.display = 'none';
+        }
+    </script>
 </head>
 
 <body>
@@ -16,23 +26,28 @@
 
             <ul>
                 <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'excluir_equipamento' %}><button class="btn_separado">Excluir um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'editar_equipamento' %}><button class="btn_separado">Editar um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
                 <a class="btn_separado" href={% url 'home' %}><button class="btn_separado">Voltar</button></a>
                 
           
                 {% for equipamento in equipamentos %}
-                    <li><a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a></li>
-                    <li><a href="{% url 'excluir_equipamento' equipamento_id=equipamento.id %}">Excluir Equipamento {{ equipamento.id }}</a></li>
+                    <li>
+                        <a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a>
+                        <button onclick="abrirModal({{ equipamento.id }})">Excluir Equipamento {{ equipamento.id }}</button>
+                    </li>
                 {% endfor %}
             </ul>
             
-                <tbody>
-                    {% for equipamento in equipamentos %}
-                        <tr>
-                            <td>{{ equipamento.nome_equipamento }}</td>
-                            <td>{{ equipamento.descricao }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+            <tbody>
+                {% for equipamento in equipamentos %}
+                    <tr>
+                        <td>{{ equipamento.nome_equipamento }}</td>
+                        <td>{{ equipamento.descricao }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
             </table>
 
             <footer>

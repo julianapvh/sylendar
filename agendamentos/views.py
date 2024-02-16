@@ -92,7 +92,7 @@ def index(request):
         # Verifique se o usuário e a senha são "teste"
         if nome != "" and cpf != "" and nome is not None and cpf is not None:
             request.session['username'] = nome  # Salve o nome do usuário na sessão
-            return render(request, 'agendamentos/home.html')
+            return render(request, 'agendamentos/administrador_home.html')
         else:
             messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
             return render(request, 'agendamentos/login.html')
@@ -101,6 +101,12 @@ def index(request):
     
 def home(request):   
     return render(request, 'agendamentos\\home.html')    
+
+def administrador_home(request):
+    return render(request, 'agendamentos\\administrador_home.html')
+
+def cliente_home(request):
+    return render(request, 'agendamentos\\cliente_home.html')
 
 def cliente(request):
     return render(request, 'agendamentos\\cliente.html')

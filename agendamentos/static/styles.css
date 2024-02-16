@@ -1,4 +1,4 @@
-/* Reset de estilos */
+
 * {
   margin: 0;
   padding: 0;
@@ -86,38 +86,5 @@ th {
   color: white;
 }
 
-
-/* Tabela de visualização de equipamentos   styles.css */
-/* styles.css */
-
-/* Estilizando a tabela */
-.visualizar-equipamentos-table {
-  width: 100%;
-  border-collapse: collapse;
-}
-
-/* Estilizando as células das células e cabeçalhos da tabela */
-.visualizar-equipamentos-table th,
-.visualizar-equipamentos-table td {
-  border: 1px solid #dddddd;
-  padding: 10px; /* Ajuste o valor conforme necessário */
-  text-align: left;
-}
-
-/* Estilizando o cabeçalho da tabela */
-.visualizar-equipamentos-table th {
-  background-color: #3490db;
-  color: white;
-}
-
-/* Estilizando as linhas pares */
-.visualizar-equipamentos-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-/* Estilizando o texto na primeira coluna */
-.visualizar-equipamentos-table tbody td:first-child {
-  font-weight: bold;
-}
 
 

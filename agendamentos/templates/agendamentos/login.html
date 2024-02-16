@@ -19,6 +19,12 @@
                 <input type="submit" value="Login">
             </form>
 
+            <!-- Adicione o botão para o cliente entrar sem fazer login -->
+            <form method="post" action="{% url 'cliente_home' %}">
+                {% csrf_token %}
+                <button type="submit" name="login_as_guest">Entrar como Convidado</button>
+            </form>
+
             {% if error_message %}
             <p class'error_message'>{{ error_message }}</p>
             {% endif %}
@@ -29,4 +35,3 @@
 </body>
 
 </html>
-

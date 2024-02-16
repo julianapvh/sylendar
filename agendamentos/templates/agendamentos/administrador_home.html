@@ -4,24 +4,16 @@
 <html>
 
 <head>
-    <title>Sistema de Agendamentos</title>
+    <title>Sistema de Agendamentos - Administrador</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 
 <body>
     <div class="container_home">
         <div class="home-form">
-        <h1> Sistema de Agendamentos</h1>
-        
-        <p>Bem-vindo, {{ request.session.username }}</p>
-            
-            <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Cliente</button></a>
+            <h1> Sistema de Agendamentos</h1>
+            <p>Bem-vindo, {{ request.session.username }}</p>
             <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Administrador</button></a>
-            <form method="post" action="{% url 'home' %}">
-                {% csrf_token %}
-                <label for="cliente">:</label>
-                <label for="administrador">:</label>
-            </form>
             <section>
                 <h2>Sobre o Sistema</h2>
                 <p>

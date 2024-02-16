@@ -23,6 +23,8 @@ urlpatterns = [
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
+    path('administrador_home/', views.administrador_home, name='administrador_home'),
+    path('cliente_home/', views.cliente_home, name='cliente_home'),
     
     
 

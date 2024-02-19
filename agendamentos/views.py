@@ -111,10 +111,44 @@ def cliente_home(request):
 def cliente(request):
     return render(request, 'agendamentos\\cliente.html')
     
+from django.shortcuts import render, redirect
+from .models import Equipamento, Agendamento
+from datetime import datetime
+
 def agendar_equipamento(request):
+    if request.method == 'POST':
+        equipamento_id = request.POST['equipamento']
+        data = request.POST['data']
+        hora = request.POST['hora']
+
+        # Converta a data e hora em um objeto datetime
+        data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+
+        # Verifique se o equipamento está disponível para agendamento
+        # Aqui, estamos verificando se há algum agendamento para o equipamento na mesma data e hora
+        agendamentos = Agendamento.objects.filter(equipamento_id=equipamento_id, data_hora=data_hora)
+
+        if agendamentos.exists():
+            # Se houver agendamento para o equipamento na mesma data e hora, exiba uma mensagem de erro
+            error_message = 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'
+            equipamentos = Equipamento.objects.all()
+            context = {'equipamentos': equipamentos, 'error_message': error_message}
+            return render(request, 'agendamentos/agendar_equipamento.html', context)
+        else:
+            # Se o equipamento estiver disponível, crie o agendamento
+            agendamento = Agendamento.objects.create(
+                equipamento_id=equipamento_id,
+                cliente=request.session['username'],  # Use o nome do cliente armazenado na sessão
+                data_hora=data_hora
+            )
+
+            # Redirecione para a página de sucesso ou para onde desejar
+            return redirect('cliente')
+
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
     return render(request, 'agendamentos/agendar_equipamento.html', context)
+
     
 def historico(request):
     return render(request, 'agendamentos\\historico.html')

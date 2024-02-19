@@ -9,32 +9,26 @@
 </head>
 
 <body>
-    <div class="container_cliente">
-        <div class="cliente-form">
+    <div class="container_agendar_equipamento">
+        <div class="agendar-equipamento-form">
             <h1>Agendar Equipamento</h1>
-            <form method="post" action="{% url 'adicionar_agendamento' %}">
+            <form method="post" action="{% url 'agendar_equipamento' %}">
                 {% csrf_token %}
                 <label for="equipamento">Selecione o Equipamento:</label>
-                <select name="equipamento" id="equipamento">
+                <select id="equipamento" name="equipamento">
                     {% for equipamento in equipamentos %}
-                        <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
+                    <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
                     {% endfor %}
                 </select>
-                <br>
                 <label for="data">Data:</label>
-                <input type="date" name="data" id="data">
-                <br>
+                <input type="date" id="data" name="data" required>
                 <label for="hora">Hora:</label>
-                <input type="time" name="hora" id="hora">
-                <br>
+                <input type="time" id="hora" name="hora" required>
                 <input type="submit" value="Agendar">
             </form>
-            
-            <footer>
-                <p>&copy; 2024 Sistema de Agendamentos</p>
-            </footer>
+
             {% if error_message %}
-            <p>{{ error_message }}</p>
+            <p class='error_message'>{{ error_message }}</p>
             {% endif %}
         </div>
     </div>

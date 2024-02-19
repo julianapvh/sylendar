@@ -1,17 +1,6 @@
-from django.contrib.auth.models import Group, Permission
-from django.db import models
 from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.utils import timezone
-
-class Equipamento(models.Model):
-    nome = models.CharField(max_length=100)
-    descricao = models.CharField(max_length=100)
-    fabricante = models.CharField(max_length=50)
-    data_aquisicao = models.DateField(default=timezone.now)
-    usuarios = models.ManyToManyField('Usuario', related_name='equipamentos', blank=True)
-
-    def __str__(self):
-        return self.nome
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
@@ -35,6 +24,7 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractUser):
+    nome = models.CharField(max_length=100)  # Novo campo adicionado
     nome_completo = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
     endereco = models.CharField(max_length=200)
@@ -43,6 +33,18 @@ class Usuario(AbstractUser):
 
     def __str__(self):
         return self.nome_completo
+
+
+class Equipamento(models.Model):
+    nome = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=100)
+    fabricante = models.CharField(max_length=50)
+    data_aquisicao = models.DateField(default=timezone.now)
+    usuarios = models.ManyToManyField(Usuario, related_name='equipamentos', blank=True)
+
+    def __str__(self):
+        return self.nome
+
 
 class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)

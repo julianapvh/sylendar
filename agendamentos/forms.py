@@ -1,5 +1,6 @@
 from django import forms
 from .models import Agendamento, Equipamento
+from .models import Usuario
 
 class AgendamentoForm(forms.ModelForm):
     class Meta:
@@ -15,3 +16,9 @@ class EquipamentoForm(forms.ModelForm):
 
 
 
+class UserRegistrationForm(forms.ModelForm):
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
+
+    class Meta:
+        model = Usuario
+        fields = ['username', 'password', 'nome', 'nome_completo', 'email', 'telefone', 'endereco', 'data_nascimento']

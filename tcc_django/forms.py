@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from models import Post<br>
+from .models import Post
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Usuário')

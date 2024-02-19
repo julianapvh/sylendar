@@ -10,6 +10,7 @@ class CustomUserManager(BaseUserManager):
         user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        
         return user
 
     def create_superuser(self, email, password=None, **extra_fields):
@@ -24,15 +25,17 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractUser):
-    nome = models.CharField(max_length=100)  # Novo campo adicionado
+    nome = models.CharField(max_length=100)
     nome_completo = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
     endereco = models.CharField(max_length=200)
-    data_nascimento = models.DateField()
+    data_nascimento = models.DateField(null=True)  # Permitindo valores nulos
     objects = CustomUserManager()
 
     def __str__(self):
         return self.nome_completo
+
+
 
 
 class Equipamento(models.Model):

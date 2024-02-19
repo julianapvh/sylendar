@@ -1,4 +1,3 @@
-# imports
 import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
@@ -7,6 +6,8 @@ from .forms import EquipamentoForm
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.contrib.auth.forms import UserCreationForm
+
 
 
 # funções de apoio
@@ -110,10 +111,6 @@ def cliente_home(request):
 
 def cliente(request):
     return render(request, 'agendamentos\\cliente.html')
-    
-from django.shortcuts import render, redirect
-from .models import Equipamento, Agendamento
-from datetime import datetime
 
 def agendar_equipamento(request):
     if request.method == 'POST':
@@ -149,7 +146,6 @@ def agendar_equipamento(request):
     context = {'equipamentos': equipamentos}
     return render(request, 'agendamentos/agendar_equipamento.html', context)
 
-    
 def historico(request):
     return render(request, 'agendamentos\\historico.html')
     
@@ -167,7 +163,6 @@ def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all().order_by('nome')  # Ordenar os equipamentos pelo nome
     return render(request, 'agendamentos/visualizar_equipamentos.html', {'equipamentos': equipamentos})
 
-    
 def listar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
     return render(request, 'agendamentos/listar_equipamentos.html', {'equipamentos': equipamentos})    
@@ -176,29 +171,6 @@ def administrador(request):
 
     return render(request, 'agendamentos\\administrador.html')
      
-        
-### Está função foi desativada por um erro que eu ainda não descobri qual é  
-"""def administrador(request):
-    if request.method == 'POST':
-        # Obter o ID do equipamento a ser excluído
-        equipamento_id = request.POST['equipamento_id']
-
-        # Excluir o equipamento
-        equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
-        equipamento.delete()
-
-        # Redirecionar o usuário para a página do administrador
-        return redirect('administrador')
-
-    else:
-        # Puxar todos os equipamentos do banco de dados
-        equipamentos = Equipamento.objects.all()
-
-        # Filtrar os equipamentos que têm o nome "Computador"
-        equipamentos = equipamentos.filter(nome_equipamento="Computador")
-
-        return render(request, 'agendamentos/administrador.html', {'equipamentos': equipamentos})"""
-
 def adicionar_agendamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']
@@ -296,7 +268,6 @@ def cadastrar_equipamento(request):
     else:
         return render(request, 'agendamentos/cadastrar_equipamento.html')
 
-
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
@@ -338,8 +309,17 @@ def alterar_equipamento(request, equipamento_id):
         form = EquipamentoForm(instance=equipamento)
     return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
     
+def registro(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redirecione para a página de login após o registro bem-sucedido
+    else:
+        form = UserCreationForm()
+    return render(request, 'agendamentos\\registro.html', {'form': form})
     
-    
-
+def login(request):
+    return render(request, 'agendamentos\\login.html')
     
     

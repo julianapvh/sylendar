@@ -1,13 +1,10 @@
 from django.contrib import admin
-from .models import Agendamento  # Importe o modelo que deseja registrar
-from django.contrib import admin
-  # Importe o modelo que deseja registrar
-from .models import Usuario
+from .models import Agendamento, Equipamento, Usuario
+
 # Registre o modelo Agendamento no painel de administração
 admin.site.register(Agendamento)
 
-
-
-# Registre o modelo CustomUser no painel de administração
-
+# Registre o modelo Usuario no painel de administração
 admin.site.register(Usuario)
+
+admin.site.register(Equipamento)

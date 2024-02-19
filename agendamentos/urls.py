@@ -2,6 +2,9 @@ from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
 from agendamentos.views import excluir_equipamento
+from .views import register
+from django.contrib.auth import views as auth_views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -30,6 +33,9 @@ urlpatterns = [
     path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
+    path('registro/', register, name='registro'),
+    path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
 
     
     

@@ -1,11 +1,20 @@
+{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
     <meta charset="UTF-8">
     <title>Falha no Agendamento</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+
 <body>
-    <h1>Falha no Agendamento</h1>
-    <p>Ocorreu um problema ao agendar o equipamento. Por favor, tente novamente.</p>
+    <div class="container_failure">
+        <div class="failure-message">
+            <h1>Falha no Agendamento</h1>
+            <p>Ocorreu um problema ao agendar o equipamento. Por favor, tente novamente.</p>
+        </div>
+    </div>
 </body>
+
 </html>

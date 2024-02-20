@@ -18,18 +18,16 @@
                 <input type="password" id="password" name="password" placeholder="Senha" required>
                 <input type="submit" value="Login">
             </form>
-
-            <!-- Adicione o botão para o cliente entrar sem fazer login -->
-            <form method="post" action="{% url 'cliente_home' %}">
+            
+            <!-- Adicione o botão de cadastro -->
+            <form method="get" action="{% url 'register' %}">
                 {% csrf_token %}
-                <button type="submit" name="login_as_guest">Entrar como Convidado</button>
+                <button type="submit">Cadastro</button>
             </form>
 
             {% if error_message %}
             <p class'error_message'>{{ error_message }}</p>
             {% endif %}
-       
-
         </div>
     </div>
 </body>

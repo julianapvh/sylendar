@@ -4,6 +4,8 @@ from agendamentos import views
 from agendamentos.views import excluir_equipamento
 from .views import register
 from django.contrib.auth import views as auth_views
+from agendamentos.models import Usuario
+
 
 
 urlpatterns = [
@@ -36,6 +38,10 @@ urlpatterns = [
     path('registro/', register, name='registro'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
+    path('agendamentos/register/', views.register, name='register'),
+    path('user_list/', views.user_list, name='user_list'),
+    
+    
 
     
     

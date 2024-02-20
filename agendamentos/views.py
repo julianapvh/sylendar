@@ -7,6 +7,12 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from .forms import UserRegistrationForm
+from .models import Usuario
+# Importe o modelo Usuario
+from agendamentos.models import Usuario
+from agendamentos.forms import UserRegistrationForm
 
 
 
@@ -308,18 +314,20 @@ def alterar_equipamento(request, equipamento_id):
     else:
         form = EquipamentoForm(instance=equipamento)
     return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
-    
-def registro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # Redirecione para a página de login após o registro bem-sucedido
-    else:
-        form = UserCreationForm()
-    return render(request, 'agendamentos\\registro.html', {'form': form})
-    
+      
 def login(request):
     return render(request, 'agendamentos\\login.html')
     
-    
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'agendamentos/register.html', {'form': form})
+
+def user_list(request):
+    users = Usuario.objects.all()
+    return render(request, 'agendamentos\\user_list.html', {'users': users})

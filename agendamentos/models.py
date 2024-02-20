@@ -2,6 +2,9 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.db import models
 from django.utils import timezone
 
+
+
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password=None, **extra_fields):
         if not email:
@@ -25,15 +28,12 @@ class CustomUserManager(BaseUserManager):
         return self.create_user(email, password, **extra_fields)
 
 class Usuario(AbstractUser):
-    nome = models.CharField(max_length=100)
     nome_completo = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
-    endereco = models.CharField(max_length=200)
-    data_nascimento = models.DateField(null=True)  # Permitindo valores nulos
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.nome_completo
+        return self.nome_completo if self.nome_completo else self.username
 
 
 

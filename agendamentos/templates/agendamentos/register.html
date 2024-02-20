@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Página de Cadastro</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+</head>
+<body>
+    <body>
+        <div class="container">
+            <div class="login-form">
+    <h2>Cadastre-se</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div>
+            <label for="id_username">Usuário:</label>
+            {{ form.username }}
+        </div>
+        <div>
+            <label for="id_email">Email:</label>
+            {{ form.email }}
+        </div>
+        <div>
+            <label for="id_password1">Senha:</label>
+            {{ form.password1 }}
+        </div>
+        <div>
+            <label for="id_password2">Confirmação de senha:</label>
+            {{ form.password2 }}
+        </div>
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>
+
+
+

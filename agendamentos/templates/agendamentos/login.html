@@ -22,7 +22,8 @@
             <!-- Adicione o botão de cadastro -->
             <form method="get" action="{% url 'register' %}">
                 {% csrf_token %}
-                <button type="submit">Cadastro</button>
+                <button class="btn_cadastro"type="submit">Clique aqui para se cadastrar</button>
+                <a
             </form>
 
             {% if error_message %}

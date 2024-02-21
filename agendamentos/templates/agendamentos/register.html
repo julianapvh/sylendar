@@ -7,32 +7,30 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
 <body>
-    <body>
-        <div class="container">
-            <div class="login-form">
-    <h2>Cadastre-se</h2>
-    <form method="post">
-        {% csrf_token %}
-        <div>
-            <label for="id_username">Usuário:</label>
-            {{ form.username }}
+    <div class="container">
+        <div class="login-form"> <!-- Use a mesma classe do formulário de login -->
+            <h2>Cadastre-se</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div>
+                    <label for="id_username">Usuário:</label>
+                    {{ form.username }}
+                </div>
+                <div class="email-field"> <!-- Adicione uma classe para o campo de e-mail -->
+                    <label for="id_email">Email:</label>
+                    {{ form.email }}
+                </div>
+                <div>
+                    <label for="id_password1">Senha:</label>
+                    {{ form.password1 }}
+                </div>
+                <div>
+                    <label for="id_password2">Confirmação de senha:</label>
+                    {{ form.password2 }}
+                </div>
+                <button type="submit" class="btn_cadastro">Cadastrar</button> <!-- Adicione a mesma classe do botão de login -->
+            </form>
         </div>
-        <div>
-            <label for="id_email">Email:</label>
-            {{ form.email }}
-        </div>
-        <div>
-            <label for="id_password1">Senha:</label>
-            {{ form.password1 }}
-        </div>
-        <div>
-            <label for="id_password2">Confirmação de senha:</label>
-            {{ form.password2 }}
-        </div>
-        <button type="submit">Cadastrar</button>
-    </form>
+    </div>
 </body>
 </html>
-
-
-

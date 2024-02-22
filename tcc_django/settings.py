@@ -88,7 +88,7 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 
 # settings.py
 
-'''DATABASES = {
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'bd_agendamentos',  # Nome do banco de dados
@@ -97,7 +97,7 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
         'HOST': 'localhost',      # Host do banco de dados
         'PORT': '3306',           # Porta do banco de dados
     }
-}'''
+}
 
 
 

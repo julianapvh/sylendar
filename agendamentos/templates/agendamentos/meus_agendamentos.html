@@ -1,40 +1,79 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
-    <title>Meus Agendamentos</title>
+    <meta charset="UTF-8">
+    <title>Sistema de Agendamentos - Meus Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px; /* Ajuste o valor conforme necessário */
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #3490db;
+            color: white;
+        }
+        
+        .botao-voltar {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            margin-top: 20px; /* Adicionado para criar espaço entre a tabela e o botão */
+        }
+
+        .botao-voltar:hover {
+            background-color: #0056b3;
+        }
+        
+    </style>
 </head>
 
 <body>
-    <div class="container_cliente">
-        <div class="cliente-form">
-            <h1>Meus Agendamentos</h1>
-            <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
-            <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar equipamentos disponiveis</button></a>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
-            <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Voltar</button></a>
-            <!-- Lista de agendamentos do usuário -->
-            <ul>
-                {% for agendamento in agendamentos %}
-                <li>{{ agendamento }}</li>
-                {% empty %}
-                <li>Você não possui nenhum agendamento.</li>
-                {% endfor %}
-            </ul>
-            
-            {% if error_message %}
-            <p>{{ error_message }}</p>
-            {% endif %}
+   
+            <h2>Meus Agendamentos</h2>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID do Agendamento</th>
+                        <th>Equipamento</th>
+                        <th>Data</th>
+                        <th>Hora</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agendamento in agendamentos %}
+                        <tr>
+                            <td>{{ agendamento.id }}</td>
+                            <td>{{ agendamento.equipamento }}</td>
+                            <td>{{ agendamento.data }}</td>
+                            <td>{{ agendamento.hora }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </div>
+        <!-- Botão de voltar para a página do cliente -->
+        <a href="{% url 'cliente' %}" class="botao-voltar">Voltar</a>
     </div>
-    <footer>
-        <p>&copy; 2024 Sistema de Agendamentos</p>
-    </footer>
 </body>
 
 </html>
-
-

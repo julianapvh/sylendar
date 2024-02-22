@@ -8,6 +8,7 @@ from agendamentos.models import Usuario
 
 
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.index, name='index'),

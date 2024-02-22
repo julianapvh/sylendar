@@ -6,12 +6,64 @@
 <head>
     <title>Agendar Equipamento</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container_agendar_equipamento {
+            width: 50%;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .agendar-equipamento-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .agendar-equipamento-form select,
+        .agendar-equipamento-form input[type="date"],
+        .agendar-equipamento-form input[type="time"],
+        .agendar-equipamento-form input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+        }
+
+        .agendar-equipamento-form input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        .agendar-equipamento-form input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .error_message {
+            color: #d9534f;
+            margin-top: -10px;
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container_agendar_equipamento">
+    <div class="container_historico">
         <div class="agendar-equipamento-form">
-            <h1>Agendar Equipamento</h1>
+            <h2>Agendar Equipamento</h2>
             <form method="post" action="{% url 'agendar_equipamento' %}">
                 {% csrf_token %}
                 <label for="equipamento">Selecione o Equipamento:</label>

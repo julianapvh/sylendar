@@ -1,4 +1,3 @@
-import datetime
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Agendamento, Equipamento
@@ -7,12 +6,15 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
 from .forms import UserRegistrationForm
 from .models import Usuario
 # Importe o modelo Usuario
 from agendamentos.models import Usuario
 from agendamentos.forms import UserRegistrationForm
+from dateutil.parser import parse
+from django.utils import timezone
+from datetime import datetime
+
 
 
 
@@ -118,22 +120,37 @@ def cliente_home(request):
 def cliente(request):
     return render(request, 'agendamentos\\cliente.html')
 
+
+
 def agendar_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']
         data = request.POST['data']
         hora = request.POST['hora']
 
-        # Converta a data e hora em um objeto datetime
-        data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+        # Verifique se 'username' está presente na sessão
+        if 'username' not in request.session:
+            # Se 'username' não estiver presente na sessão, redirecione para onde desejar
+            return redirect('login')
 
-        # Verifique se o equipamento está disponível para agendamento
-        # Aqui, estamos verificando se há algum agendamento para o equipamento na mesma data e hora
-        agendamentos = Agendamento.objects.filter(equipamento_id=equipamento_id, data_hora=data_hora)
+        # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
+        data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+        data_hora_consciente = timezone.make_aware(data_hora)
+
+        # Verifique se o equipamento está disponível para agendamento para o cliente atual
+        agendamentos = Agendamento.objects.filter(
+            equipamento_id=equipamento_id,
+            cliente_nome=request.session['username'],  # Verifique o agendamento apenas para o cliente atual
+            data__year=data_hora_consciente.year,
+            data__month=data_hora_consciente.month,
+            data__day=data_hora_consciente.day,
+            hora__hour=data_hora_consciente.hour,
+            hora__minute=data_hora_consciente.minute
+        )
 
         if agendamentos.exists():
-            # Se houver agendamento para o equipamento na mesma data e hora, exiba uma mensagem de erro
-            error_message = 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'
+            # Se houver agendamento para o equipamento na mesma data e hora para o cliente atual, exiba uma mensagem de erro
+            error_message = 'Este equipamento já está agendado para você nesta data e hora. Por favor, escolha outra data ou hora.'
             equipamentos = Equipamento.objects.all()
             context = {'equipamentos': equipamentos, 'error_message': error_message}
             return render(request, 'agendamentos/agendar_equipamento.html', context)
@@ -141,8 +158,9 @@ def agendar_equipamento(request):
             # Se o equipamento estiver disponível, crie o agendamento
             agendamento = Agendamento.objects.create(
                 equipamento_id=equipamento_id,
-                cliente=request.session['username'],  # Use o nome do cliente armazenado na sessão
-                data_hora=data_hora
+                cliente_nome=request.session['username'],  # Use o nome do cliente armazenado na sessão
+                data=data_hora_consciente.date(),
+                hora=data_hora_consciente.time()
             )
 
             # Redirecione para a página de sucesso ou para onde desejar
@@ -152,16 +170,22 @@ def agendar_equipamento(request):
     context = {'equipamentos': equipamentos}
     return render(request, 'agendamentos/agendar_equipamento.html', context)
 
+
 def historico(request):
     return render(request, 'agendamentos\\historico.html')
     
 def meus_agendamentos(request):
-    # Your view logic here
-    return render(request, 'agendamentos\\meus_agendamentos.html')
+    # Verifique se 'username' está presente na sessão
+    if 'username' not in request.session:
+        # Se 'username' não estiver presente na sessão, redirecione para onde desejar
+        return redirect('login')  # Substitua 'nome_da_pagina_de_login' pelo nome da sua página de login
     
-def agendar_equipamento(request):
-    return render(request, 'agendamentos\\agendar_equipamento.html')
+    # Obtenha os agendamentos do cliente atual
+    agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'])
     
+    # Renderize o template 'meus_agendamentos.html' e passe os agendamentos para ele
+    return render(request, 'agendamentos/meus_agendamentos.html', {'agendamentos': agendamentos})
+
 def cancelar_agendamentos(request):
     return render(request, 'agendamentos\\cancelar_agendamentos.html')
     
@@ -217,17 +241,17 @@ def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
     if request.method == 'POST':
-        # Instanciar o formulário com os dados submetidos
-        formulario = editar_equipamento(request.POST, instance=equipamento)
+        # Instanciar o formulário com os dados submetidos e o equipamento existente
+        formulario = EditarEquipamentoForm(request.POST, instance=equipamento)
         if formulario.is_valid():
             # Salvar os dados do formulário no objeto equipamento
             formulario.save()
-            # Retornar uma resposta de sucesso
+            # Retornar uma resposta de sucesso ou redirecionar para algum lugar
             return HttpResponse("Equipamento editado com sucesso")
         # Se o formulário não for válido, renderizar o formulário novamente com os erros
     else:
         # Se o método for GET, renderizar o formulário de edição com os dados do equipamento
-        formulario = editar_equipamento(instance=equipamento)
+        formulario = EditarEquipamentoForm(instance=equipamento)
     
     # Renderizar o formulário de edição
     return render(request, 'agendamentos/editar_equipamento.html', {'formulario': formulario})

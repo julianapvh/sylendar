@@ -1,46 +1,34 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <title>Página de Cadastro</title>
+    <title>Página de Login</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
 </head>
+
 <body>
     <div class="container">
-        <div class="login-form"> <!-- Use a mesma classe do formulário de login -->
-            <h2>Cadastre-se</h2>
+        <div class="login-form">
+            <h1>Login</h1>
             <form method="post">
                 {% csrf_token %}
-                
-                <div>
-                    <label for="id_nome_completo">Nome Completo:</label>
-                    {{ form.nome_completo }}
-                </div>
-                <div>
-                    <label for="id_username">CPF:</label>
-                    {{ form.username }}
-                </div>
-                <div class="email-field"> <!-- Adicione uma classe para o campo de e-mail -->
-                    <label for="id_email">Email:</label>
-                    {{ form.email }}
-                </div>
-               
-                <div>
-                    <label for="id_telefone">Telefone:</label>
-                    {{ form.telefone }}
-                </div>
-                <div>
-                    <label for="id_password1">Senha:</label>
-                    {{ form.password1 }}
-                </div>
-                <div>
-                    <label for="id_password2">Confirmação de senha:</label>
-                    {{ form.password2 }}
-                </div>
-                <button type="submit" class="btn_cadastro">Cadastrar</button> <!-- Adicione a mesma classe do botão de login -->
+                <input type="text" id="username" name="username" placeholder="Usuário" required>
+                <input type="password" id="password" name="password" placeholder="Senha" required>
+                <input type="submit" value="Login">
             </form>
+            
+            <!-- Adicione o botão de cadastro -->
+            <form method="get" action="{% url 'register' %}">
+                <button class="btn_cadastro" type="submit">Clique aqui para se cadastrar</button>
+            </form>
+
+            {% if error_message %}
+            <p class="error_message">{{ error_message }}</p>
+            {% endif %}
         </div>
     </div>
 </body>
+
 </html>

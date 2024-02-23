@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
@@ -13,7 +12,11 @@
         <div class="cliente-form">
             
             <h1>Agendamentos</h1>
-            <p>Logado: {{ request.session.username }}</p>
+            {% if user.is_authenticated %}
+                <p>Logado: {{ user.get_full_name }}</p>
+            {% else %}
+                <p>Logado: Convidado</p>
+            {% endif %}
             <a class="btn_separado" href={% url 'meus_agendamentos' %}><button class="btn_separado">Meus Agendamentos</button></a>
             <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
             <a class="btn_separado" href={% url 'cancelar_agendamentos' %}><button class="btn_separado">Cancelar Agendamento</button></a>

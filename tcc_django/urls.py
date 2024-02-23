@@ -39,6 +39,7 @@ urlpatterns = [
     path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('user_list/', views.user_list, name='user_list'),
+    
 
 
     

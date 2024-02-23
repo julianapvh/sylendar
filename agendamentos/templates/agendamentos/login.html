@@ -19,15 +19,11 @@
                 <input type="submit" value="Login">
             </form>
             
-            <!-- Adicione o botão de cadastro -->
-            <form method="get" action="{% url 'register' %}">
-                {% csrf_token %}
-                <button class="btn_cadastro"type="submit">Clique aqui para se cadastrar</button>
-                <a
-            </form>
+            
+            <a href="{% url 'register' %}" class="btn_cadastro">Clique aqui para se cadastrar</a>
 
             {% if error_message %}
-            <p class'error_message'>{{ error_message }}</p>
+            <p class="error_message">{{ error_message }}</p>
             {% endif %}
         </div>
     </div>

@@ -36,10 +36,10 @@ urlpatterns = [
     path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
-    path('registro/', register, name='registro'),
+    path('agendamentos\registro/', register, name='registro'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
-    path('agendamentos/register/', views.register, name='register'),
+    path('agendamentos\register/', views.register, name='register'),
     path('user_list/', views.user_list, name='user_list'),
     
     

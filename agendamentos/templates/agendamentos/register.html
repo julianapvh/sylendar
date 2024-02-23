@@ -12,13 +12,23 @@
             <h2>Cadastre-se</h2>
             <form method="post">
                 {% csrf_token %}
+                
                 <div>
-                    <label for="id_username">Usuário:</label>
+                    <label for="id_nome_completo">Nome Completo:</label>
+                    {{ form.nome_completo }}
+                </div>
+                <div>
+                    <label for="id_username">CPF:</label>
                     {{ form.username }}
                 </div>
                 <div class="email-field"> <!-- Adicione uma classe para o campo de e-mail -->
                     <label for="id_email">Email:</label>
                     {{ form.email }}
+                </div>
+               
+                <div>
+                    <label for="id_telefone">Telefone:</label>
+                    {{ form.telefone }}
                 </div>
                 <div>
                     <label for="id_password1">Senha:</label>

@@ -14,6 +14,7 @@ from agendamentos.forms import UserRegistrationForm
 from dateutil.parser import parse
 from django.utils import timezone
 from datetime import datetime
+from django.contrib.auth.decorators import login_required
 
 
 
@@ -83,6 +84,21 @@ def login_sauron(usuario,senha):
     #___---¨¨¨ Início da execução ¨¨¨---___
     return(valida_acesso_sauron(usuario, senha))
 
+def login(request):
+    return render(request, 'agendamentos\\login.html')
+    
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
+        else:
+            print(form.errors)  # Exibe os erros de validação no console para depuração
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'agendamentos/register.html', {'form': form})
+    
 def index(request):
     error_message = None
     instruction_message = None
@@ -119,8 +135,6 @@ def cliente_home(request):
 
 def cliente(request):
     return render(request, 'agendamentos\\cliente.html')
-
-
 
 def agendar_equipamento(request):
     if request.method == 'POST':
@@ -169,7 +183,6 @@ def agendar_equipamento(request):
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
     return render(request, 'agendamentos/agendar_equipamento.html', context)
-
 
 def historico(request):
     return render(request, 'agendamentos\\historico.html')
@@ -339,19 +352,6 @@ def alterar_equipamento(request, equipamento_id):
         form = EquipamentoForm(instance=equipamento)
     return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
       
-def login(request):
-    return render(request, 'agendamentos\\login.html')
-    
-def register(request):
-    if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
-    else:
-        form = UserRegistrationForm()
-    return render(request, 'agendamentos/register.html', {'form': form})
-
 def user_list(request):
     users = Usuario.objects.all()
     return render(request, 'agendamentos\\user_list.html', {'users': users})

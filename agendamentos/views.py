@@ -17,7 +17,10 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
-
+from mechanize import Browser
+from bs4 import BeautifulSoup as bs
+from getpass import getpass
+from http.cookiejar import CookieJar
 
 
 
@@ -93,13 +96,9 @@ def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()  # Salva o novo usuário no banco de dados
-            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
-        else:
-            # Se o formulário não for válido, exiba os erros no console para depuração
-            print(form.errors)
+            form.save()
+            return redirect('index')  # Redireciona para a página de login após o registro bem-sucedido
     else:
-        # Se o método da requisição for GET, crie uma instância do formulário em branco
         form = UserRegistrationForm()
     return render(request, 'agendamentos/register.html', {'form': form})
     
@@ -116,7 +115,7 @@ def index(request):
         # Verificar se a autenticação foi bem-sucedida
         if user is not None:
             login(request)  # Faz o login do usuário
-            return redirect('cliente')  # Redireciona para a página inicial do administrador
+            return redirect('cliente')  # Redireciona para a página inicial do Cliente
         else:
             error_message = 'Credenciais inválidas'  # Define a mensagem de erro
 
@@ -132,8 +131,11 @@ def cliente_home(request):
     return render(request, 'agendamentos\\cliente_home.html')
 
 def cliente(request):
+    user = request.user
+    print("Usuário autenticado:", user)
     return render(request, 'agendamentos\\cliente.html')
 
+@login_required
 def agendar_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']

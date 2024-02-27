@@ -1,4 +1,5 @@
 {% load static %}
+
 <!DOCTYPE html>
 <html>
 
@@ -12,11 +13,15 @@
         <div class="cliente-form">
             
             <h1>Agendamentos</h1>
+<<<<<<< HEAD
             {% if user.is_authenticated %}
             <p>Logado: {{ user.nome_completo }}</p>
         {% else %}
             <p>Logado: Convidado</p>
         {% endif %}
+=======
+            <p>Logado: {{ request.session.username }}</p>
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
             <a class="btn_separado" href={% url 'meus_agendamentos' %}><button class="btn_separado">Meus Agendamentos</button></a>
             <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
             <a class="btn_separado" href={% url 'cancelar_agendamentos' %}><button class="btn_separado">Cancelar Agendamento</button></a>

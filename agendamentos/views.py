@@ -1,4 +1,3 @@
-from imaplib import _Authenticator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Agendamento, Equipamento
@@ -16,16 +15,20 @@ from dateutil.parser import parse
 from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
 from mechanize import Browser
 from bs4 import BeautifulSoup as bs
 from getpass import getpass
 from http.cookiejar import CookieJar
+=======
+
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
 
 
 
 # funções de apoio
-'''def login_sauron(usuario,senha):
+def login_sauron(usuario,senha):
     from mechanize import Browser
     from bs4 import BeautifulSoup as bs
     from getpass import getpass
@@ -87,7 +90,7 @@ from http.cookiejar import CookieJar
 
 
     #___---¨¨¨ Início da execução ¨¨¨---___
-    return(valida_acesso_sauron(usuario, senha))'''
+    return(valida_acesso_sauron(usuario, senha))
 
 def login(request):
     return render(request, 'agendamentos\\login.html')
@@ -97,29 +100,48 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
+<<<<<<< HEAD
             return redirect('index')  # Redireciona para a página de login após o registro bem-sucedido
+=======
+            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
+        else:
+            print(form.errors)  # Exibe os erros de validação no console para depuração
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
     else:
         form = UserRegistrationForm()
     return render(request, 'agendamentos/register.html', {'form': form})
     
 def index(request):
     error_message = None
+    instruction_message = None
+    
     
     if request.method == 'POST':
         username = request.POST['username']
         password = request.POST['password']
 
-        # Autenticar o usuário usando as credenciais fornecidas
-        user = authenticate(request, username=username, password=password)
+        #print(f"\n\nUsuário: {username}\nSenha: {password}\n\n")
 
+<<<<<<< HEAD
         # Verificar se a autenticação foi bem-sucedida
         if user is not None:
             login(request)  # Faz o login do usuário
             return redirect('cliente')  # Redireciona para a página inicial do Cliente
-        else:
-            error_message = 'Credenciais inválidas'  # Define a mensagem de erro
+=======
+        nome,cpf = login_sauron(username,password)
 
-    return render(request, 'agendamentos/login.html', {'error_message': error_message})
+        #print(f"Login realizado com sucesso!\nNome: {nome}\nCPF: {cpf}\n\n")
+
+        # Verifique se o usuário e a senha são "teste"
+        if nome != "" and cpf != "" and nome is not None and cpf is not None:
+            request.session['username'] = nome  # Salve o nome do usuário na sessão
+            return render(request, 'agendamentos/administrador_home.html')
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
+        else:
+            messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
+            return render(request, 'agendamentos/login.html')
+
+    return render(request, 'agendamentos/login.html')
     
 def home(request):   
     return render(request, 'agendamentos\\home.html')    

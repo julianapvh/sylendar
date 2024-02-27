@@ -16,12 +16,15 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 <<<<<<< HEAD
+<<<<<<< HEAD
 from django.contrib.auth import authenticate, login
 from mechanize import Browser
 from bs4 import BeautifulSoup as bs
 from getpass import getpass
 from http.cookiejar import CookieJar
 =======
+=======
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
 
 >>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
 
@@ -101,7 +104,13 @@ def register(request):
         if form.is_valid():
             form.save()
 <<<<<<< HEAD
+<<<<<<< HEAD
             return redirect('index')  # Redireciona para a página de login após o registro bem-sucedido
+=======
+            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
+        else:
+            print(form.errors)  # Exibe os erros de validação no console para depuração
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
 =======
             return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
         else:
@@ -123,6 +132,7 @@ def index(request):
         #print(f"\n\nUsuário: {username}\nSenha: {password}\n\n")
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         # Verificar se a autenticação foi bem-sucedida
         if user is not None:
             login(request)  # Faz o login do usuário
@@ -141,6 +151,20 @@ def index(request):
             messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
             return render(request, 'agendamentos/login.html')
 
+=======
+        nome,cpf = login_sauron(username,password)
+
+        #print(f"Login realizado com sucesso!\nNome: {nome}\nCPF: {cpf}\n\n")
+
+        # Verifique se o usuário e a senha são "teste"
+        if nome != "" and cpf != "" and nome is not None and cpf is not None:
+            request.session['username'] = nome  # Salve o nome do usuário na sessão
+            return render(request, 'agendamentos/administrador_home.html')
+        else:
+            messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
+            return render(request, 'agendamentos/login.html')
+
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
     return render(request, 'agendamentos/login.html')
     
 def home(request):   

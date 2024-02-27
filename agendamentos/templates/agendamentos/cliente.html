@@ -14,11 +14,15 @@
             
             <h1>Agendamentos</h1>
 <<<<<<< HEAD
+<<<<<<< HEAD
             {% if user.is_authenticated %}
             <p>Logado: {{ user.nome_completo }}</p>
         {% else %}
             <p>Logado: Convidado</p>
         {% endif %}
+=======
+            <p>Logado: {{ request.session.username }}</p>
+>>>>>>> parent of 5e5abe2 (Mudança na forma de logar)
 =======
             <p>Logado: {{ request.session.username }}</p>
 >>>>>>> parent of 5e5abe2 (Mudança na forma de logar)

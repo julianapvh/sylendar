@@ -59,6 +59,7 @@ class Agendamento(models.Model):
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
     data = models.DateTimeField(default=timezone.now)
     hora = models.TimeField()
+    cancelado = models.BooleanField(default=False)  # Novo campo para indicar se o agendamento foi cancelado
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"

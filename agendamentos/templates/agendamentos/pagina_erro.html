@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Erro{% endblock %}</title>
+    <!-- Inclua o Bootstrap -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Inclua seu arquivo CSS personalizado, se houver -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    <!-- Adicione um estilo personalizado para o humor -->
+    <style>
+        .funny-error {
+            font-size: 3em; /* Letras maiores para chamar mais atenção */
+            text-transform: uppercase; /* Deixa tudo em caixa alta para um toque cômico */
+        }
+        .blink {
+            animation: blinker 1s linear infinite;
+        }
+        @keyframes blinker {
+            50% {
+                opacity: 0;
+            }
+        }
+        .error-message {
+            font-size: 1.5em; /* Aumentar o tamanho da fonte das mensagens de erro */
+            margin-bottom: 20px;
+        }
+        /* Cores aleatórias */
+        .red { color: red; }
+        .blue { color: blue; }
+        .green { color: green; }
+        .purple { color: purple; }
+        .orange { color: orange; }
+        .yellow { color: yellow; }
+        /* Centralizar o canvas */
+        #canvas-container {
+            text-align: center;
+        }
+        #canvas {
+            display: inline-block;
+            margin-top: 20px;
+            border: 1px solid black;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2 text-center">
+                <h1 class="funny-error blink">Ops!</h1>
+                <p class="error-message blink"><span class="red">Parece</span> que algo <span class="blue">deu</span> <span class="green">errado</span>... Mas não foi você, foi o nosso estagiário que tropeçou nos cabos! 🤭</p>
+                <p class="error-message blink">Ele está trabalhando duro para consertar isso. Já que fez 💩!!! Enquanto isso, que tal jogar o jogo da cobrinha logo abaixo?</p>
+                <!-- Mantenha os detalhes do erro para referência técnica -->
+                <p>Detalhes do erro:</p>
+                <p>Tipo de Exceção: {{ exception_type }}</p>
+                <p>Valor da Exceção: {{ exception_value }}</p>
+                <p>Rastreamento: {{ traceback }}</p>
+                <!-- Um botão amigável para voltar à página inicial -->
+                <a href="/" class="btn btn-primary">Voltar à página inicial</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Adicione o jogo da cobrinha abaixo -->
+    <div id="canvas-container">
+        <canvas id="canvas" width="400" height="400"></canvas>
+    </div>
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        const box = 20;
+        const canvasSize = 400;
+        let snake = [{x: 10, y: 10}];
+        let food = {x: Math.floor(Math.random() * (canvasSize / box)) * box, y: Math.floor(Math.random() * (canvasSize / box)) * box};
+        let dx = box;
+        let dy = 0;
+        let game;
+
+        function draw() {
+            ctx.clearRect(0, 0, canvasSize, canvasSize);
+
+            ctx.fillStyle = 'green';
+            ctx.fillRect(food.x, food.y, box, box);
+
+            ctx.fillStyle = 'black';
+            snake.forEach(segment => {
+                ctx.fillRect(segment.x, segment.y, box, box);
+            });
+        }
+
+        function update() {
+            const head = {x: snake[0].x + dx, y: snake[0].y + dy};
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                // A comida foi comida, a cobrinha cresce
+                food = {x: Math.floor(Math.random() * (canvasSize / box)) * box, y: Math.floor(Math.random() * (canvasSize / box)) * box};
+            } else {
+                // A cobrinha não comeu nada, então remove o último segmento da cauda
+                snake.pop();
+            }
+        }
+
+        function collision(head, snakeArray) {
+            return snakeArray.some(segment => segment.x === head.x && segment.y === head.y);
+        }
+
+        function loop() {
+            update();
+            draw();
+        }
+
+        document.addEventListener('keydown', event => {
+            switch (event.key) {
+                case 'ArrowUp':
+                    if (dy === 0) {
+                        dy = -box;
+                        dx = 0;
+                    }
+                    break;
+                case 'ArrowDown':
+                    if (dy === 0) {
+                        dy = box;
+                        dx = 0;
+                    }
+                    break;
+                case 'ArrowLeft':
+                    if (dx === 0) {
+                        dx = -box;
+                        dy = 0;
+                    }
+                    break;
+                case 'ArrowRight':
+                    if (dx === 0) {
+                        dx = box;
+                        dy = 0;
+                    }
+                    break;
+            }
+        });
+
+        game = setInterval(loop, 100);
+    </script>
+</body>
+</html>

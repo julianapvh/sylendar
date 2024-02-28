@@ -84,10 +84,9 @@ body {
   color: #3490db;
 }
 
-
 /* Estilos para a página do cliente */
 .container_cliente {
-  background-color: #007BFF; /* Cor de fundo */
+  background-color: #007BFF;
   width: 100%;
   height: 100vh;
   display: flex;
@@ -96,7 +95,7 @@ body {
 }
 
 .cliente-form {
-  background-color: #ffffff; /* Cor de fundo do formulário */
+  background-color: #ffffff;
   padding: 20px;
   border-radius: 8px;
   text-align: center;
@@ -104,18 +103,24 @@ body {
   width: 300px;
 }
 
-.btn_separado {
-  background-color: #007BFF; /* Cor de fundo dos botões */
-  color: #fff; /* Cor do texto dos botões */
+.btn_separado,
+.cliente-form button {
+  background-color: #007BFF;
+  color: #fff;
   border: none;
   padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  margin: 5px 0; /* Espaçamento entre botões */
+  margin: 5px 0;
+}
+
+.btn_separado:hover,
+.cliente-form button:hover {
+  background-color: #0056b3;
 }
 
 .cliente-form h1 {
-  color: #3498db; /* Cor do título */
+  color: #3498db;
   font-size: 24px;
   margin-bottom: 20px;
 }
@@ -124,22 +129,7 @@ body {
 label {
   display: block;
   margin: 10px 0;
-  color: #333; /* Cor do texto */
-}
-
-/* Estilizar botões */
-input[type="submit"] {
-  background-color: #3498db; /* Cor de fundo dos botões */
-  color: #fff; /* Cor do texto dos botões */
-  border: none;
-  padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 5px 0; /* Espaçamento entre botões */
-}
-
-input[type="submit"]:hover {
-  background-color: #258cd1; /* Cor de fundo ao passar o mouse sobre os botões */
+  color: #333;
 }
 
 /* Estilizar a seção de informações */
@@ -149,153 +139,30 @@ section {
 }
 
 h2 {
-  color: #3498db; /* Cor do título da seção */
+  color: #3498db;
 }
 
 /* Estilizar o rodapé */
 footer {
   margin-top: 20px;
   text-align: center;
-  color: #333; /* Cor do texto do rodapé */
-}
-
-
-
-/* Reset de estilos */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Estilos gerais */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
   color: #333;
 }
 
-.container_agendar_equipamento {
-  background-color: #3498db;
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.agendar_equipamento-form {
-  background-color: #ffffff;
-  padding: 20px;
-  border-radius: 8px;
-  text-align: center;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  color: #3498db;
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-nav-link {
-  color: #3498db;
-  text-decoration: none;
-  margin: 10px;
-  display: block;
-}
-
-nav-link:hover {
-  text-decoration: underline;
-}
-
-section {
-  margin-top: 20px;
-  text-align: left;
-}
-
-h2 {
-  color: #3498db;
-}
-
-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #333;
-}
-
-
-
-/* Reset de estilos */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Estilos gerais */
-body {
-  font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
-  color: #333;
-}
-
-.container_historico {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
-
-.historico-form {
-  background-color: #fff;
-  border-radius: 5px;
-  padding: 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
-  text-align: center;
-}
-
-h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
-}
-
-.nav-link {
-  display: block;
-  margin-top: 10px;
-  text-decoration: none;
-  color: #007BFF;
-}
-
-.nav-link:hover {
-  text-decoration: underline;
-}
-
-footer {
-  margin-top: 20px;
-  text-align: center;
-  color: #333;
-}
-
-.btn_cadastro {
-  background-color: #007BFF; /* Cor de fundo dos botões */
-  color: #fff; /* Cor do texto dos botões */
-  border: none;
+/* Estilizar botões dentro do formulário de agendamentos */
+.botao-acoes,
+.botao-voltar {
+  display: inline-block;
   padding: 10px 20px;
-  border-radius: 4px;
-  cursor: pointer;
-  margin: 5px 0; /* Espaçamento entre botões */
+  background-color: #007bff;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  margin-top: 20px;
 }
 
-
-/* para o campo de e-mail do formulário de cadastro 
-*/
-.email-field input[type="email"] {
-  width: 100%; /* Ou qualquer tamanho desejado */
-  padding: 8px; /* Ajuste o padding conforme necessário */
-  box-sizing: border-box; /* Garante que o padding não aumente a largura do campo */
-  border: 1px solid #ccc; /* Adicione uma borda para manter a consistência com os outros campos */
-  border-radius: 4px; /* Adicione bordas arredondadas para combinar com os outros campos */
+.botao-acoes:hover,
+.botao-voltar:hover {
+  background-color: #0056b3;
 }

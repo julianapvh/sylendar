@@ -5,6 +5,7 @@ from agendamentos.views import excluir_equipamento
 from .views import register
 from django.contrib.auth import views as auth_views
 from agendamentos.models import Usuario
+from .views import reagendar_agendamento, cancelar_agendamento
 
 
 
@@ -27,7 +28,6 @@ urlpatterns = [
     path('agendamentos/adicionar_agendamento', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
-    path('cancelar_agendamentos/', views.cancelar_agendamentos, name='cancelar_agendamentos'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
     path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
@@ -41,6 +41,8 @@ urlpatterns = [
     path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
     path('agendamentos\register/', views.register, name='register'),
     path('user_list/', views.user_list, name='user_list'),
+    path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
+    path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     
     
 

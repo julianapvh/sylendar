@@ -2,15 +2,9 @@
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
-from agendamentos.views import excluir_equipamento
+from agendamentos.views import cancelar_agendamento, excluir_equipamento, reagendar_agendamento
 from django.contrib.auth import views as auth_views
 from agendamentos.models import Usuario
-
-
-
-
-
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -25,7 +19,6 @@ urlpatterns = [
     path('agendamentos/adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
-    path('cancelar_agendamentos/', views.cancelar_agendamentos, name='cancelar_agendamentos'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
     path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
@@ -39,10 +32,13 @@ urlpatterns = [
     path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
     path('register/', views.register, name='register'),
     path('user_list/', views.user_list, name='user_list'),
+    path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
+    path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
+    path('pagina_de_erro/', views.pagina_erro, name='pagina_erro'),
 
-
-    
-    
-    
 
 ]
+
+# Mapeie a visualização para lidar com erros
+handler404 = 'agendamentos.views.error_404_view'
+handler500 = 'agendamentos.views.error_500_view'

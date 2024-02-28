@@ -1,7 +1,8 @@
+from multiprocessing import context
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Agendamento, Equipamento
-from .forms import EquipamentoForm
+from .forms import AgendamentoForm, EquipamentoForm
 from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
@@ -134,7 +135,15 @@ def cliente_home(request):
     return render(request, 'agendamentos\\cliente_home.html')
 
 def cliente(request):
-    return render(request, 'agendamentos\\cliente.html')
+    # Verificar se o usuário está logado e se sim, obter os agendamentos dele
+    if 'username' in request.session:
+        # Obter os agendamentos do cliente atual
+        agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'])
+        # Passar os agendamentos para o template como parte do contexto
+        return render(request, 'agendamentos/cliente.html', {'agendamentos': agendamentos})
+    else:
+        # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
+        return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
 
 def agendar_equipamento(request):
     if request.method == 'POST':
@@ -193,14 +202,11 @@ def meus_agendamentos(request):
         # Se 'username' não estiver presente na sessão, redirecione para onde desejar
         return redirect('login')  # Substitua 'nome_da_pagina_de_login' pelo nome da sua página de login
     
-    # Obtenha os agendamentos do cliente atual
-    agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'])
+    # Obtenha os agendamentos do cliente atual excluindo os agendamentos cancelados
+    agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'], cancelado=False)
     
     # Renderize o template 'meus_agendamentos.html' e passe os agendamentos para ele
     return render(request, 'agendamentos/meus_agendamentos.html', {'agendamentos': agendamentos})
-
-def cancelar_agendamentos(request):
-    return render(request, 'agendamentos\\cancelar_agendamentos.html')
     
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all().order_by('nome')  # Ordenar os equipamentos pelo nome
@@ -355,3 +361,60 @@ def alterar_equipamento(request, equipamento_id):
 def user_list(request):
     users = Usuario.objects.all()
     return render(request, 'agendamentos\\user_list.html', {'users': users})
+    
+def reagendar_agendamento(request, agendamento_id):
+    if request.method == 'POST':
+        agendamento = Agendamento.objects.get(pk=agendamento_id)
+        nova_data_str = request.POST.get('nova_data')
+        nova_hora_str = request.POST.get('nova_hora')
+
+        # Verifica se nova_data_str não está vazio
+        if nova_data_str:
+            nova_data = datetime.strptime(nova_data_str, '%Y-%m-%d').date()
+            nova_hora = datetime.strptime(nova_hora_str, '%H:%M').time()
+            
+            # Atualiza os campos do agendamento
+            agendamento.data = nova_data
+            agendamento.hora = nova_hora
+            agendamento.save()
+
+            # Redireciona para a página de sucesso ou qualquer outra página desejada
+            return redirect('sucesso_agendamento')
+        else:
+            # Trate o caso em que nova_data_str está vazio
+            # Por exemplo, retorne uma mensagem de erro para o usuário
+            messages.error(request, 'Por favor, selecione uma nova data.')
+            return redirect('pagina_erro')
+    else:
+        # Trate o caso em que o método da requisição não é POST
+        # Por exemplo, retorne uma mensagem de erro para o usuário
+        messages.error(request, 'Método de requisição inválido.')
+        return redirect('pagina_erro')
+
+
+def cancelar_agendamento(request, agendamento_id):
+    # Verificar se o usuário está logado
+    if 'username' not in request.session:
+        return redirect('login')  # Redirecionar para a página de login se não estiver logado
+    
+    # Lógica para cancelar o agendamento com base no ID do agendamento
+    try:
+        agendamento = Agendamento.objects.get(id=agendamento_id)
+        # Lógica para cancelar o agendamento (por exemplo, marcar como cancelado no banco de dados)
+        agendamento.cancelado = True
+        agendamento.save()
+        # Redirecionar de volta para a página de agendamentos após o cancelamento
+        return redirect('meus_agendamentos')
+    except Agendamento.DoesNotExist:
+        # Se o agendamento não for encontrado, redirecionar para uma página de erro ou qualquer outra ação adequada
+        return redirect('pagina_erro')  # Substitua 'pagina_de_erro' pelo nome da sua página de erro
+        
+def error_404_view(request, exception):
+    return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
+
+def error_500_view(request):
+    return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
+    
+    
+def pagina_erro(request):
+    return render(request, 'agendamentos\\pagina_erro.html')

@@ -1,0 +1,53 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Detalhes do Agendamento</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<body>
+    <div class="container_detalhes_agendamento">
+        <div class="detalhes-agendamento">
+            <h2>Detalhes do Agendamento</h2>
+            <p><strong>Equipamento:</strong> {{ agendamento.equipamento.nome }}</p>
+            <p><strong>Data:</strong> {{ agendamento.data }}</p>
+            <p><strong>Hora:</strong> {{ agendamento.hora }}</p>
+
+            <!-- Formulário para reagendar -->
+            <h3>Reagendar</h3>
+            <form method="post" action="{% url 'reagendar_agendamento' agendamento.id %}" onsubmit="return confirmarReagendamento()">
+                {% csrf_token %}
+                <label for="nova_data">Nova Data:</label>
+                <input type="date" id="nova_data" name="nova_data" required>
+                <label for="nova_hora">Nova Hora:</label>
+                <input type="time" id="nova_hora" name="nova_hora" required>
+                <input type="submit" class="btn btn-primary" value="Reagendar">
+            </form>
+
+            <!-- Formulário para cancelar -->
+            <h3>Cancelar</h3>
+            <form method="post" action="{% url 'cancelar_agendamento' agendamento.id %}">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger" value="Cancelar">
+            </form>
+
+            {% if error_message %}
+            <p class='error_message'>{{ error_message }}</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Script JavaScript para confirmação de reagendamento -->
+    <script>
+        function confirmarReagendamento() {
+            return confirm("Tem certeza de que deseja reagendar este agendamento?");
+        }
+    </script>
+</body>
+
+</html>

@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'agendamentos',
     'tcc_django',
     'django.contrib.staticfiles',
+    'guardian',
+    'rolepermissions'
    
 ]
 
@@ -148,6 +150,8 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+ROLEPERMISSIONS_MODULE = 'agendamentos.roles'
 
 
 AUTHENTICATION_BACKENDS = [

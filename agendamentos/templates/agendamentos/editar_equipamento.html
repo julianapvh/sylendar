@@ -13,12 +13,7 @@
     <h1>Editar Equipamento</h1>
     <form method="post">
         {% csrf_token %}
-        <label for="nome_equipamento">Nome do Equipamento:</label><br>
-        <input type="text" id="nome_equipamento" name="nome_equipamento" value="{{ equipamento.nome_equipamento }}"><br><br>
-        
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao">{{ equipamento.descricao }}</textarea><br><br>
-        
+        {{ formulario.as_p }}
         <button type="submit">Salvar Alterações</button>
     </form>
 </body>

@@ -12,8 +12,29 @@
 <body>
     <div class="container_cliente">
         <div class="cliente-form">
-            <h1>Histórico de Equipamentos</h1>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Ver Histórico</button></a>
+            <h1>Histórico de Agendamentos</h1>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Equipamento</th>
+                        <th>Data</th>
+                        <th>Hora</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for agendamento in agendamentos %}
+                    <tr>
+                        <td>{{ agendamento.equipamento.nome }}</td>
+                        <td>{{ agendamento.data }}</td>
+                        <td>{{ agendamento.hora }}</td>
+                        <td>{% if agendamento.cancelado %}Cancelado{% else %}Agendado{% endif %}</td>
+
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
             <a class="btn_separado" href={% url 'cliente' %}><button class="btn_separado">Voltar</button></a>
             
             <footer>

@@ -10,7 +10,6 @@ from django.http import HttpResponse, HttpResponseForbidden
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegistrationForm
 from .models import Usuario
 # Importe o modelo Usuario
 from agendamentos.models import Usuario
@@ -18,13 +17,13 @@ from agendamentos.forms import UserRegistrationForm
 from dateutil.parser import parse
 from django.utils import timezone
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
 from .forms import EditarEquipamentoForm
 from rolepermissions.roles import assign_role
-from django.contrib.auth.decorators import permission_required
-from .forms import UserLoginForm
 from django.contrib.auth import authenticate, login
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import login, authenticate
+from django.contrib.auth.decorators import permission_required, login_required
+from .forms import UserLoginForm, UserRegistrationForm
 
 
 
@@ -93,38 +92,38 @@ from django.contrib.admin.views.decorators import staff_member_required
     #___---¨¨¨ Início da execução ¨¨¨---___
     return(valida_acesso_sauron(usuario, senha))'''
 
-def login(request):
+def login_view(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         
         if user is not None:
-            if user.is_superuser:  # Verifica se o usuário é um administrador
-                login(request,)
-                return redirect('administrador_home')  # Redireciona para a página do administrador
+            login(request, user)
+            if user.is_superuser:
+                return redirect('administrador_home')
             else:
-                login(request,)
-                return redirect('cliente')  # Redireciona para a página do cliente
+                return redirect('cliente')
         else:
-            messages.error(request, 'Credenciais inválidas')  # Exibe mensagem de erro se as credenciais estiverem incorretas
+            messages.error(request, 'Credenciais inválidas')
     
     return render(request, 'agendamentos/login.html')
     
-@permission_required('auth.add_usuario', raise_exception=True)  # Substitua 'auth.add_usuario' pela permissão correta para adicionar um usuário
+@permission_required('auth.add_user', raise_exception=True)
 def register(request):
     if request.method == 'POST':
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
+            return redirect('login')
         else:
-            print(form.errors)  # Exibe os erros de validação no console para depuração
+            print(form.errors)
     else:
         form = UserRegistrationForm()
     return render(request, 'agendamentos/register.html', {'form': form})
+
     
-@staff_member_required
+@login_required
 def index(request):
     error_message = None
     
@@ -134,9 +133,12 @@ def index(request):
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(username=username, password=password)
-            if user is not None and user.is_staff:
-                login(request,)
-                return redirect('administrador_home')
+            if user is not None:
+                login(request, user)
+                if user.is_superuser:
+                    return redirect('administrador_home')
+                else:
+                    return redirect('cliente')
             else:
                 error_message = 'Credenciais inválidas'
         else:

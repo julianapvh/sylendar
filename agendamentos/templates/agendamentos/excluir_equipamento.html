@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container container_excluir_equipamento">
+    <div class="container_excluir_equipamento">
         <div class="excluir_equipamento-form">
             <h1>Excluir Equipamento</h1>
             <p>Tem certeza que deseja excluir o equipamento "{{ equipamento.nome }}"?</p>
@@ -19,13 +19,13 @@
                 {% csrf_token %}
                 {% if messages %}
                     {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }}">
+                        <div class="{% if message.tags %}{{ message.tags }}{% else %}alert{% endif %}">
                             {{ message }}
                         </div>
                     {% endfor %}
                 {% endif %}
-                <input type="submit" class="btn btn-danger" value="Excluir">
-                <a href="{% url 'listar_equipamentos' %}" class="btn btn-secondary">Cancelar</a>
+                <input type="submit" value="Excluir">
+                <a href="{% url 'listar_equipamentos' %}">Cancelar</a>
             </form>
         </div>
     </div>

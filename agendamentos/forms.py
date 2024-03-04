@@ -9,12 +9,15 @@ class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
         fields = ['cliente_nome', 'cliente_cpf', 'equipamento', 'data', 'hora']
-              
+        
+        
 class EquipamentoForm(forms.ModelForm):
     class Meta:
         model = Equipamento
         fields = ['nome', 'descricao', 'fabricante', 'data_aquisicao']
 ######################################------------MODIFICAÇÕES---------------###################################################
+
+
 
 class UserRegistrationForm(forms.ModelForm):
     password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
@@ -38,12 +41,3 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-        
-class EditarEquipamentoForm(forms.ModelForm):
-    class Meta:
-        model = Equipamento
-        fields = ['nome', 'descricao', 'fabricante', 'data_aquisicao']
-        
-class UserLoginForm(forms.Form):
-    username = forms.CharField(label='Nome de usuário')
-    password = forms.CharField(label='Senha', widget=forms.PasswordInput)

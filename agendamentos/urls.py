@@ -30,6 +30,7 @@ urlpatterns = [
     path('agendar_equipamento/', views.agendar_equipamento, name='agendar_equipamento'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
+    path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
@@ -37,15 +38,11 @@ urlpatterns = [
     path('cliente_home/', views.cliente_home, name='cliente_home'),
     path('agendamentos\registro/', register, name='registro'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
-    path('login_view/', auth_views.LoginView.as_view(), name='login'),
-    path('agendamentos\templates\agendamentos\login.html/', views.login_view, name='login_view'),
+    path('agendamentos\templates\agendamentos\login.html/', views.login, name='login'),
     path('agendamentos\register/', views.register, name='register'),
     path('user_list/', views.user_list, name='user_list'),
     path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
-    path('gerenciar_equipamentos/', views.gerenciar_equipamentos, name='gerenciar_equipamentos'),
-    path('sem-permissao/', views.pagina_sem_permissao, name='pagina_sem_permissao'),
-    path('user_has_permission/', views.pagina_sem_permissao, name='pagina_sem_permissao'),
     
     
 

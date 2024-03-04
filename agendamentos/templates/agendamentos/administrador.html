@@ -22,34 +22,34 @@
 </head>
 
 <body>
-    <div class="container">
+    <div class="container_cliente">
         <div class="cliente-form">
             <h1>Painel Administrativo</h1>
 
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <a href={% url 'cadastrar_equipamento' %} class="btn btn-primary">Cadastrar um Equipamento</a>
-                <a href={% url 'excluir_equipamento' %} class="btn btn-primary">Excluir um Equipamento</a>
-                <a href={% url 'editar_equipamento' %} class="btn btn-primary">Editar um Equipamento</a>
-                <a href={% url 'visualizar_equipamentos' %} class="btn btn-primary">Listar Equipamentos Disponíveis</a>
-                <a href={% url 'register' %} class="btn btn-primary">Cadastrar um Cliente</a>
-                <a href={% url 'administrador_home' %} class="btn btn-primary">Voltar</a>
-            </div>
-
-            <table class="table">
-                <thead>
+            <ul>
+                <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'excluir_equipamento' %}><button class="btn_separado">Excluir um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'editar_equipamento' %}><button class="btn_separado">Editar um Equipamento</button></a>
+                <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
+                <a class="btn_separado" href={% url 'administrador_home' %}><button class="btn_separado">Voltar</button></a>
+                
+          
+                {% for equipamento in equipamentos %}
+                    <li>
+                        <a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a>
+                        <button onclick="abrirModal({{ equipamento.id }})">Excluir Equipamento {{ equipamento.id }}</button>
+                    </li>
+                {% endfor %}
+            </ul>
+            
+            <tbody>
+                {% for equipamento in equipamentos %}
                     <tr>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Descrição</th>
+                        <td>{{ equipamento.nome_equipamento }}</td>
+                        <td>{{ equipamento.descricao }}</td>
                     </tr>
-                </thead>
-                <tbody>
-                    {% for equipamento in equipamentos %}
-                        <tr>
-                            <td>{{ equipamento.nome_equipamento }}</td>
-                            <td>{{ equipamento.descricao }}</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
+                {% endfor %}
+            </tbody>
             </table>
 
             <footer>

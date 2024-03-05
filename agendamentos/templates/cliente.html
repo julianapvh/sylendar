@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
@@ -14,12 +13,12 @@
         <div class="cliente-form">
             
             <h1>Agendamentos</h1>
-            <p>Logado: {{ request.session.username }}</p>
+            <p>Logado: {{ request.user.username }}</p>
             <a class="btn_separado" href={% url 'meus_agendamentos' %}><button class="btn_separado">Meus Agendamentos</button></a>
             <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
             <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
             <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
-            <a class="btn_separado" href={% url 'login' %}><button class="btn_separado">Voltar</button></a>
+            <a class="btn_separado" href={% url 'logout' %}><button class="btn_separado">Logout</button></a>
             
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>

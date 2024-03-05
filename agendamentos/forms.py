@@ -1,9 +1,9 @@
 from django import forms
 from .models import Agendamento, Equipamento
-from .models import Usuario
+from .models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from agendamentos.models import Usuario
+from agendamentos.models import User
 
 class AgendamentoForm(forms.ModelForm):
     class Meta:
@@ -24,7 +24,7 @@ class UserRegistrationForm(forms.ModelForm):
     password2 = forms.CharField(label='Confirmação de senha', widget=forms.PasswordInput)
 
     class Meta:
-        model = Usuario
+        model = User
         fields = ['nome_completo', 'telefone', 'username', 'email']
 
     def clean_password2(self):

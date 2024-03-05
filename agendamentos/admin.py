@@ -1,11 +1,18 @@
 from django.contrib import admin
-from .models import Agendamento, Equipamento, Usuario
-from agendamentos.models import Usuario
+from django.contrib.auth.admin import UserAdmin
+from .models import Agendamento, Equipamento, User
+from .forms import UserRegistrationForm
 
-# Registre o modelo Agendamento no painel de administração
+class CustomUserAdmin(UserAdmin):
+    add_form = UserRegistrationForm
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        ('Informações pessoais', {'fields': ('nome_completo', 'telefone', 'email')}),
+        ('Permissões', {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        ('Datas importantes', {'fields': ('last_login', 'date_joined')}),
+    )
+
+# Registre os modelos no painel de administração
 admin.site.register(Agendamento)
-
-# Registre o modelo Usuario no painel de administração
-admin.site.register(Usuario)
-
 admin.site.register(Equipamento)
+admin.site.register(User, CustomUserAdmin)

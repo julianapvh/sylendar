@@ -8,125 +8,50 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegistrationForm
-from .models import Usuario
+from .models import User
 # Importe o modelo Usuario
-from agendamentos.models import Usuario
+from agendamentos.models import User
 from agendamentos.forms import UserRegistrationForm
 from dateutil.parser import parse
 from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login
 
 
 
 
 # funções de apoio
-def login_sauron(usuario,senha):
-    from mechanize import Browser
-    from bs4 import BeautifulSoup as bs
-    from getpass import getpass
-    from http.cookiejar import CookieJar
-
-    usuario = str(usuario)
-    senha = str(senha)
-
-    #___---¨¨¨ Variáveis do login ¨¨¨---___
-    link_de_acesso = "https://meuacesso.sistemas.ro.gov.br/"
-
-    #___---¨¨¨ Sub-Funções do login ¨¨¨---___
-    def valida_acesso_sauron(usuario,senha):
-        # Faz acesso no sauron
-
-        # Prepara o navegador
-        cookies = CookieJar()  # Cria um repositório de cookies
-        browser = Browser()    # Inicia um browser
-        browser.set_cookiejar(cookies)   # Aponta para o repositório de cookies
-
-        # Acessa o link que redireciona para a página inicial
-        browser.open(link_de_acesso)
-
-        # Faz login
-        browser.select_form(nr=0)      # o formulário de login é o primeiro(nr=0)
-        browser.form['Username'] = usuario  # O texto em form['texto'] é o nome do elemento web onde a informação será inserida
-        browser.form['Password'] = senha
-        browser.submit()  # envia os dados através do formulário de login
-
-        
-        # Tenta obter informações do acesso
-        try:
-            # Carrega os dados da página atual ("página clique para continuar") e confirma
-            browser.select_form(nr=0) # O botão de confirmar é do tipo formulário, então uma opção foi dar submit vazio no primeiro form
-            browser.submit()
-
-            # A página carregada deve ser o login efetuado
-            pagina_de_acesso = browser.response().read()
-
-            # Passa os dados da página para o BeautifulSoup
-            soup = bs(pagina_de_acesso, 'html.parser')
-
-            #print(soup.decode())
-
-            # Salva o resultado em texto, pesquisando classes como tag
-            nome = str(soup.find(class_="user-block-name").get_text())
-            cpf = str(soup.find(class_="user-block-role").get_text())
-
-            return(nome,cpf)
-
-            #print(f"Login realizado com sucesso!\nNome: {nome.title()}\nCPF: {cpf}\n\n")
-            
-            
-
-        except Exception as ex:
-            #print("Erro", f"Erro ao realizar o login: {ex}")
-            #print("senha incorreta\n")
-            return("","")
-
-
-    #___---¨¨¨ Início da execução ¨¨¨---___
-    return(valida_acesso_sauron(usuario, senha))
 
 def login(request):
-    return render(request, 'agendamentos\\login.html')
-    
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)
+            return redirect('cliente')  # Redirecionar para a página do cliente após o login
+        else:
+            # Caso as credenciais estejam incorretas
+            return render(request, 'registration/login.html', {'error': 'Credenciais inválidas. Tente novamente.'})
+    else:
+        # Se a solicitação for GET, renderize a página de login
+        return render(request, 'registration/login.html')
+
 def register(request):
     if request.method == 'POST':
-        form = UserRegistrationForm(request.POST)
+        form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
             return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
         else:
             print(form.errors)  # Exibe os erros de validação no console para depuração
     else:
-        form = UserRegistrationForm()
-    return render(request, 'agendamentos/register.html', {'form': form})
-    
-def index(request):
-    error_message = None
-    instruction_message = None
-    
-    
-    if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-
-        #print(f"\n\nUsuário: {username}\nSenha: {password}\n\n")
-
-        nome,cpf = login_sauron(username,password)
-
-        #print(f"Login realizado com sucesso!\nNome: {nome}\nCPF: {cpf}\n\n")
-
-        # Verifique se o usuário e a senha são "teste"
-        if nome != "" and cpf != "" and nome is not None and cpf is not None:
-            request.session['username'] = nome  # Salve o nome do usuário na sessão
-            return render(request, 'agendamentos/administrador_home.html')
-        else:
-            messages.error(request, 'Credenciais inválidas')  # Use o sistema de mensagens do Django para exibir a mensagem de erro
-            return render(request, 'agendamentos/login.html')
-
-    return render(request, 'agendamentos/login.html')
+        form = UserCreationForm()
+    return render(request, 'registration/register.html', {'form': form})
     
 def home(request):   
-    return render(request, 'agendamentos\\home.html')    
+    return render(request, 'home.html')    
 
 def administrador_home(request):
     return render(request, 'agendamentos\\administrador_home.html')
@@ -134,13 +59,14 @@ def administrador_home(request):
 def cliente_home(request):
     return render(request, 'agendamentos\\cliente_home.html')
 
+@login_required
 def cliente(request):
     # Verificar se o usuário está logado e se sim, obter os agendamentos dele
-    if 'username' in request.session:
+    if request.user.is_authenticated:
         # Obter os agendamentos do cliente atual
-        agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'])
+        agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
         # Passar os agendamentos para o template como parte do contexto
-        return render(request, 'agendamentos/cliente.html', {'agendamentos': agendamentos})
+        return render(request, 'cliente.html', {'agendamentos': agendamentos})
     else:
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
@@ -176,7 +102,7 @@ def agendar_equipamento(request):
             error_message = 'Este equipamento já está agendado para você nesta data e hora. Por favor, escolha outra data ou hora.'
             equipamentos = Equipamento.objects.all()
             context = {'equipamentos': equipamentos, 'error_message': error_message}
-            return render(request, 'agendamentos/agendar_equipamento.html', context)
+            return render(request, 'agendar_equipamento.html', context)
         else:
             # Se o equipamento estiver disponível, crie o agendamento
             agendamento = Agendamento.objects.create(
@@ -191,34 +117,41 @@ def agendar_equipamento(request):
 
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
-    return render(request, 'agendamentos/agendar_equipamento.html', context)
+    return render(request, 'agendar_equipamento.html', context)
 
 def historico(request):
-    return render(request, 'agendamentos\\historico.html')
+    # Verificar se o usuário está logado e se sim, obter os agendamentos dele
+    if request.user.is_authenticated:
+        # Obter os agendamentos do cliente atual
+        agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
+        # Passar os agendamentos para o template como parte do contexto
+        return render(request, 'historico.html', {'agendamentos': agendamentos})
+    else:
+        # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
+        return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
     
 def meus_agendamentos(request):
-    # Verifique se 'username' está presente na sessão
-    if 'username' not in request.session:
-        # Se 'username' não estiver presente na sessão, redirecione para onde desejar
-        return redirect('login')  # Substitua 'nome_da_pagina_de_login' pelo nome da sua página de login
-    
-    # Obtenha os agendamentos do cliente atual excluindo os agendamentos cancelados
-    agendamentos = Agendamento.objects.filter(cliente_nome=request.session['username'], cancelado=False)
-    
-    # Renderize o template 'meus_agendamentos.html' e passe os agendamentos para ele
-    return render(request, 'agendamentos/meus_agendamentos.html', {'agendamentos': agendamentos})
+    # Verificar se o usuário está logado e, em caso afirmativo, obter seus agendamentos
+    if request.user.is_authenticated:
+        # Obter os agendamentos do cliente atual, excluindo os agendamentos cancelados
+        agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username, cancelado=False)
+        # Passar os agendamentos para o template como parte do contexto
+        return render(request, 'meus_agendamentos.html', {'agendamentos': agendamentos})
+    else:
+        # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
+        return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
     
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all().order_by('nome')  # Ordenar os equipamentos pelo nome
-    return render(request, 'agendamentos/visualizar_equipamentos.html', {'equipamentos': equipamentos})
+    return render(request, 'visualizar_equipamentos.html', {'equipamentos': equipamentos})
 
 def listar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
-    return render(request, 'agendamentos/listar_equipamentos.html', {'equipamentos': equipamentos})    
+    return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})    
     
 def administrador(request):
 
-    return render(request, 'agendamentos\\administrador.html')
+    return render(request, 'administrador.html')
      
 def adicionar_agendamento(request):
     if request.method == 'POST':
@@ -241,7 +174,7 @@ def adicionar_agendamento(request):
         if agendamentos_conflitantes.exists():
             # Se existir um agendamento conflitante, retorne uma mensagem de erro
             messages.error(request, 'Já existe um agendamento para este equipamento nesta data e hora.')
-            return redirect('agendamentos/falha_agendamento.html')  # Redirecione para a página de erro ou para o formulário de agendamento
+            return redirect('falha_agendamento.html')  # Redirecione para a página de erro ou para o formulário de agendamento
         else:
             # Se não houver conflito, crie o novo agendamento
             novo_agendamento = Agendamento(
@@ -251,10 +184,10 @@ def adicionar_agendamento(request):
             )
             novo_agendamento.save()
             messages.success(request, 'Agendamento realizado com sucesso.')
-            return redirect('agendamentos/sucesso_agendamento.html')  # Redirecione para a página de sucesso ou para a lista de agendamentos
+            return redirect('sucesso_agendamento.html')  # Redirecione para a página de sucesso ou para a lista de agendamentos
     else:
         # Se a requisição não for POST, retorne o formulário vazio ou a página inicial
-        return render(request, 'agendamentos/agendar_equipamento.html')
+        return render(request, 'agendar_equipamento.html')
         
 def editar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -273,19 +206,14 @@ def editar_equipamento(request, equipamento_id):
         formulario = EditarEquipamentoForm(instance=equipamento)
     
     # Renderizar o formulário de edição
-    return render(request, 'agendamentos/editar_equipamento.html', {'formulario': formulario})
+    return render(request, 'editar_equipamento.html', {'formulario': formulario})
     
 def excluir_equipamento(request, equipamento_id):
     equipamento = Equipamento.objects.get(pk=equipamento_id)
     equipamento.delete()
     return redirect('visualizar_equipamentos')
-    
-    
+       
 ######################################------------MODIFICAÇÕES---------------###################################################
-
-#def visualizar_equipamentos(request):
-    equipamentos = Equipamento.objects.all()
-    return render(request, 'agendamentos/visualizar_equipamentos.html', {'equipamentos': equipamentos})
 
 def cadastrar_equipamento(request):
     if request.method == 'POST':
@@ -297,7 +225,7 @@ def cadastrar_equipamento(request):
         if not nome_equipamento:
             # O campo nome_equipamento não foi preenchido.
             messages.error(request, 'O campo nome é obrigatório.')
-            return render(request, 'agendamentos/cadastrar_equipamento.html')
+            return render(request, 'cadastrar_equipamento.html')
 
         try:
             # Criar um novo equipamento
@@ -312,10 +240,10 @@ def cadastrar_equipamento(request):
         except Exception as e:
             # Se ocorrer um erro ao salvar, exibe uma mensagem de erro
             messages.error(request, f'O equipamento não foi salvo. Erro: {e}')
-            return render(request, 'agendamentos/cadastrar_equipamento.html')
+            return render(request, 'cadastrar_equipamento.html')
 
     else:
-        return render(request, 'agendamentos/cadastrar_equipamento.html')
+        return render(request, 'cadastrar_equipamento.html')
 
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -334,7 +262,7 @@ def excluir_equipamento(request, equipamento_id):
             # Redireciona o usuário de volta para a página de excluir equipamento
             return redirect('excluir_equipamento', equipamento_id=equipamento_id)
     else:
-        return render(request, 'agendamentos/excluir_equipamento.html', {'equipamento': equipamento})
+        return render(request, 'excluir_equipamento.html', {'equipamento': equipamento})
 
 def confirmar_exclusao_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -345,7 +273,7 @@ def gerenciar_equipamentos(request):
     equipamentos = Equipamento.objects.all()  # Obtém todos os equipamentos do banco de dados
 
     # Renderiza a página 'gerenciar_equipamentos.html' e passa os equipamentos para o contexto do template
-    return render(request, 'agendamentos/gerenciar_equipamentos.html', {'equipamentos': equipamentos})
+    return render(request, 'gerenciar_equipamentos.html', {'equipamentos': equipamentos})
 
 def alterar_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -356,11 +284,11 @@ def alterar_equipamento(request, equipamento_id):
             return redirect('gerenciar_equipamentos')
     else:
         form = EquipamentoForm(instance=equipamento)
-    return render(request, 'agendamentos/alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
+    return render(request, 'alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
       
 def user_list(request):
-    users = Usuario.objects.all()
-    return render(request, 'agendamentos\\user_list.html', {'users': users})
+    users = User.objects.all()
+    return render(request, 'user_list.html', {'users': users})
     
 def reagendar_agendamento(request, agendamento_id):
     if request.method == 'POST':
@@ -391,7 +319,6 @@ def reagendar_agendamento(request, agendamento_id):
         messages.error(request, 'Método de requisição inválido.')
         return redirect('pagina_erro')
 
-
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está logado
     if 'username' not in request.session:
@@ -414,7 +341,10 @@ def error_404_view(request, exception):
 
 def error_500_view(request):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
-    
-    
+        
 def pagina_erro(request):
-    return render(request, 'agendamentos\\pagina_erro.html')
+    return render(request, 'pagina_erro.html')
+    
+    
+    
+############################################

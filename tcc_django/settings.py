@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'agendamentos',
     'tcc_django',
     'django.contrib.staticfiles',
+    'django_extensions',
+    'django_fastdev',
    
 ]
 
@@ -66,7 +68,9 @@ ROOT_URLCONF = 'tcc_django.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'agendamentos/templates')],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'agendamentos', 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -155,12 +159,17 @@ AUTHENTICATION_BACKENDS = [
     # Outros backends de autenticação, se necessário
 ]
 
-AUTH_USER_MODEL = 'agendamentos.CustomUser'
-AUTH_USER_MODEL = 'agendamentos.Usuario'
+#AUTH_USER_MODEL = 'agendamentos.CustomUser'
+#AUTH_USER_MODEL = 'agendamentos.Usuario'
 
 
-LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
+#LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
 
-LOGIN_REDIRECT_URL = 'agendamentos:home'  # Substitua 'nome_do_app' pela página desejada
+#LOGIN_REDIRECT_URL = 'agendamentos:home'  # Substitua 'nome_do_app' pela página desejada
 
-LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
+#LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
+
+# Redirect to home URL after login (Default redirects to /accounts/profile/)
+LOGIN_REDIRECT_URL = 'home'
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+

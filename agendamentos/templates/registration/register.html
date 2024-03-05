@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -15,28 +16,15 @@
                 {% csrf_token %}
                 
                 <div>
-                    <label for="id_nome_completo">Nome Completo:</label>
-                    {{ form.nome_completo }}
-                </div>
-                <div>
-                    <label for="id_username">CPF:</label>
+                    <label for="id_username">Nome de Usuário:</label>
                     {{ form.username }}
-                </div>
-                <div class="email-field"> <!-- Adicione uma classe para o campo de e-mail -->
-                    <label for="id_email">Email:</label>
-                    {{ form.email }}
-                </div>
-               
-                <div>
-                    <label for="id_telefone">Telefone:</label>
-                    {{ form.telefone }}
                 </div>
                 <div>
                     <label for="id_password1">Senha:</label>
                     {{ form.password1 }}
                 </div>
                 <div>
-                    <label for="id_password2">Confirmação de senha:</label>
+                    <label for="id_password2">Confirmação de Senha:</label>
                     {{ form.password2 }}
                 </div>
                 <button type="submit" class="btn_cadastro">Cadastrar</button> <!-- Adicione a mesma classe do botão de login -->

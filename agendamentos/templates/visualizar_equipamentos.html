@@ -8,42 +8,7 @@
     <title>Sistema de Agendamentos - Equipamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        table {
-            border-collapse: collapse;
-            width: 100%;
-        }
-
-        th, td {
-            border: 1px solid #dddddd;
-            text-align: left;
-            padding: 8px; /* Ajuste o valor conforme necessário */
-        }
-
-        tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        th {
-            background-color: #3490db;
-            color: white;
-        }
-        
-        .botao-voltar {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background-color 0.3s ease;
-        }
-
-        .botao-voltar:hover {
-            background-color: #0056b3;
-        }
-        
-    </style>
+   
 </head>
 
 <body>
@@ -70,7 +35,7 @@
             </tbody>
         </table>
          <!-- Botão de voltar para a página de administrador -->
-         <a href="{% url 'administrador' %}" class="botao-voltar">Voltar</a>
+         <a href="{% url 'cliente' %}" class="botao-voltar">Voltar</a>
     </div>
     
     

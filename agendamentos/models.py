@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
+from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager, Permission
 from django.db import models
 from django.utils import timezone
 

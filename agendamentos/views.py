@@ -1,4 +1,5 @@
 from multiprocessing import context
+from telnetlib import LOGOUT
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Agendamento, Equipamento
@@ -9,7 +10,6 @@ from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
 from .forms import UserRegistrationForm
 from .models import User
-# Importe o modelo Usuario
 from agendamentos.models import User
 from agendamentos.forms import UserRegistrationForm
 from dateutil.parser import parse
@@ -17,11 +17,20 @@ from django.utils import timezone
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
+######################################
+# importações para o módulo role permissions, que trata do tipo de permissões dos usuários
+from rolepermissions.permissions import revoke_permission, grant_permission
+from rolepermissions.roles import assign_role, get_user_roles
+from rolepermissions.decorators import has_role_decorator, has_permission_decorator
+from django.contrib.auth.models import Group
+
+#######################################
 
 
 
-
-# funções de apoio
 
 def login(request):
     if request.method == 'POST':
@@ -42,7 +51,8 @@ def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()  # Salva o usuário criado
+            assign_role(user, 'cliente')  # Atribui o papel (grupo) 'cliente' ao usuário
             return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
         else:
             print(form.errors)  # Exibe os erros de validação no console para depuração
@@ -213,8 +223,6 @@ def excluir_equipamento(request, equipamento_id):
     equipamento.delete()
     return redirect('visualizar_equipamentos')
        
-######################################------------MODIFICAÇÕES---------------###################################################
-
 def cadastrar_equipamento(request):
     if request.method == 'POST':
         # Obter os dados do formulário
@@ -300,7 +308,7 @@ def reagendar_agendamento(request, agendamento_id):
         if nova_data_str:
             nova_data = datetime.strptime(nova_data_str, '%Y-%m-%d').date()
             nova_hora = datetime.strptime(nova_hora_str, '%H:%M').time()
-            
+
             # Atualiza os campos do agendamento
             agendamento.data = nova_data
             agendamento.hora = nova_hora
@@ -318,6 +326,32 @@ def reagendar_agendamento(request, agendamento_id):
         # Por exemplo, retorne uma mensagem de erro para o usuário
         messages.error(request, 'Método de requisição inválido.')
         return redirect('pagina_erro')
+
+def cancelar_agendamento(request, agendamento_id):
+    # Verificar se o usuário está logado
+    if 'username' not in request.session:
+        return redirect('login')  # Redirecionar para a página de login se não estiver logado
+
+    # Lógica para cancelar o agendamento com base no ID do agendamento
+    try:
+        agendamento = Agendamento.objects.get(id=agendamento_id)
+        # Lógica para cancelar o agendamento (por exemplo, marcar como cancelado no banco de dados)
+        agendamento.cancelado = True
+        agendamento.save()
+        # Redirecionar de volta para a página de agendamentos após o cancelamento
+        return redirect('meus_agendamentos')
+    except Agendamento.DoesNotExist:
+        # Se o agendamento não for encontrado, redirecionar para uma página de erro ou qualquer outra ação adequada
+        return redirect('pagina_erro')  # Substitua 'pagina_de_erro' pelo nome da sua página de erro
+
+def error_404_view(request, exception):
+    return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
+
+def error_500_view(request):
+    return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
+
+def pagina_erro(request):
+    return render(request, 'pagina_erro.html')
 
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está logado
@@ -346,5 +380,11 @@ def pagina_erro(request):
     return render(request, 'pagina_erro.html')
     
     
+#################  -------Novas Funções---------  ###########################
+                    
+def logged_out(request):
+    LOGOUT(request)
+    return redirect(login)
     
-############################################
+#############
+

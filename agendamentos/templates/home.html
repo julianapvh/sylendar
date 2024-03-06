@@ -1,4 +1,3 @@
-
 {% load static %}
 
 <!DOCTYPE html>
@@ -8,17 +7,35 @@
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Adicione estilos personalizados aqui se necessário */
+        .container {
+            margin-top: 50px;
+        }
+        .btn-custom {
+            margin-right: 10px;
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Bem-vindo à Página Inicial</h1>
-        <p>Sistema de Agendamentos.</p>
-        
-        <!-- Adicione qualquer conteúdo adicional aqui -->
-        <p><a href="{% url 'login' %}">Login</a></p>
-        <p><a href="{% url 'logout' %}">Logout</a></p>
-        <p><a href="{% url 'cliente' %}">Ir para a página do cliente</a></p>
+        <div class="jumbotron">
+            <h1 class="display-4">Bem-vindo(a), {{ user.username }}, à Página Inicial</h1>
+            <p class="lead">Sistema de Agendamentos.</p>
+            <hr class="my-4">
+            <p>Esta é a página inicial do sistema de agendamentos.</p>
+            <p class="lead">
+            
+            <a class="btn btn-success btn-custom" href="{% url 'cliente' %}" role="button">Ir para a página do cliente</a>
+            
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary btn-custom">Logout</button>
+                </form>
+                
+            </p>
+        </div>
     </div>
 </body>
 

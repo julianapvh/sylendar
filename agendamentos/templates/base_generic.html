@@ -28,24 +28,7 @@
   </footer>
 
   <ul class="sidebar-nav">
-    <ul class="sidebar-nav">
-      ...
-  
-      {% if user.is_authenticated %}
-        <li>User: {{ user.get_username }}</li>
-        <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-      {% else %}
-        <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-      {% endif %}
     </ul>
-
-    {% if user.is_authenticated %}
-      <li>User: {{ user.get_username }}</li>
-      <li><a href="{% url 'logout'%}?next={{request.path}}">Logout</a></li>
-    {% else %}
-      <li><a href="{% url 'login'%}?next={{request.path}}">Login</a></li>
-    {% endif %}
-  </ul>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-f0fnxvbelzZJSnX63YIg+BsCVZcJ3qT67TbwqO4xOzjCk2vQnrqAM+fwA6aIG0gd" crossorigin="anonymous"></script>
 </body>

@@ -40,5 +40,6 @@ urlpatterns = [
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
+    path('logged_out/', views.logged_out, name='logged_out'),
 
 ]

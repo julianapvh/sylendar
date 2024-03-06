@@ -39,7 +39,13 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('cliente')  # Redirecionar para a página do cliente após o login
+            # Verifique se o usuário é um administrador
+            if user.is_superuser:
+                # Se sim, redirecione para a página de administração
+                return redirect('administrador')
+            else:
+                # Se não, redirecione para a página do cliente
+                return redirect('cliente')
         else:
             # Caso as credenciais estejam incorretas
             return render(request, 'registration/login.html', {'error': 'Credenciais inválidas. Tente novamente.'})
@@ -64,10 +70,10 @@ def home(request):
     return render(request, 'home.html')    
 
 def administrador_home(request):
-    return render(request, 'agendamentos\\administrador_home.html')
+    return render(request, 'administrador_home.html')
 
 def cliente_home(request):
-    return render(request, 'agendamentos\\cliente_home.html')
+    return render(request, 'cliente_home.html')
 
 @login_required
 def cliente(request):

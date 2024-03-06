@@ -1,4 +1,4 @@
-from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager, Permission
+from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
 from django.db import models
 from django.utils import timezone
 
@@ -14,6 +14,7 @@ class CustomUserManager(BaseUserManager):
     def create_superuser(self, username, password=None, **extra_fields):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_admin', True)  # Add this line to set is_admin=True for superuser
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError('Superusuário deve ter is_staff=True.')
@@ -25,6 +26,8 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser):
     nome_completo = models.CharField(max_length=100)
     telefone = models.CharField(max_length=15)
+    is_admin = models.BooleanField(default=False)  # Add this field to identify admin users
+    
     # Adicione ou altere o related_name para evitar conflitos
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
@@ -33,6 +36,7 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.nome_completo if self.nome_completo else self.username
+
         
 
 class Equipamento(models.Model):

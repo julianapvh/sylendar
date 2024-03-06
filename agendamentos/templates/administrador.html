@@ -34,23 +34,8 @@
                 <a class="btn_separado" href={% url 'administrador_home' %}><button class="btn_separado">Voltar</button></a>
                 
           
-                {% for equipamento in equipamentos %}
-                    <li>
-                        <a href="{% url 'editar_equipamento' equipamento_id=equipamento.id %}">Editar Equipamento {{ equipamento.id }}</a>
-                        <button onclick="abrirModal({{ equipamento.id }})">Excluir Equipamento {{ equipamento.id }}</button>
-                    </li>
-                {% endfor %}
-            </ul>
-            
-            <tbody>
-                {% for equipamento in equipamentos %}
-                    <tr>
-                        <td>{{ equipamento.nome_equipamento }}</td>
-                        <td>{{ equipamento.descricao }}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            </table>
+                
+           
 
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>

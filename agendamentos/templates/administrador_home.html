@@ -13,7 +13,7 @@
     <div class="container_home">
         <div class="home-form">
             <h1> Sistema de Agendamentos</h1>
-            <p>Bem-vindo, {{ request.session.username }}</p>
+            <p>Bem-vindo, {{ request.user.username }}</p>
             <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Administrador</button></a>
             <section>
                 <h2>Sobre o Sistema</h2>

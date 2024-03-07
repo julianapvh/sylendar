@@ -4,7 +4,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from .models import Agendamento, Equipamento
 from .forms import AgendamentoForm, EquipamentoForm
-from django.http import HttpResponse, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
@@ -19,6 +19,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout
 from django.shortcuts import redirect
+import sys
+from django.http import Http404
+from django.core.exceptions import PermissionDenied
+
 
 ######################################
 # importações para o módulo role permissions, que trata do tipo de permissões dos usuários
@@ -86,17 +90,13 @@ def cliente(request):
     else:
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
-
+        
+@login_required
 def agendar_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']
         data = request.POST['data']
         hora = request.POST['hora']
-
-        # Verifique se 'username' está presente na sessão
-        if 'username' not in request.session:
-            # Se 'username' não estiver presente na sessão, redirecione para onde desejar
-            return redirect('login')
 
         # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
         data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
@@ -105,7 +105,7 @@ def agendar_equipamento(request):
         # Verifique se o equipamento está disponível para agendamento para o cliente atual
         agendamentos = Agendamento.objects.filter(
             equipamento_id=equipamento_id,
-            cliente_nome=request.session['username'],  # Verifique o agendamento apenas para o cliente atual
+            cliente_nome=request.user.username,  # Verifique o agendamento apenas para o cliente atual
             data__year=data_hora_consciente.year,
             data__month=data_hora_consciente.month,
             data__day=data_hora_consciente.day,
@@ -114,22 +114,19 @@ def agendar_equipamento(request):
         )
 
         if agendamentos.exists():
-            # Se houver agendamento para o equipamento na mesma data e hora para o cliente atual, exiba uma mensagem de erro
-            error_message = 'Este equipamento já está agendado para você nesta data e hora. Por favor, escolha outra data ou hora.'
-            equipamentos = Equipamento.objects.all()
-            context = {'equipamentos': equipamentos, 'error_message': error_message}
-            return render(request, 'agendar_equipamento.html', context)
+            # Se houver agendamento para o equipamento na mesma data e hora para o cliente atual, retorne uma resposta JSON indicando o erro
+            return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para você nesta data e hora. Por favor, escolha outra data ou hora.'})
         else:
             # Se o equipamento estiver disponível, crie o agendamento
             agendamento = Agendamento.objects.create(
                 equipamento_id=equipamento_id,
-                cliente_nome=request.session['username'],  # Use o nome do cliente armazenado na sessão
+                cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
                 data=data_hora_consciente.date(),
                 hora=data_hora_consciente.time()
             )
 
-            # Redirecione para a página de sucesso ou para onde desejar
-            return redirect('cliente')
+            # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
+            return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
 
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
@@ -305,27 +302,36 @@ def user_list(request):
     return render(request, 'user_list.html', {'users': users})
     
 def reagendar_agendamento(request, agendamento_id):
+    # Obtém o agendamento pelo ID
+    agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
+
     if request.method == 'POST':
-        agendamento = Agendamento.objects.get(pk=agendamento_id)
         nova_data_str = request.POST.get('nova_data')
         nova_hora_str = request.POST.get('nova_hora')
 
-        # Verifica se nova_data_str não está vazio
-        if nova_data_str:
-            nova_data = datetime.strptime(nova_data_str, '%Y-%m-%d').date()
-            nova_hora = datetime.strptime(nova_hora_str, '%H:%M').time()
+        # Verifica se nova_data_str e nova_hora_str não estão vazios
+        if nova_data_str and nova_hora_str:
+            try:
+                nova_data = datetime.strptime(nova_data_str, '%Y-%m-%d').date()
+                nova_hora = datetime.strptime(nova_hora_str, '%H:%M').time()
 
-            # Atualiza os campos do agendamento
-            agendamento.data = nova_data
-            agendamento.hora = nova_hora
-            agendamento.save()
+                # Atualiza os campos do agendamento
+                agendamento.data = nova_data
+                agendamento.hora = nova_hora
+                agendamento.save()
 
-            # Redireciona para a página de sucesso ou qualquer outra página desejada
-            return redirect('sucesso_agendamento')
+                # Redireciona para a página de sucesso ou qualquer outra página desejada
+                messages.success(request, 'Agendamento reagendado com sucesso!')
+                return redirect('meus_agendamentos')
+            except ValueError:
+                # Trate o caso em que a conversão da data ou hora falha
+                # Por exemplo, retorne uma mensagem de erro para o usuário
+                messages.error(request, 'Data ou hora inválida. Por favor, verifique e tente novamente.')
+                return redirect('pagina_erro')
         else:
-            # Trate o caso em que nova_data_str está vazio
+            # Trate o caso em que nova_data_str ou nova_hora_str está vazio
             # Por exemplo, retorne uma mensagem de erro para o usuário
-            messages.error(request, 'Por favor, selecione uma nova data.')
+            messages.error(request, 'Por favor, selecione uma nova data e hora.')
             return redirect('pagina_erro')
     else:
         # Trate o caso em que o método da requisição não é POST
@@ -334,22 +340,24 @@ def reagendar_agendamento(request, agendamento_id):
         return redirect('pagina_erro')
 
 def cancelar_agendamento(request, agendamento_id):
-    # Verificar se o usuário está logado
-    if 'username' not in request.session:
-        return redirect('login')  # Redirecionar para a página de login se não estiver logado
+    # Verificar se o usuário está autenticado
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirecionar para a página de login se não estiver autenticado
 
-    # Lógica para cancelar o agendamento com base no ID do agendamento
     try:
-        agendamento = Agendamento.objects.get(id=agendamento_id)
-        # Lógica para cancelar o agendamento (por exemplo, marcar como cancelado no banco de dados)
+        # Obter o agendamento pelo ID
+        agendamento = Agendamento.objects.get(pk=agendamento_id, cliente_nome=request.user)
+        
+        # Marcar o agendamento como cancelado
         agendamento.cancelado = True
         agendamento.save()
-        # Redirecionar de volta para a página de agendamentos após o cancelamento
+        
+        # Redirecionar para a página de meus agendamentos ou para onde desejar
         return redirect('meus_agendamentos')
     except Agendamento.DoesNotExist:
-        # Se o agendamento não for encontrado, redirecionar para uma página de erro ou qualquer outra ação adequada
-        return redirect('pagina_erro')  # Substitua 'pagina_de_erro' pelo nome da sua página de erro
-
+        # Se o agendamento não for encontrado, levantar uma exceção Http404
+        raise Http404("O agendamento não foi encontrado.")
+        
 def error_404_view(request, exception):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
 
@@ -357,24 +365,17 @@ def error_500_view(request):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
 
 def pagina_erro(request):
-    return render(request, 'pagina_erro.html')
+    # Defina as variáveis de exceção
+    exception_type = "FastDevVariableDoesNotExist"  # O tipo de exceção que ocorreu
+    exception_value = "exception_value_placeholder"  # O valor da exceção (se necessário)
+    traceback = "traceback_placeholder"  # O rastreamento da exceção (se necessário)
 
-def cancelar_agendamento(request, agendamento_id):
-    # Verificar se o usuário está logado
-    if 'username' not in request.session:
-        return redirect('login')  # Redirecionar para a página de login se não estiver logado
-    
-    # Lógica para cancelar o agendamento com base no ID do agendamento
-    try:
-        agendamento = Agendamento.objects.get(id=agendamento_id)
-        # Lógica para cancelar o agendamento (por exemplo, marcar como cancelado no banco de dados)
-        agendamento.cancelado = True
-        agendamento.save()
-        # Redirecionar de volta para a página de agendamentos após o cancelamento
-        return redirect('meus_agendamentos')
-    except Agendamento.DoesNotExist:
-        # Se o agendamento não for encontrado, redirecionar para uma página de erro ou qualquer outra ação adequada
-        return redirect('pagina_erro')  # Substitua 'pagina_de_erro' pelo nome da sua página de erro
+    # Renderize o template com as variáveis no contexto
+    return render(request, 'pagina_erro.html', {
+        'exception_type': exception_type,
+        'exception_value': exception_value,
+        'traceback': traceback,
+    })
         
 def error_404_view(request, exception):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
@@ -382,15 +383,14 @@ def error_404_view(request, exception):
 def error_500_view(request):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
         
-def pagina_erro(request):
-    return render(request, 'pagina_erro.html')
-    
-    
 #################  -------Novas Funções---------  ###########################
                     
 def logged_out(request):
     LOGOUT(request)
     return redirect(login)
+    
+def sucesso_agendamento(request):
+    return render(request, 'sucesso_agendamento.html')
     
 #############
 

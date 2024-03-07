@@ -6,6 +6,7 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 
 
+
 tcc_django = 'agendamentos'
 urlpatterns = [
     path('admin/', admin.site.urls),

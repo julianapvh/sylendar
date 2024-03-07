@@ -14,7 +14,7 @@
     <div class="container_historico">
         <div class="agendar-equipamento-form">
             <h2>Agendar Equipamento</h2>
-            <form method="post" action="{% url 'agendar_equipamento' %}">
+            <form id="agendarForm" method="post" action="{% url 'agendar_equipamento' %}">
                 {% csrf_token %}
                 <label for="equipamento">Selecione o Equipamento:</label>
                 <select id="equipamento" name="equipamento">
@@ -35,6 +35,36 @@
         </div>
         <a href="{% url 'cliente' %}" class="botao-voltar">Voltar</a>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('agendarForm').addEventListener('submit', function(e) {
+                e.preventDefault(); // Impede o envio padrão do formulário
+                
+                // Envia uma solicitação POST para agendar_equipamento
+                fetch('{% url 'agendar_equipamento' %}', {
+                    method: 'POST',
+                    body: new FormData(this),
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Exibe uma caixa de diálogo com base na resposta JSON
+                    if (data.success) {
+                        alert(data.message); // Agendamento realizado com sucesso
+                        window.location.reload(); // Recarrega a página após o agendamento bem-sucedido
+                    } else {
+                        alert(data.message); // Exibe a mensagem de erro
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            });
+        });
+    </script>
 </body>
 
 </html>

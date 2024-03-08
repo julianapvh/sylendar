@@ -22,8 +22,8 @@ from django.shortcuts import redirect
 import sys
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
-from django.http import JsonResponse
 from django.db.models import F, Q
+import json
 
 
 ######################################
@@ -145,33 +145,44 @@ def agendar_equipamento(request):
     return render(request, 'agendar_equipamento.html', context)
 
 def historico(request):
-    # Verificar se o usuário está logado e, se sim, obter os agendamentos dele
     if request.user.is_authenticated:
-        # Obter os agendamentos do cliente atual
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
 
-        # Criar um dicionário para mapear o ID do equipamento ao seu status
-        status_equipamentos = {}
+        # Criar um dicionário para mapear o ID do agendamento ao seu status
+        status_agendamentos = {}
         for agendamento in agendamentos:
-            # Verificar se o agendamento foi cancelado
             if agendamento.cancelado:
-                status_equipamentos[agendamento.equipamento.id] = 'Cancelado'
+                status_agendamentos[agendamento.id] = 'Cancelado'
             else:
-                status_equipamentos[agendamento.equipamento.id] = 'Agendado'
+                status_agendamentos[agendamento.id] = 'Agendado'
 
-        # Passar os agendamentos e o status dos equipamentos para o template como parte do contexto
-        return render(request, 'historico.html', {'agendamentos': agendamentos, 'status_equipamentos': status_equipamentos})
+            # Verificar se o agendamento foi reagendado
+            if agendamento.reagendado:
+                status_agendamentos[agendamento.id] = 'Reagendado'
+
+        return render(request, 'historico.html', {'agendamentos': agendamentos, 'status_agendamentos': status_agendamentos})
     else:
-        # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
-        return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
-    
+        return redirect('login')
+        
 def meus_agendamentos(request):
     # Verificar se o usuário está logado e, em caso afirmativo, obter seus agendamentos
     if request.user.is_authenticated:
         # Obter os agendamentos do cliente atual, excluindo os agendamentos cancelados
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username, cancelado=False)
+        
+        # Adicione a lógica de filtragem por data e equipamento, se houver parâmetros de consulta na solicitação
+        data_filter = request.GET.get('data')
+        equipamento_filter = request.GET.get('equipamento')
+        
+        if data_filter:
+            agendamentos = agendamentos.filter(data=data_filter)
+        
+        if equipamento_filter:
+            agendamentos = agendamentos.filter(equipamento__nome__icontains=equipamento_filter)
+
         # Passar os agendamentos para o template como parte do contexto
-        return render(request, 'meus_agendamentos.html', {'agendamentos': agendamentos})
+        context = {'agendamentos': agendamentos}
+        return render(request, 'meus_agendamentos.html', context)
     else:
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
@@ -179,6 +190,53 @@ def meus_agendamentos(request):
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
     return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})
+    
+def reagendar_agendamento(request, agendamento_id):
+    agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
+
+    if request.method == 'POST':
+        data = json.loads(request.body.decode('utf-8'))  # Decodifica o JSON enviado no corpo da requisição
+        nova_data = data.get('nova_data')
+        nova_hora = data.get('nova_hora')
+
+        if nova_data and nova_hora:
+            try:
+                agendamento.data = nova_data
+                agendamento.hora = nova_hora
+                agendamento.save()
+                return JsonResponse({'mensagem': 'Agendamento reagendado com sucesso!'})
+            except ValueError:
+                return JsonResponse({'erro': 'Data ou hora inválida. Por favor, verifique e tente novamente.'}, status=400)
+        else:
+            return JsonResponse({'erro': 'Por favor, selecione uma nova data e hora.'}, status=400)
+    else:
+        return JsonResponse({'erro': 'Método não permitido'}, status=405)
+        
+def cancelar_agendamento(request, agendamento_id):
+    # Verificar se o usuário está autenticado
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirecionar para a página de login se não estiver autenticado
+
+    try:
+        # Obter o agendamento pelo ID
+        agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
+
+        # Obter o equipamento associado ao agendamento
+        equipamento = agendamento.equipamento
+
+        # Marcar o agendamento como cancelado
+        agendamento.cancelado = True
+        agendamento.save()
+
+        # Incrementar a quantidade disponível do equipamento associado
+        equipamento.quantidade_disponivel += 1
+        equipamento.save()
+
+        # Redirecionar para a página de meus agendamentos ou para onde desejar
+        return redirect('meus_agendamentos')
+    except Agendamento.DoesNotExist:
+        # Se o agendamento não for encontrado, levantar uma exceção Http404
+        raise Http404("O agendamento não foi encontrado.")
     
 def administrador(request):
 
@@ -319,67 +377,7 @@ def alterar_equipamento(request, equipamento_id):
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
-    
-def reagendar_agendamento(request, agendamento_id):
-    # Obtém o agendamento pelo ID
-    agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
-
-    if request.method == 'POST':
-        nova_data_str = request.POST.get('nova_data')
-        nova_hora_str = request.POST.get('nova_hora')
-
-        # Verifica se nova_data_str e nova_hora_str não estão vazios
-        if nova_data_str and nova_hora_str:
-            try:
-                nova_data = datetime.strptime(nova_data_str, '%Y-%m-%d').date()
-                nova_hora = datetime.strptime(nova_hora_str, '%H:%M').time()
-
-                # Atualiza os campos do agendamento
-                agendamento.data = nova_data
-                agendamento.hora = nova_hora
-                agendamento.save()
-
-                # Retorne uma resposta JSON indicando o sucesso
-                return JsonResponse({'mensagem': 'Agendamento reagendado com sucesso!'})
-            except ValueError:
-                # Trate o caso em que a conversão da data ou hora falha
-                # Por exemplo, retorne uma mensagem de erro para o usuário
-                return JsonResponse({'erro': 'Data ou hora inválida. Por favor, verifique e tente novamente.'}, status=400)
-        else:
-            # Trate o caso em que nova_data_str ou nova_hora_str está vazio
-            # Por exemplo, retorne uma mensagem de erro para o usuário
-            return JsonResponse({'erro': 'Por favor, selecione uma nova data e hora.'}, status=400)
-    else:
-        # Trate o caso em que o método da requisição não é POST
-        # Por exemplo, retorne um erro
-        return JsonResponse({'erro': 'Método não permitido'}, status=405)
-
-def cancelar_agendamento(request, agendamento_id):
-    # Verificar se o usuário está autenticado
-    if not request.user.is_authenticated:
-        return redirect('login')  # Redirecionar para a página de login se não estiver autenticado
-
-    try:
-        # Obter o agendamento pelo ID
-        agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
-
-        # Obter o equipamento associado ao agendamento
-        equipamento = agendamento.equipamento
-
-        # Marcar o agendamento como cancelado
-        agendamento.cancelado = True
-        agendamento.save()
-
-        # Incrementar a quantidade disponível do equipamento associado
-        equipamento.quantidade_disponivel += 1
-        equipamento.save()
-
-        # Redirecionar para a página de meus agendamentos ou para onde desejar
-        return redirect('meus_agendamentos')
-    except Agendamento.DoesNotExist:
-        # Se o agendamento não for encontrado, levantar uma exceção Http404
-        raise Http404("O agendamento não foi encontrado.")
-        
+     
 def error_404_view(request, exception):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
 

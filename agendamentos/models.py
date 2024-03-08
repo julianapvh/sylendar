@@ -65,6 +65,7 @@ class Agendamento(models.Model):
     data = models.DateTimeField(default=timezone.now)
     hora = models.TimeField()
     cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
+    reagendado = models.BooleanField(default=False)
 
     def status_equipamento(self):
         return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento

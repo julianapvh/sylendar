@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
@@ -14,7 +13,6 @@
         <div class="cliente-form">
             <h1>Histórico de Equipamentos</h1>
             
-            
             <table class="table">
                 <thead>
                     <tr>
@@ -22,6 +20,7 @@
                         <th>Equipamento</th>
                         <th>Data</th>
                         <th>Hora</th>
+                        <th>Status do Agendamento</th> <!-- Novo campo para o status do agendamento -->
                     </tr>
                 </thead>
                 <tbody>
@@ -31,6 +30,19 @@
                         <td>{{ agendamento.equipamento }}</td>
                         <td>{{ agendamento.data }}</td>
                         <td>{{ agendamento.hora }}</td>
+                        <td>
+                            {% if agendamento.cancelado %}
+                                Cancelado
+                            {% else %}
+                                {% if agendamento.data < timezone.now %}
+                                    Passado
+                                {% elif agendamento.data == timezone.now %}
+                                    Agendado para agora
+                                {% else %}
+                                    Agendamento futuro
+                                {% endif %}
+                            {% endif %}
+                        </td>
                     </tr>
                     {% endfor %}
                 </tbody>

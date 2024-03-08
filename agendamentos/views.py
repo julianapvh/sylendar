@@ -23,7 +23,7 @@ import sys
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
 from django.http import JsonResponse
-from django.db.models import F
+from django.db.models import F, Q
 
 
 ######################################
@@ -103,14 +103,15 @@ def agendar_equipamento(request):
         data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
         data_hora_consciente = timezone.make_aware(data_hora)
 
-        # Verifique se o equipamento está disponível para agendamento para o cliente atual
+        # Verifique se a data e hora já passaram
+        if data_hora_consciente < timezone.now():
+            return JsonResponse({'success': False, 'message': 'Não é possível agendar um equipamento em uma data ou hora passada.'})
+
+        # Verifique se o equipamento está disponível para agendamento
         agendamentos = Agendamento.objects.filter(
             equipamento_id=equipamento_id,
-            data__year=data_hora_consciente.year,
-            data__month=data_hora_consciente.month,
-            data__day=data_hora_consciente.day,
-            hora__hour=data_hora_consciente.hour,
-            hora__minute=data_hora_consciente.minute
+            data=data_hora_consciente.date(),
+            hora=data_hora_consciente.time()
         )
 
         if agendamentos.exists():
@@ -144,12 +145,22 @@ def agendar_equipamento(request):
     return render(request, 'agendar_equipamento.html', context)
 
 def historico(request):
-    # Verificar se o usuário está logado e se sim, obter os agendamentos dele
+    # Verificar se o usuário está logado e, se sim, obter os agendamentos dele
     if request.user.is_authenticated:
         # Obter os agendamentos do cliente atual
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
-        # Passar os agendamentos para o template como parte do contexto
-        return render(request, 'historico.html', {'agendamentos': agendamentos})
+
+        # Criar um dicionário para mapear o ID do equipamento ao seu status
+        status_equipamentos = {}
+        for agendamento in agendamentos:
+            # Verificar se o agendamento foi cancelado
+            if agendamento.cancelado:
+                status_equipamentos[agendamento.equipamento.id] = 'Cancelado'
+            else:
+                status_equipamentos[agendamento.equipamento.id] = 'Agendado'
+
+        # Passar os agendamentos e o status dos equipamentos para o template como parte do contexto
+        return render(request, 'historico.html', {'agendamentos': agendamentos, 'status_equipamentos': status_equipamentos})
     else:
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
@@ -166,12 +177,8 @@ def meus_agendamentos(request):
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
     
 def visualizar_equipamentos(request):
-    equipamentos = Equipamento.objects.all().order_by('nome')  # Ordenar os equipamentos pelo nome
-    return render(request, 'visualizar_equipamentos.html', {'equipamentos': equipamentos})
-
-def listar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
-    return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})    
+    return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})
     
 def administrador(request):
 
@@ -268,7 +275,6 @@ def cadastrar_equipamento(request):
     else:
         return render(request, 'cadastrar_equipamento.html')
 
-
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
@@ -355,12 +361,19 @@ def cancelar_agendamento(request, agendamento_id):
 
     try:
         # Obter o agendamento pelo ID
-        agendamento = Agendamento.objects.get(pk=agendamento_id, cliente_nome=request.user)
-        
+        agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
+
+        # Obter o equipamento associado ao agendamento
+        equipamento = agendamento.equipamento
+
         # Marcar o agendamento como cancelado
         agendamento.cancelado = True
         agendamento.save()
-        
+
+        # Incrementar a quantidade disponível do equipamento associado
+        equipamento.quantidade_disponivel += 1
+        equipamento.save()
+
         # Redirecionar para a página de meus agendamentos ou para onde desejar
         return redirect('meus_agendamentos')
     except Agendamento.DoesNotExist:

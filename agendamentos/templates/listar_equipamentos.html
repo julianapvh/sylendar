@@ -1,22 +1,44 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Equipamentos</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <title>Listar Equipamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
+
 <body>
-    <div class="cliente-form">
-        <h1>Equipamentos Cadastrados</h1>
-        <ul>
-            {% for equipamento in equipamentos %}
-                <li>{{ equipamento.nome }}</li>
-            {% endfor %}
-        </ul>
+    <div class="container">
+        <h2>Equipamentos Disponíveis</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Descrição</th>
+                    <th>Fabricante</th>
+                    {% if request.user.is_staff %} <!-- Verifica se o usuário é administrador -->
+                    <th>Data de Aquisição</th> <!-- Exibe a coluna apenas para administradores -->
+                    {% endif %}
+                    <th>Quantidade Disponível</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for equipamento in equipamentos %}
+                <tr>
+                    <td>{{ equipamento.nome }}</td>
+                    <td>{{ equipamento.descricao }}</td>
+                    <td>{{ equipamento.fabricante }}</td>
+                    {% if request.user.is_staff %} <!-- Verifica se o usuário é administrador -->
+                    <td>{{ equipamento.data_aquisicao }}</td> <!-- Exibe a data de aquisição apenas para administradores -->
+                    {% endif %}
+                    <td>{{ equipamento.quantidade_disponivel }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="javascript:history.back()" class="btn btn-secondary">Voltar</a> <!-- Botão para voltar -->
     </div>
 </body>
+
 </html>

@@ -40,11 +40,18 @@ class User(AbstractUser):
         
 
 class Equipamento(models.Model):
+    STATUS_CHOICES = (
+        ('disponivel', 'Disponível'),
+        ('agendado', 'Agendado'),
+        ('cancelado', 'Cancelado'),
+    )
+
     nome = models.CharField(max_length=100)
     descricao = models.CharField(max_length=100)
     fabricante = models.CharField(max_length=50)
     data_aquisicao = models.DateField(default=timezone.now)
-    quantidade_disponivel = models.IntegerField(default=0)  # Campo para quantidade de equipamentos disponíveis
+    quantidade_disponivel = models.IntegerField(default=0)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='disponivel')
     usuarios = models.ManyToManyField(User, related_name='equipamentos', blank=True)
 
     def __str__(self):
@@ -57,7 +64,12 @@ class Agendamento(models.Model):
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
     data = models.DateTimeField(default=timezone.now)
     hora = models.TimeField()
-    cancelado = models.BooleanField(default=False)  # Novo campo para indicar se o agendamento foi cancelado
+    cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
+
+    def status_equipamento(self):
+        return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
+
+

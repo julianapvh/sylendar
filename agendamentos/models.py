@@ -44,10 +44,12 @@ class Equipamento(models.Model):
     descricao = models.CharField(max_length=100)
     fabricante = models.CharField(max_length=50)
     data_aquisicao = models.DateField(default=timezone.now)
+    quantidade_disponivel = models.IntegerField(default=0)  # Campo para quantidade de equipamentos disponíveis
     usuarios = models.ManyToManyField(User, related_name='equipamentos', blank=True)
 
     def __str__(self):
         return self.nome
+
 
 class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)

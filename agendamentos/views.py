@@ -22,6 +22,8 @@ from django.shortcuts import redirect
 import sys
 from django.http import Http404
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.db.models import F
 
 
 ######################################
@@ -91,7 +93,6 @@ def cliente(request):
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
         
-@login_required
 def agendar_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']
@@ -105,7 +106,6 @@ def agendar_equipamento(request):
         # Verifique se o equipamento está disponível para agendamento para o cliente atual
         agendamentos = Agendamento.objects.filter(
             equipamento_id=equipamento_id,
-            cliente_nome=request.user.username,  # Verifique o agendamento apenas para o cliente atual
             data__year=data_hora_consciente.year,
             data__month=data_hora_consciente.month,
             data__day=data_hora_consciente.day,
@@ -114,19 +114,30 @@ def agendar_equipamento(request):
         )
 
         if agendamentos.exists():
-            # Se houver agendamento para o equipamento na mesma data e hora para o cliente atual, retorne uma resposta JSON indicando o erro
-            return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para você nesta data e hora. Por favor, escolha outra data ou hora.'})
+            # Se houver agendamento para o equipamento na mesma data e hora, retorne uma resposta JSON indicando o erro
+            return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'})
         else:
-            # Se o equipamento estiver disponível, crie o agendamento
-            agendamento = Agendamento.objects.create(
-                equipamento_id=equipamento_id,
-                cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
-                data=data_hora_consciente.date(),
-                hora=data_hora_consciente.time()
-            )
+            # Obtenha o equipamento
+            equipamento = Equipamento.objects.get(pk=equipamento_id)
 
-            # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
-            return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
+            # Verifique se há equipamento disponível
+            if equipamento.quantidade_disponivel > 0:
+                # Criar o agendamento
+                Agendamento.objects.create(
+                    equipamento=equipamento,
+                    cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
+                    data=data_hora_consciente.date(),
+                    hora=data_hora_consciente.time()
+                )
+
+                # Decrementar a quantidade disponível atomicamente
+                Equipamento.objects.filter(pk=equipamento_id).update(quantidade_disponivel=F('quantidade_disponivel') - 1)
+
+                # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
+                return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
+            else:
+                # Se não houver equipamento disponível, retorne uma resposta JSON indicando o erro
+                return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível no momento.'})
 
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
@@ -166,7 +177,7 @@ def administrador(request):
 
     return render(request, 'administrador.html')
      
-def adicionar_agendamento(request):
+#def adicionar_agendamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST['equipamento']
         data = request.POST['data']
@@ -231,6 +242,7 @@ def cadastrar_equipamento(request):
         # Obter os dados do formulário
         nome_equipamento = request.POST.get('nome_equipamento')
         descricao = request.POST.get('descricao')
+        quantidade_disponivel = request.POST.get('quantidade_disponivel')
 
         # Verificar se os campos obrigatórios estão preenchidos
         if not nome_equipamento:
@@ -240,7 +252,7 @@ def cadastrar_equipamento(request):
 
         try:
             # Criar um novo equipamento
-            equipamento = Equipamento(nome=nome_equipamento, descricao=descricao)
+            equipamento = Equipamento(nome=nome_equipamento, descricao=descricao, quantidade_disponivel=quantidade_disponivel)
             equipamento.save()
 
             # Define a mensagem de sucesso
@@ -255,6 +267,7 @@ def cadastrar_equipamento(request):
 
     else:
         return render(request, 'cadastrar_equipamento.html')
+
 
 def excluir_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
@@ -320,24 +333,20 @@ def reagendar_agendamento(request, agendamento_id):
                 agendamento.hora = nova_hora
                 agendamento.save()
 
-                # Redireciona para a página de sucesso ou qualquer outra página desejada
-                messages.success(request, 'Agendamento reagendado com sucesso!')
-                return redirect('meus_agendamentos')
+                # Retorne uma resposta JSON indicando o sucesso
+                return JsonResponse({'mensagem': 'Agendamento reagendado com sucesso!'})
             except ValueError:
                 # Trate o caso em que a conversão da data ou hora falha
                 # Por exemplo, retorne uma mensagem de erro para o usuário
-                messages.error(request, 'Data ou hora inválida. Por favor, verifique e tente novamente.')
-                return redirect('pagina_erro')
+                return JsonResponse({'erro': 'Data ou hora inválida. Por favor, verifique e tente novamente.'}, status=400)
         else:
             # Trate o caso em que nova_data_str ou nova_hora_str está vazio
             # Por exemplo, retorne uma mensagem de erro para o usuário
-            messages.error(request, 'Por favor, selecione uma nova data e hora.')
-            return redirect('pagina_erro')
+            return JsonResponse({'erro': 'Por favor, selecione uma nova data e hora.'}, status=400)
     else:
         # Trate o caso em que o método da requisição não é POST
-        # Por exemplo, retorne uma mensagem de erro para o usuário
-        messages.error(request, 'Método de requisição inválido.')
-        return redirect('pagina_erro')
+        # Por exemplo, retorne um erro
+        return JsonResponse({'erro': 'Método não permitido'}, status=405)
 
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está autenticado

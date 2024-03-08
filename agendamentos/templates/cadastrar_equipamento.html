@@ -21,17 +21,22 @@
             <h1>Cadastro</h1>
 
             <form action="{% url 'cadastrar_equipamento' %}" method="post">
-              {% csrf_token %}
-              <div class="form-group">
-                  <label for="nome">Nome</label>
-                  <input type="text" class="form-control" id="nome" name="nome_equipamento" required>
-              </div>
-              <div class="form-group">
-                  <label for="descricao">Descrição</label>
-                  <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
-              </div>
-              <button type="submit" class="btn btn-primary">Salvar</button>
-          </form>
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome_equipamento" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade Disponível</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade_disponivel" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+            </form>
+            
           
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>

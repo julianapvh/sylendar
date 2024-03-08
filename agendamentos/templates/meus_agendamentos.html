@@ -32,8 +32,8 @@
                         <td>{{ agendamento.data }}</td>
                         <td>{{ agendamento.hora }}</td>
                         <td>
-                            <!-- Link para reagendar -->
-                            <a href="{% url 'reagendar_agendamento' agendamento.id %}" onclick="return confirmarReagendamento()" class="btn btn-primary">Reagendar</a>
+                            <!-- Botão para reagendar -->
+                            <button onclick="reagendarAgendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
                             <!-- Link para cancelar -->
                             <a href="#" onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</a>
                         </td>
@@ -55,10 +55,32 @@
         }
     </script>
 
-    <!-- Script JavaScript para confirmação de reagendamento -->
+    <!-- Script JavaScript para reagendar o agendamento -->
     <script>
-        function confirmarReagendamento() {
-            return confirm("Tem certeza de que deseja reagendar este agendamento?");
+        function reagendarAgendamento(agendamentoId) {
+            if (confirm("Tem certeza de que deseja reagendar este agendamento?")) {
+                // Enviar solicitação AJAX para reagendar o agendamento
+                fetch(`/reagendar/${agendamentoId}/`, {
+                    method: 'POST',  // ou 'PUT' se preferir
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}'  // Adicione o token CSRF se necessário
+                    },
+                    body: JSON.stringify({ agendamento_id: agendamentoId })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // Atualizar a página após o reagendamento ser concluído
+                        window.location.reload();
+                    } else {
+                        // Lidar com erros, se houver
+                        console.error('Erro ao reagendar agendamento:', response.statusText);
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro ao reagendar agendamento:', error);
+                });
+            }
         }
     </script>
 </body>

@@ -190,7 +190,7 @@ def meus_agendamentos(request):
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
     return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})
-    
+     
 def reagendar_agendamento(request, agendamento_id):
     agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
 

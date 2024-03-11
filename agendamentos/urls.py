@@ -24,7 +24,6 @@ urlpatterns = [
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
-    path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('excluir_equipamento/<int:equipamento_id>/', views.excluir_equipamento, name='excluir_equipamento'),
     #path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),

@@ -1,25 +1,88 @@
 {% load static %}
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Equipamento</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <h1>Editar Equipamento</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="nome_equipamento">Nome do Equipamento:</label><br>
-        <input type="text" id="nome_equipamento" name="nome_equipamento" value="{{ equipamento.nome_equipamento }}"><br><br>
-        
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao">{{ equipamento.descricao }}</textarea><br><br>
-        
-        <button type="submit">Salvar Alterações</button>
-    </form>
+    <div class="container">
+        <h1>Escolha um Equipamento para Editar</h1>
+        <ul class="list-group">
+            {% for equipamento in equipamentos %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    {{ equipamento.nome }}
+                    <button class="btn btn-primary" onclick="openEditModal('{{ equipamento.id }}')">Editar</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editModalLabel">Editar Equipamento</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="editForm" method="POST" action="{% url 'editar_equipamento' %}">
+                        {% csrf_token %}
+                        <input type="hidden" id="equipamento_id" name="equipamento_id">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" class="form-control" id="nome" name="nome">
+                        </div>
+                        <div class="form-group">
+                            <label for="descricao">Descrição:</label>
+                            <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="fabricante">Fabricante:</label>
+                            <input type="text" class="form-control" id="fabricante" name="fabricante">
+                        </div>
+                        <div class="form-group">
+                            <label for="data_aquisicao">Data de Aquisição:</label>
+                            <input type="date" class="form-control" id="data_aquisicao" name="data_aquisicao">
+                        </div>
+                        <div class="form-group">
+                            <label for="quantidade_disponivel">Quantidade Disponível:</label>
+                            <input type="number" class="form-control" id="quantidade_disponivel" name="quantidade_disponivel">
+                        </div>
+                        <!-- Adicione mais campos conforme necessário para editar os dados do equipamento -->
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o modal de edição com os dados do equipamento selecionado
+        function openEditModal(equipamentoId) {
+            // Obter os dados do equipamento selecionado usando Ajax, se necessário
+            // Aqui, por simplicidade, apenas definimos o ID do equipamento no campo oculto
+            document.getElementById('equipamento_id').value = equipamentoId;
+            // Abre o modal
+            $('#editModal').modal('show');
+        }
+
+        // Função para enviar o formulário de edição quando o botão "Salvar Alterações" é clicado
+        function submitEditForm() {
+            document.getElementById('editForm').submit();
+        }
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

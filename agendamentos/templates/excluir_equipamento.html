@@ -14,20 +14,34 @@
     <div class="container_excluir_equipamento">
         <div class="excluir_equipamento-form">
             <h1>Excluir Equipamento</h1>
-            <p>Tem certeza que deseja excluir o equipamento "{{ equipamento.nome }}"?</p>
-            <form action="{% url 'excluir_equipamento' equipamento_id=equipamento.id %}" method="POST">
+            <p>Selecione o equipamento que deseja excluir:</p>
+            <form action="{% url 'excluir_equipamento' %}" method="POST" id="deleteForm">
                 {% csrf_token %}
-                {% if messages %}
-                    {% for message in messages %}
-                        <div class="{% if message.tags %}{{ message.tags }}{% else %}alert{% endif %}">
-                            {{ message }}
-                        </div>
+                <select name="equipamento_id">
+                    {% for equipamento in equipamentos %}
+                        <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
                     {% endfor %}
-                {% endif %}
-                <input type="submit" value="Excluir">
-                <a href="{% url 'listar_equipamentos' %}">Cancelar</a>
+                </select>
+                <br>
+                <br>
+                <input type="submit" value="Excluir" onclick="return confirmarExclusao()">
+                <br>
+                <br>
+                
+                <a href="{% url 'administrador' %}" class="btn btn-secondary">Voltar</a>
+                
             </form>
         </div>
     </div>
+    
+    <script>
+        function confirmarExclusao() {
+            var equipamentoSelecionado = document.querySelector('select[name="equipamento_id"]').value;
+            var equipamentoNome = document.querySelector('select[name="equipamento_id"] option[value="' + equipamentoSelecionado + '"]').innerText;
+            return confirm("Tem certeza que deseja excluir o equipamento '" + equipamentoNome + "'?");
+        }
+    </script>
 </body>
 </html>
+
+

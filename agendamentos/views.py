@@ -278,30 +278,33 @@ def administrador(request):
         # Se a requisição não for POST, retorne o formulário vazio ou a página inicial
         return render(request, 'agendar_equipamento.html')
         
-def editar_equipamento(request, equipamento_id):
-    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
-
+def editar_equipamento(request):
     if request.method == 'POST':
-        # Instanciar o formulário com os dados submetidos e o equipamento existente
-        formulario = EditarEquipamentoForm(request.POST, instance=equipamento)
-        if formulario.is_valid():
-            # Salvar os dados do formulário no objeto equipamento
-            formulario.save()
-            # Retornar uma resposta de sucesso ou redirecionar para algum lugar
-            return HttpResponse("Equipamento editado com sucesso")
-        # Se o formulário não for válido, renderizar o formulário novamente com os erros
+        equipamento_id = request.POST.get('equipamento_id')
+        nome = request.POST.get('nome')
+        descricao = request.POST.get('descricao')
+        fabricante = request.POST.get('fabricante')
+        data_aquisicao = request.POST.get('data_aquisicao')
+        quantidade_disponivel = request.POST.get('quantidade_disponivel')
+        
+        # Obtenha o equipamento a ser editado
+        equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+        
+        # Atualize os dados do equipamento
+        equipamento.nome = nome
+        equipamento.descricao = descricao
+        equipamento.fabricante = fabricante
+        equipamento.data_aquisicao = data_aquisicao
+        equipamento.quantidade_disponivel = quantidade_disponivel
+        equipamento.save()
+        
+        # Redireciona o usuário para a página de gerenciamento de equipamentos
+        return redirect('editar_equipamento')
     else:
-        # Se o método for GET, renderizar o formulário de edição com os dados do equipamento
-        formulario = EditarEquipamentoForm(instance=equipamento)
-    
-    # Renderizar o formulário de edição
-    return render(request, 'editar_equipamento.html', {'formulario': formulario})
-    
-def excluir_equipamento(request, equipamento_id):
-    equipamento = Equipamento.objects.get(pk=equipamento_id)
-    equipamento.delete()
-    return redirect('visualizar_equipamentos')
-       
+        # Se não for uma solicitação POST, renderize o formulário de edição
+        equipamentos = Equipamento.objects.all()
+        return render(request, 'editar_equipamento.html', {'equipamentos': equipamentos})
+           
 def cadastrar_equipamento(request):
     if request.method == 'POST':
         # Obter os dados do formulário
@@ -333,10 +336,10 @@ def cadastrar_equipamento(request):
     else:
         return render(request, 'cadastrar_equipamento.html')
 
-def excluir_equipamento(request, equipamento_id):
-    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
-
+def excluir_equipamento(request):
     if request.method == 'POST':
+        equipamento_id = request.POST.get('equipamento_id')
+        equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
         try:
             # Excluir o equipamento
             equipamento.delete()
@@ -348,9 +351,10 @@ def excluir_equipamento(request, equipamento_id):
             # Se ocorrer um erro ao excluir, exibe uma mensagem de erro
             messages.error(request, f'O equipamento não foi excluído. Erro: {e}')
             # Redireciona o usuário de volta para a página de excluir equipamento
-            return redirect('excluir_equipamento', equipamento_id=equipamento_id)
+            return redirect('excluir_equipamento')
     else:
-        return render(request, 'excluir_equipamento.html', {'equipamento': equipamento})
+        equipamentos = Equipamento.objects.all()
+        return render(request, 'excluir_equipamento.html', {'equipamentos': equipamentos})
 
 def confirmar_exclusao_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)

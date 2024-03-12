@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUser
 from django.db import models
 from django.utils import timezone
 
+
 class CustomUserManager(BaseUserManager):
     def create_user(self, username, password=None, **extra_fields):
         if not username:
@@ -28,7 +29,7 @@ class User(AbstractUser):
     telefone = models.CharField(max_length=15)
     is_admin = models.BooleanField(default=False)  # Add this field to identify admin users
     
-    # Adicione ou altere o related_name para evitar conflitos
+    
     groups = models.ManyToManyField(Group, related_name='custom_user_groups')
     user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions')
     
@@ -58,7 +59,7 @@ class Equipamento(models.Model):
         return self.nome
 
 
-class Agendamento(models.Model):
+'''class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)
     cliente_cpf = models.CharField(max_length=11, default="00000000000")
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
@@ -71,6 +72,23 @@ class Agendamento(models.Model):
         return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento
 
     def __str__(self):
-        return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
+        return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"'''
+        
+        
 
+class Agendamento(models.Model):
+    cliente_nome = models.CharField(max_length=100)
+    cliente_cpf = models.CharField(max_length=11, default="00000000000")
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
+    data = models.DateField(default=timezone.now)  # Campo de data para armazenar a data do agendamento
+    hora = models.TimeField(default=timezone.now)  # Campo de hora para armazenar a hora do agendamento
+    tipo_servico = models.CharField(max_length=100)  # Campo para armazenar o tipo de serviço realizado no agendamento
+    cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
+    reagendado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi reagendado
+
+    def status_equipamento(self):
+        return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento
+
+    def __str__(self):
+        return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
 

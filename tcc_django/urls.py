@@ -1,9 +1,11 @@
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
-from agendamentos.views import cancelar_agendamento, excluir_equipamento, reagendar_agendamento
+from agendamentos.views import cancelar_agendamento, excluir_equipamento, reagendar_agendamento, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
+
+
 
 
 
@@ -34,6 +36,9 @@ urlpatterns = [
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
+    path('relatorios/', views.relatorios_home, name='relatorios_home'),
+    path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
+    path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
         
 
 ]

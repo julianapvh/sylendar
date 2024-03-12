@@ -1,0 +1,42 @@
+<!-- relatorio_quantidade_agendamentos_por_dia.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Quantidade de Agendamentos por Dia</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Bootstrap JavaScript (opcional, caso deseje adicionar funcionalidades) -->
+    <!-- <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> -->
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Relatório de Quantidade de Agendamentos por Dia</h1>
+        <table class="table mt-3">
+            <thead>
+                <tr>
+                    <th scope="col">Dia</th>
+                    <th scope="col">Mês</th>
+                    <th scope="col">Ano</th>
+                    <th scope="col">Quantidade de Agendamentos</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for dado in dados_relatorio %}
+                    <tr>
+                        <td>{{ dado.dia }}</td>
+                        <td>{{ dado.mes }}</td>
+                        <td>{{ dado.ano }}</td>
+                        <td>{{ dado.quantidade }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Bootstrap JavaScript (opcional, caso deseje adicionar funcionalidades) -->
+    <!-- <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> -->
+</body>
+</html>

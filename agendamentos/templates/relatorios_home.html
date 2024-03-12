@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatórios</title>
+</head>
+<body>
+    <h1>Bem-vindo à página de Relatórios</h1>
+    <ul>
+        <li><a href="{% url 'relatorio_padroes_agendamento' %}">Relatório de Padrões de Agendamento</a></li>
+        <li><a href="{% url 'relatorio_quantidade_agendamentos_por_dia' %}">Relatório de Quantidade de Agendamentos por Dia</a></li>
+    </ul>
+</body>
+</html>

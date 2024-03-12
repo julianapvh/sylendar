@@ -9,12 +9,6 @@
         <div class="card-body">
           <h5 class="card-title">Você foi desconectado!</h5>
           <p class="card-text">Clique <a href="{% url 'login' %}">aqui</a> para fazer login novamente.</p>
-          {% if user.is_authenticated %}
-          <form action="{% url 'logout' %}" method="post">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary">Logout</button>
-          </form>
-          {% endif %}
         </div>
       </div>
     </div>

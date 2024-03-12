@@ -2,12 +2,13 @@ from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
 from agendamentos.views import excluir_equipamento
-from .views import register, sucesso_agendamento
+from .views import logged_out, register, sucesso_agendamento
 from django.contrib.auth import views as auth_views
 from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
 from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
+from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 
 tcc_django = 'agendamentos'
 urlpatterns = [
@@ -33,11 +34,17 @@ urlpatterns = [
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
-    path('logged_out/', views.logged_out, name='logged_out'),
+    #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('sucesso_agendamento/', sucesso_agendamento, name='sucesso_agendamento'),
     path('selecionar_nova_data_hora/<int:agendamento_id>/', views.selecionar_nova_data_hora, name='selecionar_nova_data_hora'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
+    path('relatorios/', views.relatorios_home, name='relatorios_home'),
+    path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
+    path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
+
+]
 
     
 
-]
+

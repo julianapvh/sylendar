@@ -1,41 +1,32 @@
-from multiprocessing import context
-from telnetlib import LOGOUT
-from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
-from .models import Agendamento, Equipamento
-from .forms import AgendamentoForm, EquipamentoForm
-from django.http import HttpResponse, HttpResponseForbidden, JsonResponse
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-from django.contrib.auth.forms import UserCreationForm
-from .forms import UserRegistrationForm
-from .models import User
-from agendamentos.models import User
-from agendamentos.forms import UserRegistrationForm
-from dateutil.parser import parse
-from django.utils import timezone
 from datetime import datetime
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate, login
-from django.contrib.auth import logout
-from django.shortcuts import redirect
+import json
 import sys
-from django.http import Http404
+#################  -------  ---------  ###########################
+from dateutil.parser import parse
+from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.db.models import F, Q
-import json
-
-
-######################################
-# importações para o módulo role permissions, que trata do tipo de permissões dos usuários
+from django.http import Http404, HttpResponse, HttpResponseForbidden, JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
+from django.utils import timezone
+#################  -------  ---------  ###########################
+from agendamentos.forms import AgendamentoForm, EquipamentoForm, UserRegistrationForm
+from agendamentos.models import Agendamento, Equipamento, User
+#################  -------  ---------  ###########################
+from rolepermissions.decorators import has_permission_decorator, has_role_decorator
 from rolepermissions.permissions import revoke_permission, grant_permission
 from rolepermissions.roles import assign_role, get_user_roles
-from rolepermissions.decorators import has_role_decorator, has_permission_decorator
 from django.contrib.auth.models import Group
+from multiprocessing import context
+from telnetlib import LOGOUT
 
-#######################################
 
-
+#################  ------- Views de login, cadastro e home ---------  ###########################
 
 
 def login(request):
@@ -80,7 +71,7 @@ def administrador_home(request):
 
 def cliente_home(request):
     return render(request, 'cliente_home.html')
-
+    
 @login_required
 def cliente(request):
     # Verificar se o usuário está logado e se sim, obter os agendamentos dele
@@ -92,6 +83,15 @@ def cliente(request):
     else:
         # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
         return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
+    
+@login_required    
+def administrador(request):
+
+    return render(request, 'administrador.html')   
+    
+    
+#################  ------- Funções do Sistema ---------  ###########################
+        
         
 def agendar_equipamento(request):
     if request.method == 'POST':
@@ -237,47 +237,7 @@ def cancelar_agendamento(request, agendamento_id):
     except Agendamento.DoesNotExist:
         # Se o agendamento não for encontrado, levantar uma exceção Http404
         raise Http404("O agendamento não foi encontrado.")
-    
-def administrador(request):
-
-    return render(request, 'administrador.html')
-     
-#def adicionar_agendamento(request):
-    if request.method == 'POST':
-        equipamento_id = request.POST['equipamento']
-        data = request.POST['data']
-        hora = request.POST['hora']
-        
-        # Conversão da string de data e hora para objetos do tipo datetime
-        data_agendamento = datetime.strptime(data, '%Y-%m-%d')
-        hora_agendamento = datetime.strptime(hora, '%H:%M').time()
-        
-        # Verificação de disponibilidade do equipamento na data e hora especificadas
-        equipamento = Equipamento.objects.get(pk=equipamento_id)
-        agendamentos_conflitantes = Agendamento.objects.filter(
-            equipamento=equipamento,
-            data=data_agendamento,
-            hora=hora_agendamento
-        )
-        
-        if agendamentos_conflitantes.exists():
-            # Se existir um agendamento conflitante, retorne uma mensagem de erro
-            messages.error(request, 'Já existe um agendamento para este equipamento nesta data e hora.')
-            return redirect('falha_agendamento.html')  # Redirecione para a página de erro ou para o formulário de agendamento
-        else:
-            # Se não houver conflito, crie o novo agendamento
-            novo_agendamento = Agendamento(
-                equipamento=equipamento,
-                data=data_agendamento,
-                hora=hora_agendamento
-            )
-            novo_agendamento.save()
-            messages.success(request, 'Agendamento realizado com sucesso.')
-            return redirect('sucesso_agendamento.html')  # Redirecione para a página de sucesso ou para a lista de agendamentos
-    else:
-        # Se a requisição não for POST, retorne o formulário vazio ou a página inicial
-        return render(request, 'agendar_equipamento.html')
-        
+                    
 def editar_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento_id')
@@ -382,6 +342,10 @@ def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
      
+
+#################  ------- Páginas de erro ---------  ###########################
+
+
 def error_404_view(request, exception):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
 
@@ -406,8 +370,10 @@ def error_404_view(request, exception):
 
 def error_500_view(request):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 500', 'message': 'Ocorreu um erro interno no servidor'}, status=500)
-        
+      
+      
 #################  -------Novas Funções---------  ###########################
+                    
                     
 def logged_out(request):
     LOGOUT(request)
@@ -415,6 +381,4 @@ def logged_out(request):
     
 def sucesso_agendamento(request):
     return render(request, 'sucesso_agendamento.html')
-    
-#############
 

@@ -1,5 +1,7 @@
 from collections import Counter
 from datetime import datetime
+from imaplib import _Authenticator
+from django.contrib.auth import authenticate, login
 from itertools import count
 import json
 from os import truncate
@@ -40,7 +42,7 @@ def login(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Verifique se o usuário é um administrador
+            # Verifique se o usuário é um superusuário ou um administrador
             if user.is_superuser:
                 # Se sim, redirecione para a página de administração
                 return redirect('administrador')
@@ -53,7 +55,7 @@ def login(request):
     else:
         # Se a solicitação for GET, renderize a página de login
         return render(request, 'registration/login.html')
-
+        
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

@@ -22,8 +22,10 @@
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>
-            
-
+                <!-- Aqui é um botão oculto, ele aparece somente se o usuario logado for um administrador do sistema -->
+            {% if request.user.is_superuser %}
+                <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Página do Administrador</button></a>
+            {% endif %}
             
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>

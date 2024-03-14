@@ -1,6 +1,6 @@
 from collections import Counter
+from datetime import datetime
 from imaplib import _Authenticator
-from telnetlib import LOGOUT
 from django.contrib.auth import authenticate, login
 from itertools import count
 import json
@@ -16,6 +16,7 @@ from django.db.models import Count, DateTimeField, F, Q
 from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseServerError, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.utils.timezone import make_aware
 from requests import request
 
@@ -27,11 +28,6 @@ from rolepermissions.roles import assign_role, get_user_roles
 from django.db.models.functions import Trunc
 from django.db.models.functions import TruncDate
 import logging
-from django.db import transaction
-from datetime import timedelta, datetime, timezone
-from datetime import datetime, timedelta
-from django.utils import timezone
-
 
 
 
@@ -102,7 +98,7 @@ def administrador(request):
     
 def logged_out(request):
     if request.method == 'POST':
-        LOGOUT(request)
+        logout(request)
         return redirect('login')
     else:
         # Se a solicitação não for POST, redirecione para onde desejar
@@ -110,51 +106,52 @@ def logged_out(request):
 #################  ------- Funções do Sistema ---------  ###########################
         
         
-@transaction.atomic
 def agendar_equipamento(request):
     if request.method == 'POST':
-        try:
-            equipamento_id = int(request.POST.get('equipamento', 0))
-            data = request.POST.get('data')
-            hora = request.POST.get('hora')
+        equipamento_id = request.POST['equipamento']
+        data = request.POST['data']
+        hora = request.POST['hora']
 
-            if not (equipamento_id and data and hora):
-                return JsonResponse({'success': False, 'message': 'Todos os campos são obrigatórios.'})
+        # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
+        data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+        data_hora_consciente = make_aware(data_hora)
 
-            data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
-            data_hora_consciente = make_aware(data_hora)
+        # Verifique se a data e hora já passaram
+        if data_hora_consciente < timezone.now():
+            return JsonResponse({'success': False, 'message': 'Não é possível agendar um equipamento em uma data ou hora passada.'})
 
-            # Verificar se a data é no futuro e a hora é pelo menos uma hora à frente
-            if data_hora_consciente <= timezone.now() + timedelta(hours=1):
-                return JsonResponse({'success': False, 'message': 'Não é possível agendar um equipamento para um dia passado ou com menos de uma hora de antecedência.'})
+        # Verifique se o equipamento está disponível para agendamento
+        agendamentos = Agendamento.objects.filter(
+            equipamento_id=equipamento_id,
+            data=data_hora.date(),
+            hora=data_hora.time()
+        )
 
-            agendamentos = Agendamento.objects.filter(
-                equipamento_id=equipamento_id,
-                data=data_hora.date(),
-                hora=data_hora.time()
-            )
+        if agendamentos.exists():
+            # Se houver agendamento para o equipamento na mesma data e hora, retorne uma resposta JSON indicando o erro
+            return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'})
+        else:
+            # Obtenha o equipamento
+            equipamento = Equipamento.objects.get(pk=equipamento_id)
 
-            if agendamentos.exists():
-                return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'})
-
-            equipamento = Equipamento.objects.select_for_update().get(pk=equipamento_id)
-
+            # Verifique se há equipamento disponível
             if equipamento.quantidade_disponivel > 0:
+                # Criar o agendamento
                 Agendamento.objects.create(
                     equipamento=equipamento,
-                    cliente_nome=request.user.username,
+                    cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
                     data=data_hora.date(),
                     hora=data_hora.time()
                 )
 
-                equipamento.quantidade_disponivel -= 1
-                equipamento.save()
+                # Decrementar a quantidade disponível atomicamente
+                Equipamento.objects.filter(pk=equipamento_id).update(quantidade_disponivel=F('quantidade_disponivel') - 1)
 
+                # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
                 return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
             else:
+                # Se não houver equipamento disponível, retorne uma resposta JSON indicando o erro
                 return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível no momento.'})
-        except (ValueError, Equipamento.DoesNotExist):
-            return JsonResponse({'success': False, 'message': 'Equipamento inválido.'})
 
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
@@ -237,12 +234,6 @@ def cancelar_agendamento(request, agendamento_id):
         # Obter o agendamento pelo ID
         agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
 
-        # Verificar se o agendamento está dentro do limite de tempo para cancelamento
-        tempo_limite_cancelamento = agendamento.data_hora - timezone.timedelta(minutes=30)
-        if timezone.now() >= tempo_limite_cancelamento:
-            # Se estiver dentro do limite de tempo, retornar uma mensagem de erro em JSON
-            return JsonResponse({'success': False, 'message': 'Você não pode cancelar este agendamento. O cancelamento só é permitido até 30 minutos antes do horário agendado.'})
-
         # Obter o equipamento associado ao agendamento
         equipamento = agendamento.equipamento
 
@@ -254,11 +245,11 @@ def cancelar_agendamento(request, agendamento_id):
         equipamento.quantidade_disponivel += 1
         equipamento.save()
 
-        # Retornar uma resposta JSON indicando que o cancelamento foi bem-sucedido
-        return JsonResponse({'success': True, 'message': 'Agendamento cancelado com sucesso!'})
+        # Redirecionar para a página de meus agendamentos ou para onde desejar
+        return redirect('meus_agendamentos')
     except Agendamento.DoesNotExist:
-        # Se o agendamento não for encontrado, retornar uma mensagem de erro em JSON
-        return JsonResponse({'success': False, 'message': 'O agendamento não foi encontrado.'})
+        # Se o agendamento não for encontrado, levantar uma exceção Http404
+        raise Http404("O agendamento não foi encontrado.")
                     
 def editar_equipamento(request):
     if request.method == 'POST':
@@ -469,22 +460,3 @@ def relatorio_quantidade_agendamentos_por_dia(request):
     dados_relatorio = [{'dia': agendamento['data__day'], 'mes': agendamento['data__month'], 'ano': agendamento['data__year'], 'quantidade': agendamento['data_day_count']} for agendamento in agendamentos_por_dia]
 
     return render(request, 'relatorio_quantidade_agendamentos_por_dia.html', {'dados_relatorio': dados_relatorio})
-    
-    
-@user_passes_test(lambda u: u.is_staff)  # Verifica se o usuário é um administrador
-def devolucao_equipamento(request):
-    if request.method == 'POST':
-        cliente_nome = request.POST.get('cliente_nome')  # Obtém o nome do cliente da requisição POST
-        agendamentos = Agendamento.objects.filter(cliente_nome=cliente_nome, cancelado=False)  # Filtra os agendamentos do cliente
-        return render(request, 'devolucao_equipamento.html', {'agendamentos': agendamentos})
-    else:
-        return render(request, 'devolucao_equipamento.html')
-
-def calcular_prazo_devolucao(data_agendamento, hora_agendamento):
-    data_agendamento_hora = datetime.combine(data_agendamento, hora_agendamento)
-    dias_uteis = 0
-    while dias_uteis < 3:
-        data_agendamento_hora += timedelta(days=1)
-        if data_agendamento_hora.weekday() < 5:  # Verifica se o dia é útil (segunda a sexta)
-            dias_uteis += 1
-    return data_agendamento_hora

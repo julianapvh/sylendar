@@ -57,7 +57,24 @@ class Equipamento(models.Model):
 
     def __str__(self):
         return self.nome
-   
+
+
+'''class Agendamento(models.Model):
+    cliente_nome = models.CharField(max_length=100)
+    cliente_cpf = models.CharField(max_length=11, default="00000000000")
+    equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
+    data = models.DateTimeField(default=timezone.now)
+    hora = models.TimeField()
+    cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
+    reagendado = models.BooleanField(default=False)
+
+    def status_equipamento(self):
+        return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento
+
+    def __str__(self):
+        return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"'''
+        
+        
 
 class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)
@@ -65,7 +82,6 @@ class Agendamento(models.Model):
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
     data = models.DateField(default=timezone.now)  # Campo de data para armazenar a data do agendamento
     hora = models.TimeField(default=timezone.now)  # Campo de hora para armazenar a hora do agendamento
-    prazo_devolucao = models.DateField(null=True)  # Permitir valores nulos para o prazo de devolução
     tipo_servico = models.CharField(max_length=100)  # Campo para armazenar o tipo de serviço realizado no agendamento
     cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
     reagendado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi reagendado
@@ -75,3 +91,4 @@ class Agendamento(models.Model):
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
+

@@ -32,7 +32,6 @@
                         <td>{{ agendamento.data }}</td>
                         <td>{{ agendamento.hora }}</td>
                         <td>
-                            {% if agendamento.pode_cancelar %}
                             <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
                             <a href="#" onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</a>
                             <div id="campos_reagendamento_{{ agendamento.id }}" style="display: none;">
@@ -40,9 +39,6 @@
                                 <input type="time" id="nova_hora_{{ agendamento.id }}" name="nova_hora_{{ agendamento.id }}">
                                 <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
                             </div>
-                            {% else %}
-                            <span class="text-danger">Não é possível cancelar este agendamento neste momento.</span>
-                            {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
@@ -95,7 +91,7 @@
                 });
             }
         }
-    </script>
+    </script
 </body>
 
 </html>

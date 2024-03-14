@@ -39,7 +39,7 @@ urlpatterns = [
     path('relatorios/', views.relatorios_home, name='relatorios_home'),
     path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
     path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
-    path('devolucao_equipamento/', views.devolucao_equipamento, name='devolucao_equipamento'),  
+        
 
 ]
 

@@ -1,0 +1,21 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Devolução de Equipamento</title>
+</head>
+<body>
+    <h2>Devolução de Equipamento</h2>
+    <p>Cliente: {{ agendamento.cliente_nome }}</p>
+    <p>Equipamento: {{ agendamento.equipamento.nome }}</p>
+    <p>Data e hora do agendamento: {{ agendamento.data }} {{ agendamento.hora }}</p>
+    <p>Prazo de devolução: {{ agendamento.prazo_devolucao }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Registrar Devolução</button>
+    </form>
+</body>
+</html>

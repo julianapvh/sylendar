@@ -7,7 +7,6 @@
     <title>Agendar Equipamento</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 </head>
 
 <body>
@@ -17,7 +16,7 @@
             <form id="agendarForm" method="post" action="{% url 'agendar_equipamento' %}">
                 {% csrf_token %}
                 <label for="equipamento">Selecione o Equipamento:</label>
-                <select id="equipamento" name="equipamento">
+                <select id="equipamento" name="equipamento" required>
                     {% for equipamento in equipamentos %}
                     <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
                     {% endfor %}
@@ -30,12 +29,12 @@
                 <input type="text" id="tipo_servico" name="tipo_servico" required>
                 <input type="submit" value="Agendar">
             </form>
-    
+
             <div id="errorDiv"></div> <!-- Div para exibir mensagens de erro -->
         </div>
         <a href="{% url 'cliente' %}" class="botao-voltar">Voltar</a>
     </div>
-    
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('agendarForm').addEventListener('submit', function(e) {
@@ -66,7 +65,7 @@
             });
         });
     </script>
-    
+
 </body>
 
 </html>

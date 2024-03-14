@@ -22,22 +22,23 @@
 </head>
 
 <body>
-    <div class="container_cliente">
-        <div class="cliente-form">
+    <center>
+    <div class="container">
+        <div class="home">
             <h1>Painel Administrativo</h1>
     
             <ul>
-                <a class="btn_separado" href={% url 'cadastrar_equipamento' %}><button class="btn_separado">Cadastrar um Equipamento</button></a>
-                <a class="btn_separado" href={% url 'excluir_equipamento' %}><button class="btn_separado">Excluir um Equipamento</button></a>
-                <a class="btn_separado" href={% url 'editar_equipamento' %}><button class="btn_separado">Editar um Equipamento</button></a>
-                <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
+                <a class="btn-primary" href={% url 'cadastrar_equipamento' %}><button class="btn-primary">Cadastrar um Equipamento</button></a>
+                <a class="btn-primary" href={% url 'excluir_equipamento' %}><button class="btn-primary">Excluir um Equipamento</button></a>
+                <a class="btn-primary" href={% url 'editar_equipamento' %}><button class="btn-primary">Editar um Equipamento</button></a>
+                <a class="btn-primary" href={% url 'visualizar_equipamentos' %}><button class="btn-primary">Listar Equipamentos Disponiveis</button></a>
                 
-                <a class="btn_separado" href={% url 'relatorios_home' %}><button class="btn_separado">Relatórios</button></a>
+                <a class="btn-primary" href={% url 'relatorios_home' %}><button class="btn-primary">Relatórios</button></a>
 
-                <a class="btn_separado" href={% url 'administrador_home' %}><button class="btn_separado">Voltar</button></a>
+                <a class="btn-primary" href={% url 'administrador_home' %}><button class="btn-primary">Voltar</button></a>
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn_separado">Logout</button>
+                    <button type="submit" class="btn-primary">Logout</button>
                 </form>
             </ul>
     
@@ -48,6 +49,7 @@
     </div>
         
     </div>
+    <center>
 </body>
 
 </html>

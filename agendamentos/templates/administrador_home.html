@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html>
 
@@ -10,11 +9,12 @@
 </head>
 
 <body>
+    <center>
     <div class="container_home">
         <div class="home-form">
             <h1> Sistema de Agendamentos</h1>
             <p>Bem-vindo, {{ request.user.username }}</p>
-            <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Administrador</button></a>
+            <a class="btn_separado" href={% url 'administrador' %}>Administrador</a>
             <section>
                 <h2>Sobre o Sistema</h2>
                 <p>
@@ -29,6 +29,7 @@
             {% endif %}
         </div>
     </div>
+    <center>
 </body>
 
 </html>

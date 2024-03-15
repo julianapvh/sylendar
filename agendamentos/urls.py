@@ -8,7 +8,8 @@ from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
 from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
-from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
+from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia,
+
 
 tcc_django = 'agendamentos'
 urlpatterns = [
@@ -20,7 +21,6 @@ urlpatterns = [
     path('historico/', views.historico, name='historico'),
     path('equipamentos_list/', views.listar_equipamentos, name='equipamentos_list'),
     path('cadastrar_equipamento/', views.cadastrar_equipamento, name='cadastrar_equipamento'),
-    path('alterar_equipamento/<int:equipamento_id>/', views.alterar_equipamento, name='alterar_equipamento'),
     path('administrador/', views.administrador, name='administrador'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
@@ -42,7 +42,8 @@ urlpatterns = [
     path('relatorios/', views.relatorios_home, name='relatorios_home'),
     path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
     path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
-
+    path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
+    path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
 ]
 
     

@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Buscar Agendamentos para Devolução</title>
+    <script>
+        function confirmarDevolucao(agendamentoId) {
+            // Confirmar a devolução com o usuário
+            if (confirm("Tem certeza que deseja confirmar a devolução deste agendamento?")) {
+                // Enviar uma requisição AJAX para devolver o equipamento
+                var xhr = new XMLHttpRequest();
+                xhr.open("POST", "{% url 'devolucao_equipamento' 0 %}".replace("0", agendamentoId));
+                xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                xhr.onload = function () {
+                    if (xhr.status == 200) {
+                        alert("Equipamento devolvido com sucesso!");
+                        location.reload(); // Recarregar a página após a devolução
+                    } else {
+                        alert("Erro ao devolver o equipamento. Tente novamente.");
+                    }
+                };
+                xhr.send();
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <center>
+    <div class="container_home">
+        <div class="home-form">
+    <h1>Buscar Agendamentos para Devolução</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="cliente_nome">Nome do Cliente:</label>
+        <input type="text" name="cliente_nome" id="cliente_nome">
+        <button type="submit">Buscar</button>
+    </form>
+
+    {% if agendamentos %}
+    <h2>Agendamentos encontrados:</h2>
+    <ul>
+        {% for agendamento in agendamentos %}
+        <li>
+            {{ agendamento }}
+            <button onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nenhum agendamento encontrado para o cliente.</p>
+    {% endif %}
+</div>
+        
+</div>
+<center>
+</body>
+
+</html>

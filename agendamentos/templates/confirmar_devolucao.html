@@ -1,0 +1,20 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Confirmar Devolução</title>
+</head>
+
+<body>
+    <h1>Confirmar Devolução</h1>
+    <p>Tem certeza que deseja confirmar a devolução do agendamento:</p>
+    <p>{{ agendamento }}</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Confirmar Devolução</button>
+    </form>
+</body>
+
+</html>

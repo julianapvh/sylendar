@@ -9,6 +9,8 @@ from django.views.generic import RedirectView
 
 
 
+
+
 tcc_django = 'agendamentos'
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -39,8 +41,8 @@ urlpatterns = [
     path('relatorios/', views.relatorios_home, name='relatorios_home'),
     path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
     path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
-        
-
+    path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
+    path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
 ]
 
 # Mapeie a visualização para lidar com erros

@@ -1,7 +1,8 @@
 from collections import Counter
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from imaplib import _Authenticator
 from django.contrib.auth import authenticate, login
+from django.contrib.admin.views.decorators import staff_member_required
 from itertools import count
 import json
 from os import truncate
@@ -350,30 +351,54 @@ def confirmar_exclusao_equipamento(request, equipamento_id):
     equipamento.delete()
     return redirect('gerenciar_equipamentos')
     
-def gerenciar_equipamentos(request):
-    equipamentos = Equipamento.objects.all()  # Obtém todos os equipamentos do banco de dados
-
-    # Renderiza a página 'gerenciar_equipamentos.html' e passa os equipamentos para o contexto do template
-    return render(request, 'gerenciar_equipamentos.html', {'equipamentos': equipamentos})
-
-def alterar_equipamento(request, equipamento_id):
-    equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+@staff_member_required
+def buscar_agendamentos(request):
     if request.method == 'POST':
-        form = EquipamentoForm(request.POST, instance=equipamento)
-        if form.is_valid():
-            form.save()
-            return redirect('gerenciar_equipamentos')
+        cliente_nome = request.POST.get('cliente_nome', None)
+        if cliente_nome:
+            # Buscar os agendamentos de todos os clientes pelo nome
+            agendamentos = Agendamento.objects.filter(cliente_nome__icontains=cliente_nome, cancelado=False)
+            return render(request, 'buscar_agendamentos.html', {'agendamentos': agendamentos})
     else:
-        form = EquipamentoForm(instance=equipamento)
-    return render(request, 'alterar_equipamento.html', {'form': form, 'equipamento': equipamento})
+        # Se o método não for POST, exibir a página de busca vazia
+        return render(request, 'buscar_agendamentos.html')
+
+@staff_member_required
+def devolucao_equipamento(request, agendamento_id):
+    try:
+        # Obter o agendamento pelo ID
+        agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
+
+        # Verificar se o agendamento já foi cancelado
+        if agendamento.cancelado:
+            return HttpResponseBadRequest("Este agendamento já foi cancelado.")
+
+        # Marcar o agendamento como devolvido
+        agendamento.cancelado = True
+
+        # Atualizar o status do equipamento para disponível e incrementar o número de equipamentos disponíveis
+        with transaction.atomic():
+            equipamento = agendamento.equipamento
+            equipamento.disponivel = True
+            equipamento.save()
+
+            # Incrementar o número de equipamentos disponíveis
+            Equipamento.objects.filter(id=equipamento.id).update(quantidade_disponivel=F('quantidade_disponivel') + 1)
+
+            agendamento.save()
+
+        # Redirecionar para o painel administrativo ou para onde desejar
+        return redirect('administrador')  # Altere 'admin_dashboard' para o nome da sua view de painel administrativo
+    except Agendamento.DoesNotExist:
+        raise Http404("O agendamento não foi encontrado.")
+
+
       
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
      
-
 #################  ------- Páginas de erro ---------  ###########################
-
 
 def error_404_view(request, exception):
     return render(request, 'pagina_erro.html', {'heading': 'Erro 404', 'message': 'Página não encontrada'}, status=404)
@@ -402,20 +427,15 @@ def error_500_view(request):
       
       
 #################  -------Novas Funções---------  ###########################
-                    
-                    
 
-    
 def sucesso_agendamento(request):
     return render(request, 'sucesso_agendamento.html')
-    
     
 #################  ------- Views para os relatórios ---------  ###########################
     
 def relatorios_home(request):
     return render(request, 'relatorios_home.html')
-    
-    
+     
 # Crie um objeto de logger
 logger = logging.getLogger(__name__)
 def relatorio_padroes_agendamento(request):
@@ -476,3 +496,7 @@ def relatorio_quantidade_agendamentos_por_dia(request):
     dados_relatorio = [{'dia': agendamento['data__day'], 'mes': agendamento['data__month'], 'ano': agendamento['data__year'], 'quantidade': agendamento['data_day_count']} for agendamento in agendamentos_por_dia]
 
     return render(request, 'relatorio_quantidade_agendamentos_por_dia.html', {'dados_relatorio': dados_relatorio})
+
+
+#################  -------  ---------  ###########################
+

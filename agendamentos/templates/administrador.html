@@ -40,6 +40,7 @@
                     {% csrf_token %}
                     <button type="submit" class="btn-primary">Logout</button>
                 </form>
+                <a class="btn-primary" href="{% url 'buscar_agendamentos' %}"><button class="btn-primary">Buscar Agendamentos</button></a>
             </ul>
     
             <footer>
@@ -53,3 +54,4 @@
 </body>
 
 </html>
+

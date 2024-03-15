@@ -1,5 +1,5 @@
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta
 from imaplib import _Authenticator
 from django.contrib.auth import authenticate, login
 from itertools import count
@@ -14,6 +14,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.db.models import Count, DateTimeField, F, Q
 from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseServerError, JsonResponse
+from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -27,6 +28,7 @@ from rolepermissions.permissions import revoke_permission, grant_permission
 from rolepermissions.roles import assign_role, get_user_roles
 from django.db.models.functions import Trunc
 from django.db.models.functions import TruncDate
+from django.db import transaction
 import logging
 
 
@@ -106,33 +108,29 @@ def logged_out(request):
 #################  ------- Funções do Sistema ---------  ###########################
         
         
+@transaction.atomic
 def agendar_equipamento(request):
     if request.method == 'POST':
-        equipamento_id = request.POST['equipamento']
-        data = request.POST['data']
-        hora = request.POST['hora']
+        try:
+            equipamento_id = request.POST['equipamento']
+            data = request.POST['data']
+            hora = request.POST['hora']
 
-        # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
-        data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
-        data_hora_consciente = make_aware(data_hora)
+            # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
+            data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
+            data_hora_consciente = timezone.make_aware(data_hora)
 
-        # Verifique se a data e hora já passaram
-        if data_hora_consciente < timezone.now():
-            return JsonResponse({'success': False, 'message': 'Não é possível agendar um equipamento em uma data ou hora passada.'})
+            # Verifique se a data e hora são anteriores à data e hora atual
+            if data_hora_consciente < timezone.now():
+                return JsonResponse({'success': False, 'message': 'Não é possível agendar um equipamento em uma data ou hora passada.'}, status=400)
 
-        # Verifique se o equipamento está disponível para agendamento
-        agendamentos = Agendamento.objects.filter(
-            equipamento_id=equipamento_id,
-            data=data_hora.date(),
-            hora=data_hora.time()
-        )
+            # Verifique se a data é para o mesmo dia e se a hora é pelo menos 1 hora à frente
+            if data_hora_consciente.date() == timezone.now().date():
+                if data_hora_consciente - timezone.now() < timedelta(hours=1):
+                    return JsonResponse({'success': False, 'message': 'É necessário agendar com pelo menos 1 hora de antecedência.'}, status=400)
 
-        if agendamentos.exists():
-            # Se houver agendamento para o equipamento na mesma data e hora, retorne uma resposta JSON indicando o erro
-            return JsonResponse({'success': False, 'message': 'Este equipamento já está agendado para esta data e hora. Por favor, escolha outra data ou hora.'})
-        else:
-            # Obtenha o equipamento
-            equipamento = Equipamento.objects.get(pk=equipamento_id)
+            # Obtenha o equipamento ou retorne 404 se não existir
+            equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
 
             # Verifique se há equipamento disponível
             if equipamento.quantidade_disponivel > 0:
@@ -140,19 +138,24 @@ def agendar_equipamento(request):
                 Agendamento.objects.create(
                     equipamento=equipamento,
                     cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
-                    data=data_hora.date(),
-                    hora=data_hora.time()
+                    data=data_hora_consciente.date(),
+                    hora=data_hora_consciente.time()
                 )
 
-                # Decrementar a quantidade disponível atomicamente
-                Equipamento.objects.filter(pk=equipamento_id).update(quantidade_disponivel=F('quantidade_disponivel') - 1)
+                # Decrementar a quantidade disponível
+                equipamento.quantidade_disponivel -= 1
+                equipamento.save()
 
                 # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
                 return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
             else:
                 # Se não houver equipamento disponível, retorne uma resposta JSON indicando o erro
-                return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível no momento.'})
+                return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível no momento.'}, status=400)
+        except KeyError:
+            # Se os dados do formulário não foram fornecidos corretamente, retorne uma resposta JSON com erro 400 Bad Request
+            return JsonResponse({'success': False, 'message': 'Dados de agendamento ausentes ou inválidos.'}, status=400)
 
+    # Se o método não for POST, renderize a página de agendamento
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
     return render(request, 'agendar_equipamento.html', context)
@@ -233,6 +236,19 @@ def cancelar_agendamento(request, agendamento_id):
     try:
         # Obter o agendamento pelo ID
         agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
+
+        # Verificar se o agendamento já foi cancelado
+        if agendamento.cancelado:
+            return HttpResponseBadRequest("Este agendamento já foi cancelado.")
+
+        # Verificar se o agendamento pode ser cancelado
+        agora = timezone.now()
+        data_hora_agendamento = datetime.combine(agendamento.data, agendamento.hora)
+        data_hora_agendamento = timezone.make_aware(data_hora_agendamento, timezone.get_current_timezone())
+        tempo_minimo_cancelamento = data_hora_agendamento - timedelta(minutes=30)
+        if agora >= tempo_minimo_cancelamento:
+            # Se já passou do tempo mínimo de cancelamento, retorne uma mensagem de erro
+            return HttpResponseBadRequest("Não é possível cancelar este agendamento. O cancelamento não é permitido dentro de 30 minutos do início do agendamento.")
 
         # Obter o equipamento associado ao agendamento
         equipamento = agendamento.equipamento

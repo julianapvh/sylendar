@@ -14,17 +14,17 @@
             
             <h1>Página de Agendamentos</h1>
             <p>Logado como: {{ request.user.username }}</p>
-            <a class="btn_separado" href={% url 'meus_agendamentos' %}><button class="btn_separado">Meus Agendamentos</button></a>
-            <a class="btn_separado" href={% url 'agendar_equipamento' %}><button class="btn_separado">Agendar Equipamento</button></a>
-            <a class="btn_separado" href={% url 'visualizar_equipamentos' %}><button class="btn_separado">Listar Equipamentos Disponiveis</button></a>
-            <a class="btn_separado" href={% url 'historico' %}><button class="btn_separado">Histórico</button></a>
+            <a class="btn-primary" href={% url 'meus_agendamentos' %}><button class="btn-primary">Meus Agendamentos</button></a>
+            <a class="btn-primary" href={% url 'agendar_equipamento' %}><button class="btn-primary">Agendar Equipamento</button></a>
+            <a class="btn-primary" href={% url 'visualizar_equipamentos' %}><button class="btn-primary">Listar Equipamentos Disponiveis</button></a>
+            <a class="btn-primary" href={% url 'historico' %}><button class="btn-primary">Histórico</button></a>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">Logout</button>
             </form>
                 <!-- Aqui é um botão oculto, ele aparece somente se o usuario logado for um administrador do sistema -->
             {% if request.user.is_superuser %}
-                <a class="btn_separado" href={% url 'administrador' %}><button class="btn_separado">Página do Administrador</button></a>
+                <a class="btn-primary" href={% url 'administrador' %}><button class="btn-primary">Página do Administrador</button></a>
             {% endif %}
             
             <footer>
@@ -33,5 +33,6 @@
         </div>
     </div>
 </body>
+
 
 </html>

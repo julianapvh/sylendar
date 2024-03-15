@@ -1,6 +1,7 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
 from django.db import models
 from django.utils import timezone
+from datetime import datetime, timedelta
 
 
 class CustomUserManager(BaseUserManager):
@@ -80,14 +81,27 @@ class Agendamento(models.Model):
     cliente_nome = models.CharField(max_length=100)
     cliente_cpf = models.CharField(max_length=11, default="00000000000")
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)  
-    data = models.DateField(default=timezone.now)  # Campo de data para armazenar a data do agendamento
-    hora = models.TimeField(default=timezone.now)  # Campo de hora para armazenar a hora do agendamento
-    tipo_servico = models.CharField(max_length=100)  # Campo para armazenar o tipo de serviço realizado no agendamento
-    cancelado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi cancelado
-    reagendado = models.BooleanField(default=False)  # Campo para indicar se o agendamento foi reagendado
+    data = models.DateField(default=timezone.now)
+    hora = models.TimeField(default=timezone.now)
+    tipo_servico = models.CharField(max_length=100)
+    cancelado = models.BooleanField(default=False)
+    reagendado = models.BooleanField(default=False)
 
     def status_equipamento(self):
-        return self.equipamento.status  # Retorna o status do equipamento associado ao agendamento
+        return self.equipamento.status
+
+    def pode_cancelar(self):
+        if not self.cancelado:
+            agora = timezone.now()
+            # Combine the date and time and make them timezone-aware
+            data_hora_agendamento = timezone.make_aware(
+                timezone.datetime.combine(self.data, self.hora),
+                timezone.get_current_timezone()
+            )
+            tempo_minimo_cancelamento = data_hora_agendamento - timedelta(minutes=30)
+            # Ensure that 'agora' is timezone-aware
+            agora = agora.astimezone(data_hora_agendamento.tzinfo)
+            return agora < tempo_minimo_cancelamento
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"

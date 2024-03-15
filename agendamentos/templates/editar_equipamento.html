@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container">
+    <div class="container_home">
         <h1>Escolha um Equipamento para Editar</h1>
         <ul class="list-group">
             {% for equipamento in equipamentos %}
@@ -58,8 +58,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
+                    <button type="button" class="btn-primary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
                 </div>
             </div>
         </div>

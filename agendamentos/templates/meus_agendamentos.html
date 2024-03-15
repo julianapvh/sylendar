@@ -11,8 +11,8 @@
 </head>
 
 <body>
-    <div class="container_agendar_equipamento">
-        <div class='agendar_equipamento-form'>
+    <div class="container_home">
+        <div class=''>
             <h2>Meus Agendamentos</h2>
             <table class="table">
                 <thead>
@@ -26,25 +26,29 @@
                 </thead>
                 <tbody>
                     {% for agendamento in agendamentos %}
-                    <tr>
-                        <td>{{ agendamento.id }}</td>
-                        <td>{{ agendamento.equipamento }}</td>
-                        <td>{{ agendamento.data }}</td>
-                        <td>{{ agendamento.hora }}</td>
-                        <td>
-                            <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
-                            <a href="#" onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</a>
-                            <div id="campos_reagendamento_{{ agendamento.id }}" style="display: none;">
-                                <input type="date" id="nova_data_{{ agendamento.id }}" name="nova_data_{{ agendamento.id }}">
-                                <input type="time" id="nova_hora_{{ agendamento.id }}" name="nova_hora_{{ agendamento.id }}">
-                                <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
-                            </div>
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{{ agendamento.id }}</td>
+                            <td>{{ agendamento.equipamento }}</td>
+                            <td>{{ agendamento.data }}</td>
+                            <td>{{ agendamento.hora }}</td>
+                            <td>
+                                <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
+                                {% if agendamento.pode_cancelar %}
+                                    <button onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</button>
+                                {% else %}
+                                    <button class="btn btn-danger" disabled>Cancelar</button>
+                                {% endif %}
+                                <div id="campos_reagendamento_{{ agendamento.id }}" style="display: none;">
+                                    <input type="date" id="nova_data_{{ agendamento.id }}" name="nova_data_{{ agendamento.id }}">
+                                    <input type="time" id="nova_hora_{{ agendamento.id }}" name="nova_hora_{{ agendamento.id }}">
+                                    <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
+                                </div>
+                            </td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'cliente' %}" class="btn btn-secondary">Voltar</a>
+            <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a>
         </div>
     </div>
 
@@ -91,7 +95,9 @@
                 });
             }
         }
-    </script
+    </script>
 </body>
 
 </html>
+
+

@@ -11,6 +11,11 @@
 <body>
     <div class="container_cliente">
         <div class="cliente-form">
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
             
             <h1>Página de Agendamentos</h1>
             <p>Logado como: {{ request.user.username }}</p>

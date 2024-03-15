@@ -8,27 +8,38 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-    <div class="container_home container"> <!-- Adicione a classe container do Bootstrap -->
-        <div class="home-form"> <!-- Use a mesma classe do formulário de login -->
+    <div class="container_home container">
+        <div class="home-form">
             <h2>Cadastre-se</h2>
+            <!-- Adicione o bloco de mensagens aqui -->
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <!-- Fim do bloco de mensagens -->
             <form method="post">
                 {% csrf_token %}
-                
-                <div class="mb-3"> <!-- Adicione a classe mb-3 do Bootstrap para espaçamento inferior -->
+                <div class="mb-3">
                     <label for="id_username">Nome de Usuário:</label>
                     {{ form.username }}
                 </div>
-                <div class="mb-3"> <!-- Adicione a classe mb-3 do Bootstrap para espaçamento inferior -->
+                <div class="mb-3">
                     <label for="id_password1">Senha:</label>
                     {{ form.password1 }}
                 </div>
-                <div class="mb-3"> <!-- Adicione a classe mb-3 do Bootstrap para espaçamento inferior -->
+                <div class="mb-3">
                     <label for="id_password2">Confirmação de Senha:</label>
                     {{ form.password2 }}
                 </div>
-                <button type="submit" class="btn btn-primary">Cadastrar</button> <!-- Adicione a mesma classe do botão de login -->
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
             </form>
         </div>
     </div>
 </body>
 </html>
+

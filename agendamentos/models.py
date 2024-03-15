@@ -2,6 +2,7 @@ from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUser
 from django.db import models
 from django.utils import timezone
 from datetime import datetime, timedelta
+from workdays import workday
 
 
 class CustomUserManager(BaseUserManager):
@@ -86,6 +87,7 @@ class Agendamento(models.Model):
     tipo_servico = models.CharField(max_length=100)
     cancelado = models.BooleanField(default=False)
     reagendado = models.BooleanField(default=False)
+    data_entrega_prevista = models.DateTimeField(default=None, null=True, blank=True)
 
     def status_equipamento(self):
         return self.equipamento.status
@@ -102,6 +104,17 @@ class Agendamento(models.Model):
             # Ensure that 'agora' is timezone-aware
             agora = agora.astimezone(data_hora_agendamento.tzinfo)
             return agora < tempo_minimo_cancelamento
+
+    def calcular_data_entrega_prevista(self):
+        # Adiciona três dias úteis à data e hora do agendamento
+        data_entrega_prevista = workday(self.data, 3)
+        return timezone.datetime.combine(data_entrega_prevista, self.hora)
+
+    def save(self, *args, **kwargs):
+        # Calcula e atribui a data de entrega prevista antes de salvar o objeto
+        if not self.data_entrega_prevista:
+            self.data_entrega_prevista = self.calcular_data_entrega_prevista()
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"

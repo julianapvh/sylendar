@@ -36,8 +36,6 @@ import logging
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
-
-
 def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
@@ -65,8 +63,12 @@ def register(request):
         if form.is_valid():
             user = form.save()  # Salva o usuário criado
             assign_role(user, 'cliente')  # Atribui o papel (grupo) 'cliente' ao usuário
+            messages.success(request, 'Usuário cadastrado com sucesso! Faça o login para acessar sua conta.')  # Mensagem de sucesso
             return redirect('login')  # Redireciona para a página de login após o registro bem-sucedido
         else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, f"Erro no campo '{field}': {error}")  # Mensagem de erro para cada campo inválido
             print(form.errors)  # Exibe os erros de validação no console para depuração
     else:
         form = UserCreationForm()
@@ -106,9 +108,7 @@ def logged_out(request):
     else:
         # Se a solicitação não for POST, redirecione para onde desejar
         return redirect('logged_out')
-#################  ------- Funções do Sistema ---------  ###########################
-        
-        
+#################  ------- Funções do Sistema ---------  ###########################   
 @transaction.atomic
 def agendar_equipamento(request):
     if request.method == 'POST':
@@ -391,9 +391,7 @@ def devolucao_equipamento(request, agendamento_id):
         return redirect('administrador')  # Altere 'admin_dashboard' para o nome da sua view de painel administrativo
     except Agendamento.DoesNotExist:
         raise Http404("O agendamento não foi encontrado.")
-
-
-      
+     
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})

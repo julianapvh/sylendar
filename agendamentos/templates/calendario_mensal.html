@@ -1,0 +1,57 @@
+{% load static %}
+{% load fullcalendar_tags %} 
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário Mensal de Agendamentos</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.css" integrity="sha512-g/MXEqgqE2I7PC9Hd01KSFz5cMHgTvTwyBYUjJL+V8qq2F4SLhO+yLC0Z+DWuR4DsDw2RyR9JoJaWjvK+IML2g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div id="calendario"></div>
+        <!-- Adicione esses links no cabeçalho do seu template -->
+    <link href="{% static 'fullcalendar/core/main.css' %}" rel="stylesheet">
+    <link href="{% static 'fullcalendar/daygrid/main.css' %}" rel="stylesheet">
+    <link href="{% static 'fullcalendar/timegrid/main.css' %}" rel="stylesheet">
+    <script src="{% static 'fullcalendar/core/main.js' %}"></script>
+    <script src="{% static 'fullcalendar/daygrid/main.js' %}"></script>
+    <script src="{% static 'fullcalendar/timegrid/main.js' %}"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-yyfs8SxYjw5IxnT30lnvA0Gq1g+0rrHFnjfvHQ6exeyA/qcIYxgxvqNO7nJrXO3iq/9DhOD1VsK2M5d9G2SEMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.10.1/main.min.js" integrity="sha512-Lovfw3KDgnkwDvfvAUbZ6PLK3WQyHtKoNSccReHChY99wq0psKdfmyGcxDVz5WsXWUp7k+SB2mL38cm8Bq/0DQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            if (calendarEl) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    events: [
+                        {% for agendamento in agendamentos %}
+                        {
+                            title: '{{ agendamento.cliente_nome }} - {{ agendamento.tipo_servico }}',
+                            start: '{{ agendamento.data }}T{{ agendamento.hora }}',
+                            {% if agendamento.cancelado %}
+                            color: 'gray',
+                            {% endif %}
+                        },
+                        {% endfor %}
+                        
+                    ]
+                });
+                calendar.render();
+            } else {
+                console.error('Elemento do calendário não encontrado.');
+            }
+        });
+    </script>
+    
+</body>
+</html>

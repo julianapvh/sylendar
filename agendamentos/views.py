@@ -300,6 +300,8 @@ def cadastrar_equipamento(request):
         # Obter os dados do formulário
         nome_equipamento = request.POST.get('nome_equipamento')
         descricao = request.POST.get('descricao')
+        fabricante = request.POST.get('fabricante')
+        data_aquisicao = request.POST.get('data_aquisicao')
         quantidade_disponivel = request.POST.get('quantidade_disponivel')
 
         # Verificar se os campos obrigatórios estão preenchidos
@@ -310,7 +312,7 @@ def cadastrar_equipamento(request):
 
         try:
             # Criar um novo equipamento
-            equipamento = Equipamento(nome=nome_equipamento, descricao=descricao, quantidade_disponivel=quantidade_disponivel)
+            equipamento = Equipamento(nome=nome_equipamento, descricao=descricao, fabricante=fabricante, data_aquisicao=data_aquisicao, quantidade_disponivel=quantidade_disponivel)
             equipamento.save()
 
             # Define a mensagem de sucesso
@@ -325,6 +327,7 @@ def cadastrar_equipamento(request):
 
     else:
         return render(request, 'cadastrar_equipamento.html')
+
 
 def excluir_equipamento(request):
     if request.method == 'POST':
@@ -498,3 +501,36 @@ def relatorio_quantidade_agendamentos_por_dia(request):
 
 #################  -------  ---------  ###########################
 
+@staff_member_required
+def historico_agendamentos(request):
+    agendamentos = Agendamento.objects.all()
+    return render(request, 'historico_agendamentos.html', {'agendamentos': agendamentos})
+    
+def obter_dados_equipamento(request):
+    equipamento_id = request.GET.get('equipamento_id')
+    equipamento = Equipamento.objects.get(pk=equipamento_id)
+    data = {
+        'id': equipamento.id,
+        'nome': equipamento.nome,
+        'descricao': equipamento.descricao,
+        'fabricante': equipamento.fabricante,
+        'data_aquisicao': equipamento.data_aquisicao,
+        'quantidade_disponivel': equipamento.quantidade_disponivel
+    }
+    return JsonResponse(data)
+    
+
+'''@login_required
+def calendario_mensal(request):
+    # Obtém o usuário logado
+    cliente_nome = request.user.username
+    
+    # Obtém o ano e mês atuais
+    today = timezone.now()
+    ano_atual = today.year
+    mes_atual = today.month
+    
+    # Obtém os agendamentos do cliente para o mês atual
+    agendamentos = Agendamento.objects.filter(cliente_nome=cliente_nome, data__year=ano_atual, data__month=mes_atual)
+    
+    return render(request, 'calendario_mensal.html', {'agendamentos': agendamentos, 'ano': ano_atual, 'mes': mes_atual})'''

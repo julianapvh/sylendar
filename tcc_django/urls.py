@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
-from agendamentos.views import cancelar_agendamento, excluir_equipamento, reagendar_agendamento, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
+from agendamentos.views import cancelar_agendamento, excluir_equipamento, historico_agendamentos, reagendar_agendamento, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 
@@ -43,6 +43,9 @@ urlpatterns = [
     path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
     path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
     path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
+    path('historico_agendamentos/', views.historico_agendamentos, name='historico_agendamentos'),
+    path('obter_dados_equipamento/', views.obter_dados_equipamento, name='obter_dados_equipamento'),
+    #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
 ]
 
 # Mapeie a visualização para lidar com erros

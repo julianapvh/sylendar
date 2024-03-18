@@ -8,7 +8,8 @@ from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
 from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
-from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia,
+from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
+from .views import historico_agendamentos
 
 
 tcc_django = 'agendamentos'
@@ -44,6 +45,9 @@ urlpatterns = [
     path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
     path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
     path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
+    path('historico_agendamentos/', views.historico_agendamentos, name='historico_agendamentos'),
+    path('obter_dados_equipamento/', views.obter_dados_equipamento, name='obter_dados_equipamento'),
+    #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
 ]
 
     

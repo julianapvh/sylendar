@@ -1,0 +1,40 @@
+<!-- historico_agendamentos.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Historico de Agendamentos</title>
+</head>
+<body>
+<div class="container_home">
+<div class="home-form">
+    <h1>Historico de Agendamentos</h1>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Data</th>
+                <th>Hora</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for agendamento in agendamentos %}
+            <tr>
+                <td>{{ agendamento.id }}</td>
+                <td>{{ agendamento.cliente_nome }}</td>
+                <td>{{ agendamento.data }}</td>
+                <td>{{ agendamento.hora }}</td>
+                <!-- Add more columns as needed -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+</div>
+
+</body>
+</html>

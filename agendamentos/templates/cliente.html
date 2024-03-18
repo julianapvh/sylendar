@@ -23,6 +23,7 @@
             <a class="btn-primary" href={% url 'agendar_equipamento' %}><button class="btn-primary">Agendar Equipamento</button></a>
             <a class="btn-primary" href={% url 'visualizar_equipamentos' %}><button class="btn-primary">Listar Equipamentos Disponiveis</button></a>
             <a class="btn-primary" href={% url 'historico' %}><button class="btn-primary">Histórico</button></a>
+            <a class="btn-primary" href={% url 'calendario_mensal'%}><button class="btn-primary">Calendário Mensal de Agendamentos</button><a/>
             <form action="{% url 'logout' %}" method="post">
                 {% csrf_token %}
                 <button type="submit">Logout</button>

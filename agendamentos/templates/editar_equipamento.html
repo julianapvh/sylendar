@@ -14,7 +14,7 @@
             {% for equipamento in equipamentos %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
                     {{ equipamento.nome }}
-                    <button class="btn btn-primary" onclick="openEditModal('{{ equipamento.id }}')">Editar</button>
+                    <button class="btn btn-primary" onclick="openEditModal('{{ equipamento.id }}', '{{ equipamento.nome }}', '{{ equipamento.descricao }}', '{{ equipamento.fabricante }}', '{{ equipamento.data_aquisicao }}', '{{ equipamento.quantidade_disponivel }}')">Editar</button>
                 </li>
             {% endfor %}
         </ul>
@@ -67,11 +67,13 @@
 
     <script>
         // Função para abrir o modal de edição com os dados do equipamento selecionado
-        function openEditModal(equipamentoId) {
-            // Obter os dados do equipamento selecionado usando Ajax, se necessário
-            // Aqui, por simplicidade, apenas definimos o ID do equipamento no campo oculto
+        function openEditModal(equipamentoId, nome, descricao, fabricante, data_aquisicao, quantidade_disponivel) {
             document.getElementById('equipamento_id').value = equipamentoId;
-            // Abre o modal
+            document.getElementById('nome').value = nome;
+            document.getElementById('descricao').value = descricao;
+            document.getElementById('fabricante').value = fabricante;
+            document.getElementById('data_aquisicao').value = data_aquisicao;
+            document.getElementById('quantidade_disponivel').value = quantidade_disponivel;
             $('#editModal').modal('show');
         }
 

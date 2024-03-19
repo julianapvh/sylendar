@@ -52,7 +52,7 @@ class Equipamento(models.Model):
     nome = models.CharField(max_length=100)
     descricao = models.CharField(max_length=100)
     fabricante = models.CharField(max_length=50)
-    data_aquisicao = models.DateField(default=timezone.now)
+    data_aquisicao = models.DateField(blank=False)
     quantidade_disponivel = models.IntegerField(default=0)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='disponivel')
     usuarios = models.ManyToManyField(User, related_name='equipamentos', blank=True)
@@ -71,6 +71,14 @@ class Agendamento(models.Model):
     cancelado = models.BooleanField(default=False)
     reagendado = models.BooleanField(default=False)
     data_entrega_prevista = models.DateTimeField(default=None, null=True, blank=True)
+    data_emprestimo = models.DateTimeField(default=None, null=True, blank=True)  # Data de empréstimo do equipamento
+    situacao = models.CharField(max_length=100, default="Agendado")  # Situação do agendamento
+    prazo_restante = models.DurationField(null=True, blank=True)  # Prazo restante para devolução
+
+    nova_data = models.DateField(null=True, blank=True)
+    nova_hora = models.TimeField(null=True, blank=True)
+    data_original = models.DateField(null=True, blank=True)
+    hora_original = models.TimeField(null=True, blank=True)
 
     def status_equipamento(self):
         return self.equipamento.status
@@ -78,13 +86,11 @@ class Agendamento(models.Model):
     def pode_cancelar(self):
         if not self.cancelado:
             agora = timezone.now()
-            # Combine the date and time and make them timezone-aware
             data_hora_agendamento = timezone.make_aware(
                 timezone.datetime.combine(self.data, self.hora),
                 timezone.get_current_timezone()
             )
             tempo_minimo_cancelamento = data_hora_agendamento - timedelta(minutes=30)
-            # Ensure that 'agora' is timezone-aware
             agora = agora.astimezone(data_hora_agendamento.tzinfo)
             return agora < tempo_minimo_cancelamento
 
@@ -93,12 +99,36 @@ class Agendamento(models.Model):
         data_entrega_prevista = workday(self.data, 3)
         return timezone.datetime.combine(data_entrega_prevista, self.hora)
 
+    def calcular_data_devolucao(self):
+        if self.data_emprestimo:
+            data_devolucao = workday(self.data_emprestimo.date(), 3)
+            data_devolucao_prevista = timezone.datetime.combine(data_devolucao, self.data_emprestimo.time())
+            data_devolucao_prevista = timezone.make_aware(data_devolucao_prevista)
+            return data_devolucao_prevista
+        return None
+
+    def calcular_prazo_restante(self):
+        if self.data_emprestimo:
+            data_devolucao_prevista = self.calcular_data_devolucao()
+            if data_devolucao_prevista:
+                agora = timezone.now()
+                prazo_restante = data_devolucao_prevista - agora
+                return prazo_restante if prazo_restante > timedelta(0) else timedelta(0)
+        return None
+
     def save(self, *args, **kwargs):
-        # Calcula e atribui a data de entrega prevista antes de salvar o objeto
         if not self.data_entrega_prevista:
             self.data_entrega_prevista = self.calcular_data_entrega_prevista()
+
+        if self.data_emprestimo:
+            self.prazo_restante = self.calcular_prazo_restante()
+
+        if self.nova_data and self.nova_hora:
+            self.reagendado = True
+        else:
+            self.reagendado = False
+
         super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
-

@@ -1,4 +1,3 @@
-<!-- historico_agendamentos.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -16,9 +15,11 @@
             <tr>
                 <th>ID</th>
                 <th>Cliente</th>
-                <th>Data</th>
+                <th>Data Original</th>
+                <th>Nova Data</th>
                 <th>Hora</th>
-                <!-- Add more columns as needed -->
+                <th>Estado</th>
+                <th>Reagendado</th>
             </tr>
         </thead>
         <tbody>
@@ -26,15 +27,40 @@
             <tr>
                 <td>{{ agendamento.id }}</td>
                 <td>{{ agendamento.cliente_nome }}</td>
-                <td>{{ agendamento.data }}</td>
+                <td>
+                    {% if agendamento.reagendado %}
+                        {{ agendamento.data_original }} {{ agendamento.hora_original }}
+                    {% else %}
+                        {{ agendamento.data }}
+                    {% endif %}
+                </td>
+                <td>
+                    {% if agendamento.reagendado %}
+                        {{ agendamento.nova_data }} {{ agendamento.nova_hora }}
+                    {% else %}
+                        N/A
+                    {% endif %}
+                </td>
                 <td>{{ agendamento.hora }}</td>
-                <!-- Add more columns as needed -->
+                <td>
+                    {% if agendamento.cancelado %}
+                        Cancelado
+                    {% else %}
+                        Ativo
+                    {% endif %}
+                </td>
+                <td>
+                    {% if agendamento.reagendado %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
 </div>
 </div>
-
 </body>
 </html>

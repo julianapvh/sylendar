@@ -12,6 +12,7 @@ from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_qua
 from .views import historico_agendamentos
 
 
+
 tcc_django = 'agendamentos'
 urlpatterns = [
     path('login/', views.login, name='login'),
@@ -27,7 +28,6 @@ urlpatterns = [
     path('adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('excluir_equipamento/<int:equipamento_id>/', views.excluir_equipamento, name='excluir_equipamento'),
-    #path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
     path('user_list/', views.user_list, name='user_list'),
@@ -35,7 +35,6 @@ urlpatterns = [
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
-    #path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('logout/', auth_views.LogoutView.as_view(next_page='login'), name='logout'),
     path('sucesso_agendamento/', sucesso_agendamento, name='sucesso_agendamento'),
     path('selecionar_nova_data_hora/<int:agendamento_id>/', views.selecionar_nova_data_hora, name='selecionar_nova_data_hora'),

@@ -182,27 +182,18 @@ def historico(request):
         return redirect('login')
         
 def meus_agendamentos(request):
-    # Verificar se o usuário está logado e, em caso afirmativo, obter seus agendamentos
     if request.user.is_authenticated:
-        # Obter os agendamentos do cliente atual, excluindo os agendamentos cancelados
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username, cancelado=False)
-        
-        # Adicione a lógica de filtragem por data e equipamento, se houver parâmetros de consulta na solicitação
-        data_filter = request.GET.get('data')
-        equipamento_filter = request.GET.get('equipamento')
-        
-        if data_filter:
-            agendamentos = agendamentos.filter(data=data_filter)
-        
-        if equipamento_filter:
-            agendamentos = agendamentos.filter(equipamento__nome__icontains=equipamento_filter)
-
-        # Passar os agendamentos para o template como parte do contexto
+        agora = timezone.now()
+        for agendamento in agendamentos:
+            if agendamento.data_emprestimo:
+                agendamento.prazo_restante = agendamento.calcular_prazo_restante()
+            else:
+                agendamento.prazo_restante = None  # Define como None se não estiver emprestado
         context = {'agendamentos': agendamentos}
         return render(request, 'meus_agendamentos.html', context)
     else:
-        # Caso o usuário não esteja logado, redirecionar para a página de login ou fazer qualquer outra coisa que desejar
-        return redirect('login')  # Ou renderizar outro template informando que o usuário precisa estar logado
+        return redirect('login')
     
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()

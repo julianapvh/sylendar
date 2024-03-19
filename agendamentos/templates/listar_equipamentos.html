@@ -17,8 +17,8 @@
                     <th>Nome</th>
                     <th>Descrição</th>
                     <th>Fabricante</th>
-                    {% if request.user.is_staff %} <!-- Verifica se o usuário é administrador -->
-                    <th>Data de Aquisição</th> <!-- Exibe a coluna apenas para administradores -->
+                    {% if request.user.is_staff %}
+                    <th>Data de Aquisição</th>
                     {% endif %}
                     <th>Quantidade Disponível</th>
                 </tr>
@@ -29,15 +29,21 @@
                     <td>{{ equipamento.nome }}</td>
                     <td>{{ equipamento.descricao }}</td>
                     <td>{{ equipamento.fabricante }}</td>
-                    {% if request.user.is_staff %} <!-- Verifica se o usuário é administrador -->
-                    <td>{{ equipamento.data_aquisicao }}</td> <!-- Exibe a data de aquisição apenas para administradores -->
+                    {% if request.user.is_staff %}
+                    <td>{{ equipamento.data_aquisicao }}</td>
                     {% endif %}
-                    <td>{{ equipamento.quantidade_disponivel }}</td>
+                    <td>
+                        {% if equipamento.quantidade_disponivel > 0 %}
+                            {{ equipamento.quantidade_disponivel }}
+                        {% else %}
+                            Indisponível no momento
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <a href="javascript:history.back()" class="btn-primary">Voltar</a> <!-- Botão para voltar -->
+        <a href="javascript:history.back()" class="btn-primary">Voltar</a>
     </div>
 </body>
 

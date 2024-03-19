@@ -21,6 +21,9 @@
                         <th>Equipamento</th>
                         <th>Data</th>
                         <th>Hora</th>
+                        <th>Situação</th>
+                        <th>Prazo Restante</th>
+                        <th>Data Prevista</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -29,8 +32,36 @@
                         <tr>
                             <td>{{ agendamento.id }}</td>
                             <td>{{ agendamento.equipamento }}</td>
-                            <td>{{ agendamento.data }}</td>
-                            <td>{{ agendamento.hora }}</td>
+                            <td>{{ agendamento.data|date:"d/m/Y" }}</td>
+                            <td>{{ agendamento.hora|time:"H:i" }}</td>
+                            <td>
+                                {% if agendamento.data_emprestimo %}
+                                    Emprestado
+                                {% else %}
+                                    Agendado
+                                {% endif %}
+                            </td>
+                        
+                            <td>
+                                {% if agendamento.prazo_restante %}
+                                    {% if agendamento.prazo_restante.days > 0 %}
+                                        {{ agendamento.prazo_restante.days }} dias
+                                    {% else %}
+                                        {{ agendamento.prazo_restante|timesince }} restante
+                                    {% endif %}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if agendamento.data_entrega_prevista %}
+                                    {{ agendamento.data_entrega_prevista|date:"d/m/Y" }}
+                                {% else %}
+                                    N/A
+                                {% endif %}
+                            </td>
+
+
                             <td>
                                 <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
                                 {% if agendamento.pode_cancelar %}
@@ -99,5 +130,3 @@
 </body>
 
 </html>
-
-

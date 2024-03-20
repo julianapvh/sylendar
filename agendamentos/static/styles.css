@@ -29,3 +29,14 @@
 
 
 
+
+/* Estilos para os botões */
+.btn-primary {
+  margin: 5px; /* Espaçamento entre os botões */
+}
+
+/* Estilos para o rodapé */
+footer {
+  margin-top: 20px; /* Espaçamento entre o conteúdo e o rodapé */
+}
+

@@ -170,16 +170,19 @@ def historico(request):
         for agendamento in agendamentos:
             if agendamento.cancelado:
                 status_agendamentos[agendamento.id] = 'Cancelado'
+            elif agendamento.reagendado:
+                status_agendamentos[agendamento.id] = 'Reagendado'
+            elif agendamento.data_emprestimo and not agendamento.data_devolucao:
+                status_agendamentos[agendamento.id] = 'Emprestado'
+            elif agendamento.data_devolucao:
+                status_agendamentos[agendamento.id] = 'Devolvido'
             else:
                 status_agendamentos[agendamento.id] = 'Agendado'
-
-            # Verificar se o agendamento foi reagendado
-            if agendamento.reagendado:
-                status_agendamentos[agendamento.id] = 'Reagendado'
 
         return render(request, 'historico.html', {'agendamentos': agendamentos, 'status_agendamentos': status_agendamentos})
     else:
         return redirect('login')
+
         
 def meus_agendamentos(request):
     if request.user.is_authenticated:
@@ -188,8 +191,17 @@ def meus_agendamentos(request):
         for agendamento in agendamentos:
             if agendamento.data_emprestimo:
                 agendamento.prazo_restante = agendamento.calcular_prazo_restante()
+                # Define o atributo 'pode_reagendar' como False se o equipamento estiver emprestado
+                agendamento.pode_reagendar = False
+                # Define o atributo 'pode_cancelar' como False se o equipamento estiver emprestado
+                agendamento.pode_cancelar = False
             else:
                 agendamento.prazo_restante = None  # Define como None se não estiver emprestado
+                # Define o atributo 'pode_reagendar' como True se o equipamento não estiver emprestado
+                agendamento.pode_reagendar = True
+                # Define o atributo 'pode_cancelar' como True se o equipamento não estiver emprestado
+                agendamento.pode_cancelar = True
+
         context = {'agendamentos': agendamentos}
         return render(request, 'meus_agendamentos.html', context)
     else:
@@ -361,11 +373,12 @@ def buscar_agendamentos(request):
         cliente_nome = request.POST.get('cliente_nome', None)
         if cliente_nome:
             # Buscar os agendamentos de todos os clientes pelo nome
-            agendamentos = Agendamento.objects.filter(cliente_nome__icontains=cliente_nome, cancelado=False)
+            agendamentos = Agendamento.objects.filter(cliente_nome__icontains=cliente_nome, cancelado=False, devolvido=False)
             return render(request, 'buscar_agendamentos.html', {'agendamentos': agendamentos})
     else:
         # Se o método não for POST, exibir a página de busca vazia
         return render(request, 'buscar_agendamentos.html')
+
 
 @staff_member_required
 def devolucao_equipamento(request, agendamento_id):
@@ -378,7 +391,7 @@ def devolucao_equipamento(request, agendamento_id):
             return HttpResponseBadRequest("Este agendamento já foi cancelado.")
 
         # Marcar o agendamento como devolvido
-        agendamento.cancelado = True
+        agendamento.devolvido = True
 
         # Atualizar o status do equipamento para disponível e incrementar o número de equipamentos disponíveis
         with transaction.atomic():
@@ -395,6 +408,7 @@ def devolucao_equipamento(request, agendamento_id):
         return redirect('administrador')  # Altere 'admin_dashboard' para o nome da sua view de painel administrativo
     except Agendamento.DoesNotExist:
         raise Http404("O agendamento não foi encontrado.")
+
      
 def user_list(request):
     users = User.objects.all()

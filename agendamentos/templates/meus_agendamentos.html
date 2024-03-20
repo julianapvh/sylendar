@@ -63,7 +63,7 @@
 
 
                             <td>
-                                <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary">Reagendar</button>
+                                <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary" {% if not agendamento.pode_reagendar %}disabled{% endif %}>Reagendar</button>
                                 {% if agendamento.pode_cancelar %}
                                     <button onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</button>
                                 {% else %}
@@ -75,6 +75,7 @@
                                     <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
                                 </div>
                             </td>
+                            
                         </tr>
                     {% endfor %}
                 </tbody>

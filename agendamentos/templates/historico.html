@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <div class="container_cliente">
-        <div class="cliente-form">
+    <div class="container_home">
+        <div class="home-form">
             <h1>Histórico de Equipamentos</h1>
             
             <table class="table">
@@ -33,23 +33,25 @@
                         <td>
                             {% if agendamento.cancelado %}
                                 Cancelado
-                            {% elif status_agendamentos.agendamento.id == 'Reagendado' %}
+                            {% elif agendamento.reagendado %}
                                 Reagendado
+                            {% elif agendamento.emprestado %}
+                                Emprestado
+                            {% elif agendamento.devolvido %}
+                                Devolvido
+                            {% elif agendamento.data < timezone.now %}
+                                Passado
+                            {% elif agendamento.data == timezone.now %}
+                                Agendado para agora
                             {% else %}
-                                {% if agendamento.data < timezone.now %}
-                                    Passado
-                                {% elif agendamento.data == timezone.now %}
-                                    Agendado para agora
-                                {% else %}
-                                    Agendamento futuro
-                                {% endif %}
+                                Agendamento futuro
                             {% endif %}
                         </td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a class="btn-primary" href="{% url 'cliente' %}"><button class="btn-primary">Voltar</button></a>
+            <a class="btn btn-primary" href="{% url 'cliente' %}">Voltar</a>
             <footer>
                 <p>&copy; 2024 Sistema de Agendamentos</p>
             </footer>

@@ -73,9 +73,11 @@ class Agendamento(models.Model):
     reagendado = models.BooleanField(default=False)
     data_entrega_prevista = models.DateTimeField(default=None, null=True, blank=True)
     data_emprestimo = models.DateTimeField(default=None, null=True, blank=True)  # Data de empréstimo do equipamento
+    data_devolucao = models.DateTimeField(null=True, blank=True)
     situacao = models.CharField(max_length=100, default="Agendado")  # Situação do agendamento
     prazo_restante = models.DurationField(null=True, blank=True)  # Prazo restante para devolução
     emprestado = models.BooleanField(default=False)  # Se o equipamento foi emprestado
+    devolvido = models.BooleanField(default=False)  # Se o equipamento foi devolvido
 
     nova_data = models.DateField(null=True, blank=True)
     nova_hora = models.TimeField(null=True, blank=True)
@@ -84,6 +86,22 @@ class Agendamento(models.Model):
 
     def status_equipamento(self):
         return self.equipamento.status
+        
+    def get_status_agendamento(self):
+        if self.cancelado:
+            return 'Cancelado'
+        elif self.reagendado:
+            return 'Reagendado'
+        elif self.emprestado:
+            return 'Emprestado'
+        elif self.devolvido:
+            return 'Devolvido'
+        elif self.data < timezone.now():
+            return 'Passado'
+        elif self.data == timezone.now():
+            return 'Agendado para agora'
+        else:
+            return 'Agendamento futuro'
 
     def pode_cancelar(self):
         if not self.cancelado:

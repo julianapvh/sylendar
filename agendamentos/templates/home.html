@@ -7,20 +7,11 @@
     <title>Home</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* Adicione estilos personalizados aqui se necessário */
-        .container {
-            margin-top: 50px;
-        }
-        .btn-custom {
-            margin-right: 10px;
-        }
-    </style>
-</head>
+ </head>
 
 <body>
-    <div class="container">
-        <div class="jumbotron">
+    <div class="container_home">
+        <div class="home-form">
             <h1 class="display-4">Bem-vindo(a), {{ user.username }}, à Página Inicial</h1>
             <p class="lead">Sistema de Agendamentos.</p>
             <hr class="my-4">

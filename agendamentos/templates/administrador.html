@@ -34,6 +34,7 @@
                 <a class="btn-primary" href={% url 'visualizar_equipamentos' %}><button class="btn-primary">Listar Equipamentos Disponiveis</button></a>
                 <a class="btn-primary" href="{% url 'historico_agendamentos' %}"><button class="btn-primary">Histórico de Agendamentos dos Clientes</button></a>
                 <a class="btn-primary" href={% url 'relatorios_home' %}><button class="btn-primary">Relatórios</button></a>
+                <a class="btn-primary" href={% url 'marcar_como_emprestado'%}><button class="btn-primary">Marcar Como Emprestado</button></a>
 
                 <a class="btn-primary" href={% url 'administrador_home' %}><button class="btn-primary">Voltar</button></a>
                 <form action="{% url 'logout' %}" method="post">

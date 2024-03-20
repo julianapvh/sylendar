@@ -12,7 +12,7 @@ class CustomUserAdmin(UserAdmin):
         ('Datas importantes', {'fields': ('last_login', 'date_joined')}),
     )
 
-# Registre os modelos no painel de administração
-admin.site.register(Agendamento)
+# Registrar os modelos no painel de administração
+
 admin.site.register(Equipamento)
 admin.site.register(User, CustomUserAdmin)

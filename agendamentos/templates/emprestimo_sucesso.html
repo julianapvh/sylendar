@@ -1,0 +1,25 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Equipamento Emprestado com Sucesso</title>
+</head>
+
+<body>
+    <center>
+        <div class="container_home">
+            <div class="home-form">
+                <h1>Equipamento Emprestado com Sucesso</h1>
+                <p>O equipamento foi marcado como emprestado com sucesso.</p>
+                <p>Cliente: {{ agendamento.cliente_nome }}</p>
+                <p>Equipamento: {{ agendamento.equipamento.nome }}</p>
+                <a class="btn-primary" href={% url 'marcar_como_emprestado' %}><button class="btn-primary">Voltar</button></a>
+            </div>
+        </div>
+    <center>
+</body>
+
+</html>
+

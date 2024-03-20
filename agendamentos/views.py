@@ -199,6 +199,7 @@ def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
     return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})
      
+@transaction.atomic
 def reagendar_agendamento(request, agendamento_id):
     agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
 
@@ -209,6 +210,15 @@ def reagendar_agendamento(request, agendamento_id):
 
         if nova_data and nova_hora:
             try:
+                # Verifique se o agendamento pode ser reagendado
+                agora = timezone.now()
+                data_hora_agendamento = datetime.combine(agendamento.data, agendamento.hora)
+                data_hora_agendamento = timezone.make_aware(data_hora_agendamento, timezone.get_current_timezone())
+                tempo_minimo_reagendamento = data_hora_agendamento - timedelta(minutes=30)
+                if agora >= tempo_minimo_reagendamento:
+                    return JsonResponse({'erro': 'Não é possível reagendar este agendamento. O reagendamento não é permitido dentro de 30 minutos do início do agendamento.'}, status=400)
+
+                # Atualize a data e hora do agendamento
                 agendamento.data = nova_data
                 agendamento.hora = nova_hora
                 agendamento.save()
@@ -389,6 +399,33 @@ def devolucao_equipamento(request, agendamento_id):
 def user_list(request):
     users = User.objects.all()
     return render(request, 'user_list.html', {'users': users})
+    
+@login_required
+def marcar_como_emprestado(request):
+    if not request.user.is_superuser:
+        return redirect('login')  # Redirecionar para a página de login se não for um superusuário
+
+    agendamentos = Agendamento.objects.filter(cancelado=False, data_emprestimo__isnull=True)
+    
+    if request.method == 'POST':
+        agendamento_ids = request.POST.getlist('agendamento')
+        for agendamento_id in agendamento_ids:
+            agendamento = Agendamento.objects.get(pk=agendamento_id)
+            agendamento.situacao = 'Emprestado'
+            agendamento.data_emprestimo = timezone.now()
+            agendamento.emprestado = True
+            agendamento.save()
+        return redirect('emprestimo_sucesso')  # Redirecione para a página desejada após marcar os agendamentos como emprestados
+
+    context = {'agendamentos': agendamentos}
+    return render(request, 'marcar_como_emprestado.html', context)
+    
+def emprestimo_sucesso(request):
+    # Lógica para obter o objeto Agendamento, se necessário
+    agendamento = Agendamento.objects.get(pk=1)  # Substitua "1" pelo ID correto do Agendamento
+
+    context = {'agendamento': agendamento}
+    return render(request, 'emprestimo_sucesso.html', context)
      
 #################  ------- Páginas de erro ---------  ###########################
 

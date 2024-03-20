@@ -1,4 +1,5 @@
 from django.contrib.auth.models import AbstractUser, Group, Permission, BaseUserManager
+from django.contrib import admin
 from django.db import models
 from django.utils import timezone
 from datetime import datetime, timedelta
@@ -74,6 +75,7 @@ class Agendamento(models.Model):
     data_emprestimo = models.DateTimeField(default=None, null=True, blank=True)  # Data de empréstimo do equipamento
     situacao = models.CharField(max_length=100, default="Agendado")  # Situação do agendamento
     prazo_restante = models.DurationField(null=True, blank=True)  # Prazo restante para devolução
+    emprestado = models.BooleanField(default=False)  # Se o equipamento foi emprestado
 
     nova_data = models.DateField(null=True, blank=True)
     nova_hora = models.TimeField(null=True, blank=True)
@@ -97,13 +99,15 @@ class Agendamento(models.Model):
     def calcular_data_entrega_prevista(self):
         # Adiciona três dias úteis à data e hora do agendamento
         data_entrega_prevista = workday(self.data, 3)
-        return timezone.datetime.combine(data_entrega_prevista, self.hora)
+        data_entrega_prevista = datetime.combine(data_entrega_prevista, self.hora)  # Convertendo para datetime
+        data_entrega_prevista = timezone.make_aware(data_entrega_prevista)  # Tornar a data consciente do fuso horário
+        return data_entrega_prevista
 
     def calcular_data_devolucao(self):
         if self.data_emprestimo:
             data_devolucao = workday(self.data_emprestimo.date(), 3)
             data_devolucao_prevista = timezone.datetime.combine(data_devolucao, self.data_emprestimo.time())
-            data_devolucao_prevista = timezone.make_aware(data_devolucao_prevista)
+            data_devolucao_prevista = timezone.make_aware(data_devolucao_prevista)  # Tornar a data consciente do fuso horário
             return data_devolucao_prevista
         return None
 
@@ -132,3 +136,18 @@ class Agendamento(models.Model):
 
     def __str__(self):
         return f"Agendamento para {self.cliente_nome} em {self.equipamento.nome}"
+
+
+
+class AgendamentoAdmin(admin.ModelAdmin):
+    list_display = ('id', 'equipamento', 'cliente_nome', 'data', 'hora', 'situacao', 'data_emprestimo')
+    list_filter = ('situacao', 'data')
+    search_fields = ('equipamento__nome', 'cliente_nome')
+    actions = ['marcar_como_emprestado']
+
+    def marcar_como_emprestado(self, request, queryset):
+        queryset.update(situacao='Emprestado', data_emprestimo=timezone.now(), emprestado=True)
+
+    marcar_como_emprestado.short_description = "Marcar como Emprestado"
+
+admin.site.register(Agendamento, AgendamentoAdmin)

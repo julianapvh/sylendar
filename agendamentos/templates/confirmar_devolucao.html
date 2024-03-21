@@ -3,24 +3,24 @@
 <html lang="pt-br">
 
 <head>
-    <body>
-        <center>
-        <div class="container_home">
-            <div class="home-form">
     <meta charset="UTF-8">
     <title>Confirmar Devolução</title>
 </head>
 
 <body>
-    <h1>Confirmar Devolução</h1>
-    <p>Tem certeza que deseja confirmar a devolução do agendamento:</p>
-    <p>{{ agendamento }}</p>
-    <form method="post">
-        {% csrf_token %}
-        <button type="submit">Confirmar Devolução</button>
-    </form>
-    <div/>
-    <div/>
+    <center>
+        <div class="container_home">
+            <div class="home-form">
+                <h1>Confirmar Devolução</h1>
+                <p>Tem certeza que deseja confirmar a devolução do agendamento:</p>
+                <p>{{ agendamento }}</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit">Confirmar Devolução</button>
+                </form>
+            </div>
+        </div>
+    </center>
 </body>
 
 </html>

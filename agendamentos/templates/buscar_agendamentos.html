@@ -3,10 +3,6 @@
 <html lang="pt-br">
 
 <head>
-    <body>
-        <center>
-        <div class="container_home">
-            <div class="home-form">
     <meta charset="UTF-8">
     <title>Buscar Agendamentos para Devolução</title>
     <script>
@@ -33,33 +29,34 @@
 
 <body>
     <center>
-    <div class="container_home">
-        <div class="home-form">
-    <h1>Buscar Agendamentos para Devolução</h1>
-    <form method="post">
-        {% csrf_token %}
-        <label for="cliente_nome">Nome do Cliente:</label>
-        <input type="text" name="cliente_nome" id="cliente_nome">
-        <button type="submit">Buscar</button>
-    </form>
+        <div class="container_home">
+            <div class="home-form">
+                <h1>Buscar Agendamentos para Devolução</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    <label for="cliente_nome">Nome do Cliente:</label>
+                    <input type="text" name="cliente_nome" id="cliente_nome">
+                    <button type="submit">Buscar</button>
+                </form>
 
-    {% if agendamentos %}
-    <h2>Agendamentos encontrados:</h2>
-    <ul>
-        {% for agendamento in agendamentos %}
-        <li>
-            {{ agendamento }}
-            <button onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
-        </li>
-        {% endfor %}
-    </ul>
-    {% else %}
-    <p>Nenhum agendamento encontrado para o cliente.</p>
-    {% endif %}
-</div>
-        
-</div>
-<center>
+                {% if agendamentos %}
+                <h2>Agendamentos encontrados:</h2>
+                <ul>
+                    {% for agendamento in agendamentos %}
+                    <li>
+                        {{ agendamento }}
+                        {% if not agendamento.devolvido %}
+                        <button onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
+                        {% endif %}
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <p>Nenhum agendamento encontrado para o cliente.</p>
+                {% endif %}
+            </div>
+        </div>
+    </center>
 </body>
 
 </html>

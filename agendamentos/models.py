@@ -169,3 +169,12 @@ class AgendamentoAdmin(admin.ModelAdmin):
     marcar_como_emprestado.short_description = "Marcar como Emprestado"
 
 admin.site.register(Agendamento, AgendamentoAdmin)
+
+
+'''class Event(models.Model):
+    equipamento = models.CharField(max_length=100)
+    data = models.DateField()
+    hora = models.TimeField()
+
+    def __str__(self):
+        return self.equipamento'''

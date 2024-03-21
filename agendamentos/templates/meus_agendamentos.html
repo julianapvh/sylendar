@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 
@@ -24,6 +23,7 @@
                         <th>Situação</th>
                         <th>Prazo Restante</th>
                         <th>Data Prevista</th>
+                        <th>Devolvido</th>
                         <th>Ações</th>
                     </tr>
                 </thead>
@@ -47,7 +47,11 @@
                                     {% if agendamento.prazo_restante.days > 0 %}
                                         {{ agendamento.prazo_restante.days }} dias
                                     {% else %}
-                                        {{ agendamento.prazo_restante|timesince }} restante
+                                        {% if not agendamento.devolvido %}
+                                            {{ agendamento.prazo_restante|timesince }} restante
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
                                     {% endif %}
                                 {% else %}
                                     N/A
@@ -61,6 +65,13 @@
                                 {% endif %}
                             </td>
 
+                            <td>
+                                {% if agendamento.devolvido %}
+                                    Sim
+                                {% else %}
+                                    Não
+                                {% endif %}
+                            </td>
 
                             <td>
                                 <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary" {% if not agendamento.pode_reagendar %}disabled{% endif %}>Reagendar</button>
@@ -80,7 +91,7 @@
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a>
+            <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a
         </div>
     </div>
 

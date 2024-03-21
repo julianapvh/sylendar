@@ -1,3 +1,5 @@
+
+#from .models import Event
 from collections import Counter
 from datetime import datetime, timedelta, time
 from imaplib import _Authenticator
@@ -7,7 +9,6 @@ from itertools import count
 import json
 from os import truncate
 import sys
-
 from dateutil.parser import parse
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -21,7 +22,6 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from requests import request
-
 from agendamentos.forms import AgendamentoForm, EquipamentoForm, UserRegistrationForm
 from agendamentos.models import Agendamento, Equipamento
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
@@ -190,7 +190,10 @@ def meus_agendamentos(request):
         agora = timezone.now()
         for agendamento in agendamentos:
             if agendamento.data_emprestimo:
-                agendamento.prazo_restante = agendamento.calcular_prazo_restante()
+                if agendamento.devolvido:  # Verifica se o equipamento foi devolvido
+                    agendamento.prazo_restante = None  # Define como None se o equipamento foi devolvido
+                else:
+                    agendamento.prazo_restante = agendamento.calcular_prazo_restante()
                 # Define o atributo 'pode_reagendar' como False se o equipamento estiver emprestado
                 agendamento.pode_reagendar = False
                 # Define o atributo 'pode_cancelar' como False se o equipamento estiver emprestado
@@ -392,6 +395,11 @@ def devolucao_equipamento(request, agendamento_id):
 
         # Marcar o agendamento como devolvido
         agendamento.devolvido = True
+        agendamento.save()  # Salvar o agendamento para atualizar o campo devolvido
+
+        # Atualizar o status do agendamento para "Devolvido"
+        agendamento.situacao = 'Devolvido'
+        agendamento.save()  # Salvar o agendamento para atualizar o status
 
         # Atualizar o status do equipamento para disponível e incrementar o número de equipamentos disponíveis
         with transaction.atomic():
@@ -402,12 +410,11 @@ def devolucao_equipamento(request, agendamento_id):
             # Incrementar o número de equipamentos disponíveis
             Equipamento.objects.filter(id=equipamento.id).update(quantidade_disponivel=F('quantidade_disponivel') + 1)
 
-            agendamento.save()
-
         # Redirecionar para o painel administrativo ou para onde desejar
         return redirect('administrador')  # Altere 'admin_dashboard' para o nome da sua view de painel administrativo
     except Agendamento.DoesNotExist:
         raise Http404("O agendamento não foi encontrado.")
+
 
      
 def user_list(request):
@@ -562,17 +569,7 @@ def obter_dados_equipamento(request):
     return JsonResponse(data)
     
 
-'''@login_required
-def calendario_mensal(request):
-    # Obtém o usuário logado
-    cliente_nome = request.user.username
-    
-    # Obtém o ano e mês atuais
-    today = timezone.now()
-    ano_atual = today.year
-    mes_atual = today.month
-    
-    # Obtém os agendamentos do cliente para o mês atual
-    agendamentos = Agendamento.objects.filter(cliente_nome=cliente_nome, data__year=ano_atual, data__month=mes_atual)
-    
-    return render(request, 'calendario_mensal.html', {'agendamentos': agendamentos, 'ano': ano_atual, 'mes': mes_atual})'''
+'''def calendario_mensal(request):
+    # Fetch appointments for the logged-in client
+    appointments = Agendamento.objects.filter(cliente_nome=request.user.username)
+    return render(request, 'calendario_mensal.html', {'appointments': appointments})'''

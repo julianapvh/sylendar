@@ -463,14 +463,15 @@ def marcar_como_emprestado(request):
             agendamento.equipamento.quantidade_disponivel -= 1
             agendamento.equipamento.save()
 
-        return redirect('emprestimo_sucesso')  # Redirecione para a página desejada após marcar os agendamentos como emprestados
+        return redirect('emprestimo_sucesso', agendamento_id=agendamento.id)
+  # Redirecione para a página desejada após marcar os agendamentos como emprestados
 
     context = {'agendamentos': agendamentos}
     return render(request, 'marcar_como_emprestado.html', context)
     
-def emprestimo_sucesso(request):
-    # Lógica para obter o objeto Agendamento, se necessário
-    agendamento = Agendamento.objects.get(pk=1)  # Substitua "1" pelo ID correto do Agendamento
+def emprestimo_sucesso(request, agendamento_id):
+    # Obter o objeto Agendamento usando o ID recebido
+    agendamento = Agendamento.objects.get(pk=agendamento_id)
 
     context = {'agendamento': agendamento}
     return render(request, 'emprestimo_sucesso.html', context)

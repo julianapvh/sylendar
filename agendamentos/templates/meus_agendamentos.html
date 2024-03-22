@@ -41,7 +41,6 @@
                                     Agendado
                                 {% endif %}
                             </td>
-                        
                             <td>
                                 {% if agendamento.prazo_restante %}
                                     {% if agendamento.prazo_restante.days > 0 %}
@@ -64,7 +63,6 @@
                                     N/A
                                 {% endif %}
                             </td>
-
                             <td>
                                 {% if agendamento.devolvido %}
                                     Sim
@@ -72,7 +70,6 @@
                                     Não
                                 {% endif %}
                             </td>
-
                             <td>
                                 <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary" {% if not agendamento.pode_reagendar %}disabled{% endif %}>Reagendar</button>
                                 {% if agendamento.pode_cancelar %}
@@ -86,12 +83,11 @@
                                     <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
                                 </div>
                             </td>
-                            
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-            <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a
+            <a href="{% url 'cliente' %}" class="btn btn-primary">Voltar</a>
         </div>
     </div>
 
@@ -101,18 +97,14 @@
                 window.location.href = url; // Redireciona para a URL de cancelamento se o usuário confirmar
             }
         }
-    </script>
 
-    <script>
         function mostrarCamposReagendamento(agendamentoId) {
             // Obtém a div dos campos de reagendamento
             const divCamposReagendamento = document.getElementById(`campos_reagendamento_${agendamentoId}`);
             // Mostra os campos
             divCamposReagendamento.style.display = 'block';
         }
-    </script>
 
-    <script>
         function enviarReagendamento(agendamentoId) {
             if (confirm("Tem certeza de que deseja reagendar este agendamento?")) {
                 const novaData = document.getElementById(`nova_data_${agendamentoId}`).value;

@@ -4,17 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Historico de Agendamentos</title>
+    <title>Histórico de Agendamentos</title>
 </head>
 <body>
 <div class="container_home">
 <div class="home-form">
-    <h1>Historico de Agendamentos</h1>
+    <h1>Histórico de Agendamentos</h1>
     <table border="1">
         <thead>
             <tr>
                 <th>ID</th>
                 <th>Cliente</th>
+                <th>Equipamento</th>
                 <th>Data Original</th>
                 <th>Nova Data</th>
                 <th>Hora</th>
@@ -27,6 +28,7 @@
             <tr>
                 <td>{{ agendamento.id }}</td>
                 <td>{{ agendamento.cliente_nome }}</td>
+                <td>{{ agendamento.equipamento.nome }}</td>  <!-- Aqui é onde você acessa o nome do equipamento -->
                 <td>
                     {% if agendamento.reagendado %}
                         {{ agendamento.data_original }} {{ agendamento.hora_original }}

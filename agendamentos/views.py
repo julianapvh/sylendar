@@ -227,10 +227,17 @@ def meus_agendamentos(request):
                 if agora >= tempo_minimo_reagendamento:
                     agendamento.pode_reagendar = False
 
+            # Ajustar o prazo restante de acordo com a quantidade de dias escolhida
+            if agendamento.data_emprestimo:
+                if agendamento.quantidade_dias > 0:
+                    # Se a quantidade de dias for maior que zero, calcular o prazo restante com base nessa quantidade
+                    agendamento.prazo_restante = agendamento.calcular_prazo_restante()
+
         context = {'agendamentos': agendamentos}
         return render(request, 'meus_agendamentos.html', context)
     else:
         return redirect('login')
+
     
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()

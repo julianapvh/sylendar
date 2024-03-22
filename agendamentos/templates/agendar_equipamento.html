@@ -28,6 +28,14 @@
                 <input type="time" id="hora" name="hora" required {% if not data_atual == data %}min="00:00" max="23:59"{% endif %}>
                 <label for="tipo_servico">Tipo de Serviço:</label>
                 <input type="text" id="tipo_servico" name="tipo_servico" required>
+                
+                <label for="quantidade_dias">Quantidade de Dias:</label>
+                <select id="quantidade_dias" name="quantidade_dias">
+                    <option value="1">1 dia</option>
+                    <option value="2">2 dias</option>
+                    <option value="3" selected>3 dias</option>
+                </select>
+
                 <input type="submit" value="Agendar">
             </form>
     

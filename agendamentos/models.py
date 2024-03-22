@@ -78,6 +78,7 @@ class Agendamento(models.Model):
     prazo_restante = models.DurationField(null=True, blank=True)  # Prazo restante para devolução
     emprestado = models.BooleanField(default=False)  # Se o equipamento foi emprestado
     devolvido = models.BooleanField(default=False)  # Se o equipamento foi devolvido
+    quantidade_dias = models.IntegerField(choices=[(1, '1 dia'), (2, '2 dias'), (3, '3 dias')], default=3)
 
     nova_data = models.DateField(null=True, blank=True)
     nova_hora = models.TimeField(null=True, blank=True)
@@ -115,15 +116,15 @@ class Agendamento(models.Model):
             return agora < tempo_minimo_cancelamento
 
     def calcular_data_entrega_prevista(self):
-        # Adiciona três dias úteis à data e hora do agendamento
-        data_entrega_prevista = workday(self.data, 3)
+        # Adiciona a quantidade de dias escolhida pelo cliente à data e hora do agendamento
+        data_entrega_prevista = workday(self.data, self.quantidade_dias)
         data_entrega_prevista = datetime.combine(data_entrega_prevista, self.hora)  # Convertendo para datetime
         data_entrega_prevista = timezone.make_aware(data_entrega_prevista)  # Tornar a data consciente do fuso horário
         return data_entrega_prevista
 
     def calcular_data_devolucao(self):
         if self.data_emprestimo:
-            data_devolucao = workday(self.data_emprestimo.date(), 3)
+            data_devolucao = workday(self.data_emprestimo.date(), self.quantidade_dias)
             data_devolucao_prevista = timezone.datetime.combine(data_devolucao, self.data_emprestimo.time())
             data_devolucao_prevista = timezone.make_aware(data_devolucao_prevista)  # Tornar a data consciente do fuso horário
             return data_devolucao_prevista

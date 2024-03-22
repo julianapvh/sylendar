@@ -116,6 +116,8 @@ def agendar_equipamento(request):
             equipamento_id = request.POST['equipamento']
             data = request.POST['data']
             hora = request.POST['hora']
+            tipo_servico = request.POST['tipo_servico']
+            quantidade_dias = int(request.POST.get('quantidade_dias', 3))  # Default: 3 dias
 
             # Converta a data e hora em objetos datetime e torne-os conscientes do fuso horário
             data_hora = datetime.strptime(f"{data} {hora}", "%Y-%m-%d %H:%M")
@@ -130,36 +132,43 @@ def agendar_equipamento(request):
                 if data_hora_consciente - timezone.now() < timedelta(hours=1):
                     return JsonResponse({'success': False, 'message': 'É necessário agendar com pelo menos 1 hora de antecedência.'}, status=400)
 
-            # Obtenha o equipamento ou retorne 404 se não existir
-            equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+            # Obtenha o equipamento
+            equipamento = Equipamento.objects.get(pk=equipamento_id)
 
-            # Verifique se há equipamento disponível
-            if equipamento.quantidade_disponivel > 0:
-                # Criar o agendamento
-                Agendamento.objects.create(
-                    equipamento=equipamento,
-                    cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
-                    data=data_hora_consciente.date(),
-                    hora=data_hora_consciente.time()
-                )
+            # Verifique a disponibilidade do equipamento
+            agendamentos_conflitantes = Agendamento.objects.filter(
+                Q(data=data_hora_consciente.date(), hora=data_hora_consciente.time()) |
+                Q(data_entrega_prevista__gte=data_hora_consciente) &
+                Q(data__lte=data_hora_consciente.date(), hora__lte=data_hora_consciente.time(), equipamento=equipamento)
+            )
 
-                # Decrementar a quantidade disponível
-                equipamento.quantidade_disponivel -= 1
-                equipamento.save()
+            if agendamentos_conflitantes.exists():
+                return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível para o horário solicitado.'}, status=400)
 
-                # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
-                return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
-            else:
-                # Se não houver equipamento disponível, retorne uma resposta JSON indicando o erro
-                return JsonResponse({'success': False, 'message': 'Este equipamento não está disponível no momento.'}, status=400)
+            # Criar o agendamento
+            Agendamento.objects.create(
+                equipamento=equipamento,
+                cliente_nome=request.user.username,  # Use o nome do cliente armazenado na sessão
+                data=data_hora_consciente.date(),
+                hora=data_hora_consciente.time(),
+                quantidade_dias=quantidade_dias,
+                tipo_servico=tipo_servico
+            )
+
+            # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
+            return JsonResponse({'success': True, 'message': 'Agendamento realizado com sucesso!'})
+            
         except KeyError:
             # Se os dados do formulário não foram fornecidos corretamente, retorne uma resposta JSON com erro 400 Bad Request
             return JsonResponse({'success': False, 'message': 'Dados de agendamento ausentes ou inválidos.'}, status=400)
-
+        except Equipamento.DoesNotExist:
+            # Se o equipamento não existir, retorne uma resposta JSON com erro 400 Bad Request
+            return JsonResponse({'success': False, 'message': 'O equipamento selecionado não existe.'}, status=400)
     # Se o método não for POST, renderize a página de agendamento
     equipamentos = Equipamento.objects.all()
     context = {'equipamentos': equipamentos}
     return render(request, 'agendar_equipamento.html', context)
+
 
 def historico(request):
     if request.user.is_authenticated:
@@ -184,6 +193,7 @@ def historico(request):
         return redirect('login')
 
         
+@login_required
 def meus_agendamentos(request):
     if request.user.is_authenticated:
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username, cancelado=False)
@@ -204,6 +214,18 @@ def meus_agendamentos(request):
                 agendamento.pode_reagendar = True
                 # Define o atributo 'pode_cancelar' como True se o equipamento não estiver emprestado
                 agendamento.pode_cancelar = True
+
+            # Verifica se o agendamento pode ser cancelado
+            if agendamento.data_entrega_prevista:
+                tempo_minimo_cancelamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
+                if agora >= tempo_minimo_cancelamento:
+                    agendamento.pode_cancelar = False
+
+            # Verifica se o agendamento pode ser reagendado
+            if agendamento.data_entrega_prevista:
+                tempo_minimo_reagendamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
+                if agora >= tempo_minimo_reagendamento:
+                    agendamento.pode_reagendar = False
 
         context = {'agendamentos': agendamentos}
         return render(request, 'meus_agendamentos.html', context)
@@ -436,6 +458,11 @@ def marcar_como_emprestado(request):
             agendamento.data_emprestimo = timezone.now()
             agendamento.emprestado = True
             agendamento.save()
+
+            # Decrementar o estoque do equipamento associado ao agendamento
+            agendamento.equipamento.quantidade_disponivel -= 1
+            agendamento.equipamento.save()
+
         return redirect('emprestimo_sucesso')  # Redirecione para a página desejada após marcar os agendamentos como emprestados
 
     context = {'agendamentos': agendamentos}

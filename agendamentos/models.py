@@ -179,3 +179,9 @@ admin.site.register(Agendamento, AgendamentoAdmin)
 
     def __str__(self):
         return self.equipamento'''
+    
+    
+class HistoricoAgendamento(models.Model):
+    agendamento = models.ForeignKey(Agendamento, on_delete=models.CASCADE)
+    data_hora_alteracao = models.DateTimeField(default=timezone.now)
+    tipo_alteracao = models.CharField(max_length=100)

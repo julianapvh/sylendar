@@ -2,10 +2,10 @@
 FROM python:3.12.2
 
 # Define o diretório de trabalho dentro do contêiner
-WORKDIR /app/tcc_django
+WORKDIR /app
 
 # Copie os arquivos necessários para o contêiner
-COPY . .
+COPY requirements.txt requirements.txt
 
 # Instale as dependências do sistema
 RUN pip install --no-cache-dir -r requirements.txt
@@ -18,4 +18,4 @@ ENV DJANGO_SETTINGS_MODULE=tcc_django.settings
 ENV PYTHONUNBUFFERED=1
 
 # Execute o comando para iniciar o servidor Django
-CMD ["gunicorn", "--bind", "127.0.0.1:8000", "tcc_django.wsgi:application"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tcc_django.wsgi:application"]

@@ -1,4 +1,4 @@
-gunicorn
+gunicorn==21.2.0
 django_extensions
 django_fastdev
 django-role-permissions

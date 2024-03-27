@@ -18,4 +18,4 @@ ENV DJANGO_SETTINGS_MODULE=tcc_django.settings
 ENV PYTHONUNBUFFERED=1
 
 # Execute o comando para iniciar o servidor Django
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "tcc_django.wsgi:application"]
+CMD ["gunicorn", "--bind", "127.0.0.1/:8000", "tcc_django.wsgi:application"]

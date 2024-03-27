@@ -2,7 +2,7 @@
 FROM python:3.12.2
 
 # Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+WORKDIR /app/tcc_django
 
 # Copie os arquivos necessários para o contêiner
 COPY . .

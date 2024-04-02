@@ -3,6 +3,8 @@
 <html lang="pt-br">
 
 <head>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
     <title>Buscar Agendamentos para Devolução</title>
     <script>
@@ -54,9 +56,12 @@
                 {% else %}
                 <p>Nenhum agendamento encontrado para o cliente.</p>
                 {% endif %}
+                <a href="{% url 'administrador' %}" class="btn-primary">Voltar</a>
             </div>
         </div>
     </center>
 </body>
 
 </html>
+
+

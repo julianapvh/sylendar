@@ -1,4 +1,4 @@
-gunicorn
+
 django_extensions
 django_fastdev
 django-role-permissions
@@ -6,3 +6,12 @@ mysqlclient
 czech-workdays-holidays
 workdays
 Django==3.2.12
+gunicorn==20.1.0
+psycopg2-binary==2.9.1
+djangorestframework==3.12.4
+django-cors-headers==3.9.0
+django-environ==0.4.5
+django-filter==21.1
+django-rest-auth==0.9.5
+django-allauth==0.47.0
+requests==2.27.1

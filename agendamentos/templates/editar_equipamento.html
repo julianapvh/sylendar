@@ -5,19 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Equipamento</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container_home">
-        <h1>Escolha um Equipamento para Editar</h1>
-        <ul class="list-group">
-            {% for equipamento in equipamentos %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ equipamento.nome }}
-                    <button class="btn btn-primary" onclick="openEditModal('{{ equipamento.id }}', '{{ equipamento.nome }}', '{{ equipamento.descricao }}', '{{ equipamento.fabricante }}', '{{ equipamento.data_aquisicao }}', '{{ equipamento.quantidade_disponivel }}')">Editar</button>
-                </li>
-            {% endfor %}
-        </ul>
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Escolha um Equipamento para Editar</div>
+                    <div class="card-body">
+                        <ul class="list-group">
+                            {% for equipamento in equipamentos %}
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    {{ equipamento.nome }}
+                                    <button class="btn btn-primary" onclick="openEditModal('{{ equipamento.id }}', '{{ equipamento.nome }}', '{{ equipamento.descricao }}', '{{ equipamento.fabricante }}', '{{ equipamento.data_aquisicao }}', '{{ equipamento.quantidade_disponivel }}')">Editar</button>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'administrador' %}" class="btn btn-secondary mt-3">Cancelar</a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Modal de Edição -->
@@ -50,7 +60,7 @@
                             <label for="data_aquisicao">Data de Aquisição:</label>
                             <input type="date" class="form-control" id="data_aquisicao" name="data_aquisicao" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="quantidade_disponivel">Quantidade Disponível:</label>
                             <input type="number" class="form-control" id="quantidade_disponivel" name="quantidade_disponivel">
@@ -59,8 +69,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn-primary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" class="btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
                 </div>
             </div>
         </div>

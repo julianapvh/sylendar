@@ -31,6 +31,7 @@ from django.db.models.functions import Trunc
 from django.db.models.functions import TruncDate
 from django.db import transaction
 import logging
+from django.core.paginator import Paginator
 
 
 
@@ -608,3 +609,11 @@ def obter_dados_equipamento(request):
     # Fetch appointments for the logged-in client
     appointments = Agendamento.objects.filter(cliente_nome=request.user.username)
     return render(request, 'calendario_mensal.html', {'appointments': appointments})'''
+    
+    
+'''def listar_equipamentos(request):
+    equipamentos = Equipamento.objects.all()
+    paginator = Paginator(equipamentos, 10)  # Dividindo em páginas de 10 equipamentos por página
+    page_number = request.GET.get('page',1)
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'editar_equipamento.html', {'page_obj': page_obj})'''

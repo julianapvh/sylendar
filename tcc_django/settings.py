@@ -100,7 +100,7 @@ DATABASES = {
         'NAME': 'bd_agendamentos',  # Nome do banco de dados
         'USER': 'django',       # Usuário do banco de dados
         'PASSWORD': '@siosa',  # Senha do banco de dados
-        'HOST': 'localhost',      # Host do banco de dados
+        'HOST': 'db',      # Host do banco de dados
         'PORT': '3306',           # Porta do banco de dados
     }
 }

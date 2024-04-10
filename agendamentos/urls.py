@@ -10,7 +10,8 @@ from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
 from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from .views import historico_agendamentos
-
+from django.conf.urls.static import static
+from django.conf import settings
 
 
 tcc_django = 'agendamentos'
@@ -50,7 +51,8 @@ urlpatterns = [
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
-]
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
     
 

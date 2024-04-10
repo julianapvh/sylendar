@@ -9,6 +9,8 @@ COPY . /app
 
 # Instale as dependências do sistema
 RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install django
+
 
 # Exponha a porta em que o servidor Django será executado
 EXPOSE 8000

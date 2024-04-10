@@ -4,8 +4,8 @@ FROM python:3.12.2
 # Define o diretório de trabalho dentro do contêiner
 WORKDIR /app
 
-# Copie os arquivos necessários para o contêiner
-COPY requirements.txt requirements.txt
+# Copie todo o projeto para o contêiner
+COPY . /app
 
 # Instale as dependências do sistema
 RUN pip install --no-cache-dir -r requirements.txt

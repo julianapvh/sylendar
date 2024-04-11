@@ -95,15 +95,22 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 # settings.py
 
 DATABASES = {
+
     'default': {
+
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': os.environ.get('MYSQL_DATABASE', 'bd_agendamentos'),
-        'USER': os.environ.get('MYSQL_USER', 'django'),
-        'PASSWORD': os.environ.get('MYSQL_PASSWORD', '@siosa'),
-        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
-        'PORT': os.environ.get('MYSQL_PORT', '3306'),
+        'NAME': 'bd_agendamentos',
+        'USER': 'CloudSA8dfc5c29',
+        'PASSWORD': 'cadelinhaSam1',
+        'HOST': 'django1.database.windows.net',
+        'PORT': '3306',
+        'OPTIONS': {
+            'ssl': {'ca': 'C:\\ssl\\DigiCertGlobalRootCA.crt.pem'}
+        }
     }
 }
+
+
 
 
 

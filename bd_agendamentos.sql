@@ -15,6 +15,12 @@
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
+-- Criação do banco de dados
+CREATE DATABASE IF NOT EXISTS bd_agendamentos;
+
+-- Seleção do banco de dados
+USE bd_agendamentos;
+
 --
 -- Table structure for table `agendamentos_agendamento`
 --

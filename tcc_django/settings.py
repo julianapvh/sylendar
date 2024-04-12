@@ -95,22 +95,15 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 # settings.py
 
 DATABASES = {
-
     'default': {
-
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bd_agendamentos',
-        'USER': 'CloudSA8dfc5c29',
-        'PASSWORD': 'cadelinhaSam1',
-        'HOST': 'django1.database.windows.net',
-        'PORT': '3306',
-        'OPTIONS': {
-            'ssl': {'ca': 'C:\\ssl\\DigiCertGlobalRootCA.crt.pem'}
-        }
+        'NAME': os.environ.get('MYSQL_DATABASE', 'bd_agendamentos'),
+        'USER': os.environ.get('MYSQL_USER', 'django'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', '@siosa'),
+        'HOST': os.environ.get('MYSQL_HOST', 'localhost'),
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
     }
 }
-
-
 
 
 
@@ -151,8 +144,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),

@@ -18,11 +18,11 @@ EXPOSE 8000
 # Defina as variáveis de ambiente necessárias
 ENV DJANGO_SETTINGS_MODULE=tcc_django.settings
 ENV PYTHONUNBUFFERED=1
-ENV MYSQL_HOST=localhost
-ENV MYSQL_PORT=3306
-ENV MYSQL_USER=django
-ENV MYSQL_PASSWORD=@siosa
-ENV MYSQL_DATABASE=bd_agendamentos
+ENV HOST=django1.database.windows.net
+ENV PORT=3306
+ENV USER=CloudSA8dfc5c29
+ENV PASSWORD=cadelinhaSam1
+ENV DATABASE=bd_agendamentos
 
 
 # Execute o comando para iniciar o servidor Django

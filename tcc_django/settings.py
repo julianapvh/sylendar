@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-wd@4*7v-tyx^l=q#ian5a-p_b#e85&0on^&b71%af2*dv_r%-e
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = ['sistemadeagendamentos2-23lcg0kt.b4a.run/',]
 
 
 

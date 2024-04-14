@@ -1,0 +1,42 @@
+.container_home {
+  background-color: #f8f9fa; /* Cor de fundo padrão */
+  padding: 50px;
+  text-align: center; /* Centralizar conteúdo */
+}
+
+.home-form {
+  display: inline-block;
+}
+
+.btn_separado {
+  display: block;
+  margin-top: 20px; /* Adicionar espaço acima do botão */
+  border-radius: 20px; /* Adicionar bordas arredondadas */
+  padding: 10px 20px; /* Adicionar preenchimento interno */
+  font-size: 16px; /* Tamanho da fonte */
+  font-weight: bold; /* Negrito */
+  background-color: #007bff; /* Cor de fundo do botão */
+  color: #fff; /* Cor do texto */
+  border: none; /* Remover borda */
+  cursor: pointer; /* Cursor do mouse */
+  transition: background-color 0.3s; /* Transição suave de cor */
+}
+
+.btn_separado:hover {
+  background-color: #0056b3; /* Mudar a cor de fundo ao passar o mouse */
+}
+
+
+
+
+
+/* Estilos para os botões */
+.btn-primary {
+  margin: 5px; /* Espaçamento entre os botões */
+}
+
+/* Estilos para o rodapé */
+footer {
+  margin-top: 20px; /* Espaçamento entre o conteúdo e o rodapé */
+}
+

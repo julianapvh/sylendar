@@ -19,25 +19,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-wd@4*7v-tyx^l=q#ian5a-p_b#e85&0on^&b71%af2*dv_r%-e'
-
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
-'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'cg#p$g+j9tax!#a3cup@1$8obt2_+&k3q+pmu)5%asj6yjpkag')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'False'
 
-ALLOWED_HOSTS = ['*',]
-
-
-
-
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -54,9 +45,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_fastdev',
     'rolepermissions'
-   
 ]
-
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -71,12 +60,11 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'tcc_django.urls'
 
-
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-            os.path.join(BASE_DIR, 'agendamentos', '%s/templates' %(PROJECT_DIR    ))
+            os.path.join(BASE_DIR, 'agendamentos', 'templates')
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -90,14 +78,11 @@ TEMPLATES = [
     },
 ]
 
-
 WSGI_APPLICATION = 'tcc_django.wsgi.application'
 
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
-# settings.py
 
 DATABASES = {
     'default': {
@@ -105,7 +90,6 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
-
 
 
 # Password validation
@@ -151,8 +135,6 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
 
-
-
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
@@ -163,28 +145,9 @@ ROLEPERMISSIONS_MODULE = "agendamentos.roles"
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
-    # Outros backends de autenticação, se necessário
 ]
-
-#AUTH_USER_MODEL = 'agendamentos.CustomUser'
-#AUTH_USER_MODEL = 'agendamentos.Usuario'
-
-
-#LOGIN_URL = 'agendamentos:login'  # Substitua 'nome_do_app' pelo nome do seu aplicativo
-
-#LOGIN_REDIRECT_URL = 'agendamentos:home'  # Substitua 'nome_do_app' pela página desejada
-
-#LOGOUT_REDIRECT_URL = 'agendamentos:logout'  # Substitua 'nome_do_app' pela página desejada
 
 # Redirect to home URL after login (Default redirects to /accounts/profile/)
 LOGIN_REDIRECT_URL = 'home'
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
-
-
-
-# Simplified static file serving.
-# https://warehouse.python.org/project/whitenoise/
-#STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-

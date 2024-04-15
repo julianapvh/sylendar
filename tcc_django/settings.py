@@ -33,7 +33,13 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY',
 # DEBUG = True
 DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
-ALLOWED_HOSTS = ['*',]
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+    '[::1]',
+    'sistemadeagendamentos2-23lcg0kt.b4a.run/'  # Adicione o seu domínio real aqui
+]
+
 
 
 

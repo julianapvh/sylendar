@@ -30,6 +30,11 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://tcc-zwc69txm.b4a.run',
+    # Add other trusted origins here if needed
+]
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,12 +49,6 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_fastdev',
     'rolepermissions',
-]
-
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://tcc-zwc69txm.b4a.run',
-    # Add other trusted origins here if needed
 ]
 
 MIDDLEWARE = [

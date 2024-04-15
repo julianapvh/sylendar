@@ -48,6 +48,7 @@ urlpatterns = [
     path('marcar_como_emprestado/', views.marcar_como_emprestado, name='marcar_como_emprestado'),
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
+    path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
     #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
 ]
 

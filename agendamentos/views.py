@@ -14,6 +14,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from .models import HistoricoAgendamento, User
 from django.db.models import Count, DateTimeField, F, Q
 from django.http import Http404, HttpResponse, HttpResponseForbidden, HttpResponseServerError, JsonResponse
 from django.http import HttpResponseBadRequest
@@ -604,7 +605,23 @@ def obter_dados_equipamento(request):
     }
     return JsonResponse(data)
     
+@staff_member_required
+def lista_clientes(request):
+    clientes = User.objects.all()  # Busque todos os clientes do banco de dados
+    historico_agendamentos = {}  # Dicionário para mapear ID do cliente ao seu histórico de agendamentos
 
+    # Preencher o dicionário de histórico de agendamentos
+    for cliente in clientes:
+        # Lógica para obter o histórico de agendamentos para cada cliente
+        historico_agendamentos[cliente.id] = HistoricoAgendamento(cliente)
+
+    return render(request, 'lista_clientes.html', {'clientes': clientes, 'historico_agendamentos': historico_agendamentos})
+
+
+
+    
+    
+    
 '''def calendario_mensal(request):
     # Fetch appointments for the logged-in client
     appointments = Agendamento.objects.filter(cliente_nome=request.user.username)

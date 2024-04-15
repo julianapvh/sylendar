@@ -1,0 +1,54 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Agendamentos</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container_home">
+<div class="home-form">
+</head>
+<body>
+    <h1>Lista de Clientes</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>Nome Completo</th>
+                <th>Telefone</th>
+                <th>Agendamentos</th>
+                <th>Histórico de Agendamentos</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cliente in clientes %}
+            <tr>
+                <td>{{ cliente.nome_completo }}</td>
+                <td>{{ cliente.telefone }}</td>
+                <td>
+                    <ul>
+                        {% for agendamento in cliente.agendamentos.all %}
+                        <li>{{ agendamento }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>
+                    <ul>
+                        {% for agendamento in historico_agendamentos.0 %}
+                        <li>{{ agendamento }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+            </tr>
+            
+            {% endfor %}
+        </tbody>
+    </table>
+<a href="{% url 'administrador' %}" class="btn-primary ">Voltar</a>
+
+</body>
+</html>

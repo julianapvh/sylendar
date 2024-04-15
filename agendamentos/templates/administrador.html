@@ -47,39 +47,42 @@
             
             <ul class="list-group">
                 <li class="list-group-item">
-                    <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block">Cadastrar um Equipamento</a>
+                    <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block btn_separado btn_separado">Cadastrar um Equipamento</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir um Equipamento</a>
+                    <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block btn_separado btn_separado">Excluir um Equipamento</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar um Equipamento</a>
+                    <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block btn_separado">Editar um Equipamento</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Listar Equipamentos Disponíveis</a>
+                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block btn_separado">Listar Equipamentos Disponíveis</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block">Histórico de Agendamentos dos Clientes</a>
+                    <a href="{% url 'lista_clientes' %}" class="btn btn-primary btn-block btn_separado btn_separado">Lista de Clientes</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'relatorios_home' %}" class="btn btn-primary btn-block">Relatórios</a>
+                    <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block btn_separado">Histórico de Agendamentos dos Clientes</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'marcar_como_emprestado'%}" class="btn btn-primary btn-block">Marcar Como Emprestado</a>
+                    <a href="{% url 'relatorios_home' %}" class="btn btn-primary btn-block btn_separado">Relatórios</a>
                 </li>
                 <li class="list-group-item">
-                    <a href="{% url 'buscar_agendamentos' %}" class="btn btn-primary btn-block">Buscar Agendamentos</a>
+                    <a href="{% url 'marcar_como_emprestado'%}" class="btn btn-primary btn-block btn_separado">Marcar Como Emprestado</a>
+                </li>
+                <li class="list-group-item">
+                    <a href="{% url 'buscar_agendamentos' %}" class="btn btn-primary btn-block btn_separado">Buscar Agendamentos</a>
             </ul>
             </div>
       
             <div class="row justify-content-center mt-5">
                 <div class="col-md-6">
-                    <a href="{% url 'administrador_home' %}" class="btn btn-primary btn-block">Voltar</a>
+                    <a href="{% url 'administrador_home' %}" class="btn btn-primary btn-block btn_separado">Voltar</a>
                 </div>
                 <div class="col-md-6">
                     <form action="{% url 'logout' %}" method="post">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-primary btn-block">Logout</button>
+                        <button type="submit" class="btn btn-primary btn-block btn_separado">Logout</button>
                     </form>
                 </div>
             </div>

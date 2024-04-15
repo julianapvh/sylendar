@@ -46,6 +46,12 @@ INSTALLED_APPS = [
     'rolepermissions',
 ]
 
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://tcc-zwc69txm.b4a.run',
+    # Add other trusted origins here if needed
+]
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     #'whitenoise.middleware.WhiteNoiseMiddleware',

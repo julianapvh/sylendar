@@ -40,3 +40,11 @@ footer {
   margin-top: 20px; /* Espaçamento entre o conteúdo e o rodapé */
 }
 
+/* Estilos para o formulário */
+.form-label {
+  font-weight: bold;
+}
+
+.form-control {
+  width: 100%;
+}

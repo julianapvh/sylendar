@@ -1,21 +1,37 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <title>Página de Cadastro</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* Estilos para o container */
+        .container_home {
+            padding: 50px;
+        }
+        
+        /* Estilos para o botão de cadastrar */
+        .btn-primary {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <div class="container_home container">
         <div class="home-form">
-            <h2>Cadastre-se</h2>
+            <h2 class="mb-4">Cadastre-se</h2>
             <!-- Adicione o bloco de mensagens aqui -->
             {% if messages %}
             <div class="messages">
                 {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
+                <div class="alert alert-{{ message.tags }}" role="alert">
                     {{ message }}
                 </div>
                 {% endfor %}
@@ -24,22 +40,31 @@
             <!-- Fim do bloco de mensagens -->
             <form method="post">
                 {% csrf_token %}
-                <div class="mb-3">
-                    <label for="id_username">Nome de Usuário:</label>
-                    {{ form.username }}
+                <div class="form-group row">
+                    <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
+                    <div class="col-sm-10">
+                        {{ form.username }}
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_password1">Senha:</label>
-                    {{ form.password1 }}
+                <div class="form-group row">
+                    <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
+                    <div class="col-sm-10">
+                        {{ form.password1 }}
+                    </div>
                 </div>
-                <div class="mb-3">
-                    <label for="id_password2">Confirmação de Senha:</label>
-                    {{ form.password2 }}
+                <div class="form-group row">
+                    <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
+                    <div class="col-sm-10">
+                        {{ form.password2 }}
+                    </div>
                 </div>
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <div class="form-group row">
+                    <div class="col-sm-10 offset-sm-2">
+                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 </body>
 </html>
-

@@ -6,14 +6,14 @@
     <title>Login</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
 <body>
-<center>
-<div class="container_home">
-  <div class="row">
-    <div class="col-md-6 offset-md-3">
-      <div class="card mt-5">
+<div class="container">
+  <div class="row justify-content-center align-items-center vh-100">
+    <div class="col-md-6">
+      <div class="card">
         <div class="card-body">
           {% if form.errors %}
           <div class="alert alert-danger" role="alert">
@@ -36,26 +36,25 @@
           <form method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
-              {{ form.username.label_tag }}
+              <label for="username"><i class="fas fa-user"></i></label>
               {{ form.username }}
             </div>
             <div class="form-group">
-              {{ form.password.label_tag }}
+              <label for="password"><i class="fas fa-lock"></i></label>
               {{ form.password }}
             </div>
-            <input type="submit" class="btn btn-primary" value="Login" />
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
             <input type="hidden" name="next" value="{{ next }}" />
           </form>
 
-          <p>Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-secondary">Cadastre-se</a></p>
+          <p class="text-center">Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-link">Cadastre-se</a></p>
 
           {# Assumes you setup the password_reset view in your URLconf #}
-          <p><a href="{% url 'password_reset' %}" class="btn btn-link">Esqueceu a senha?</a></p>
+          <p class="text-center"><a href="{% url 'password_reset' %}" class="btn btn-link">Esqueceu a senha?</a></p>
         </div>
       </div>
     </div>
   </div>
 </div>
-<center>
 </body>
 {% endblock %}

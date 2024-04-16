@@ -138,15 +138,19 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-# The absolute path to the directory where collectstatic will collect static files for deployment.
+# No seu arquivo de configurações settings.py
+
+# O caminho absoluto para o diretório onde collectstatic coletará os arquivos estáticos para implantação.
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-# The URL to use when referring to static files (where they will be served from)
+# O URL para usar ao se referir aos arquivos estáticos (de onde eles serão servidos).
 STATIC_URL = '/static/'
 
+# Adicione o diretório 'agendamentos/static' aos diretórios de arquivos estáticos
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'agendamentos', 'static'),
 ]
+
 
 
 # Default primary key field type

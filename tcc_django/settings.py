@@ -91,7 +91,17 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
-    }
+        
+    },
+    
+    'database2': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'bd_agendamentos',
+        'USER': 'django',
+        'PASSWORD': 'cadelinhaSam1',
+        'HOST': 'django.mysql.database.azure.com',
+        'PORT': '3306',
+}
 }
 
 # Password validation

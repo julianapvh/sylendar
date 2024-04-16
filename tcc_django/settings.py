@@ -31,7 +31,7 @@ DEBUG = os.environ.get('DJANGO_DEBUG', '') != 'True'
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://sistemadeagendamentos2-23lcg0kt.b4a.run',
+    'https://sistemadeagendamentos2-23lcg0kt.b4a.run','https://agendamentos.azurewebsites.net',
     # Add other trusted origins here if needed
 ]
 

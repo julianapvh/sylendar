@@ -89,6 +89,8 @@ ipython_config.py
 # Database
 *.sqlite3
 
+.env
+
 #tcc_django/settings.py
 
 

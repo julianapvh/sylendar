@@ -88,12 +88,7 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'database2': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-        
-    },
-   
+
     'default': {
         'ENGINE': 'mysql.connector.django',
         'NAME': 'bd_agendamentos',
@@ -104,6 +99,10 @@ DATABASES = {
         'OPTIONS': {
             'ssl_ca': 'https://github.com/julianapvh/tcc_django/blob/14c19e0b1c9e6e76c427bcbd38b3aada9878c42a/ssl/DigiCertGlobalRootCA.crt.pem',
         },
+    #'database2': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        
     },
 }
 

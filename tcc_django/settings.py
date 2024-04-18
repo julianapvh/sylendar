@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
 import os
-
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -88,20 +87,28 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-# in your setting file, eg. settings.py
-host = os.getenv('django.mysql.database.azure.com')
-user = os.getenv('django')
-password = os.getenv('cadelinhaSam1')
-database = os.getenv('bd_agendamentos')
+
+
 
 DATABASES = {
+
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': database,
-        'USER': user,
-        'PASSWORD': password,
-        'HOST': host
-    }
+        'ENGINE': 'mysql.connector.django',
+        'NAME': 'bd_agendamentos',
+        'USER': 'django',
+        'PASSWORD': 'cadelinhaSam1',
+        'HOST': 'django.mysql.database.azure.com',
+        'PORT': '3306',
+        'OPTIONS': {
+            'ssl_ca': 'https://github.com/julianapvh/tcc_django/blob/14c19e0b1c9e6e76c427bcbd38b3aada9878c42a/ssl/DigiCertGlobalRootCA.crt.pem',
+        },
+    #'database2': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        #'NAME': BASE_DIR / 'db.sqlite3',
+        
+        
+        
+    },
 }
 
 

@@ -96,8 +96,7 @@ DATABASES = {
         'HOST': 'django.mysql.database.azure.com',
         'PORT': '3306',
         'OPTIONS': {
-            'ssl_ca': 'ssl\DigiCertGlobalRootCA.crt.pem',
-            'ssl_disabled': False,
+            'ssl_verify_cert': 'C:\\Users\\01707245223.RONDONIA\\Documents\\GitHub\\tcc_django\\ssl\\DigiCertGlobalRootCA.crt.pem',
         },
     },
     # Adicione outras configurações de banco de dados se necessário

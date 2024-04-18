@@ -102,13 +102,16 @@ DATABASES = {
         'OPTIONS': {
             'ssl_ca': 'https://github.com/julianapvh/tcc_django/blob/14c19e0b1c9e6e76c427bcbd38b3aada9878c42a/ssl/DigiCertGlobalRootCA.crt.pem',
         },
-    #'database2': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': BASE_DIR / 'db.sqlite3',
+        
+        
+    'database2': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
         
         
         
     },
+}
 }
 
 

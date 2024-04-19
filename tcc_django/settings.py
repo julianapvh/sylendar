@@ -91,27 +91,26 @@ WSGI_APPLICATION = 'tcc_django.wsgi.application'
 
 
 DATABASES = {
-
     'default': {
         'ENGINE': 'mysql.connector.django',
-        'NAME': 'bd_agendamentos',
-        'USER': 'django',
-        'PASSWORD': 'cadelinhaSam1',
-        'HOST': 'django.mysql.database.azure.com',
-        'PORT': '3306',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('DB_USER'),
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': os.getenv('DB_HOST'),
+        'PORT': os.getenv('DB_PORT'),
         'OPTIONS': {
             'ssl_ca': 'https://github.com/julianapvh/tcc_django/blob/14c19e0b1c9e6e76c427bcbd38b3aada9878c42a/ssl/DigiCertGlobalRootCA.crt.pem',
         },
     },
-        
-    # banco SQLITE3
+      # banco SQLITE3 para testes off-line
     #'sqlite3': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
+}
+        
+  
         
         
-        
-    }
 
 
 

@@ -91,9 +91,11 @@ ipython_config.py
 
 *.env
 
-*.settings.py
-
 #tcc_django/settings.py
+settings.py
+
+
+
 
 
 # pyenv

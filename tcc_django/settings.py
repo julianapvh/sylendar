@@ -54,7 +54,12 @@ INSTALLED_APPS = [
     'tcc_django',
     'django_extensions',
     'django_fastdev',
+    
+    # apps de terceiros
+    
     'rolepermissions',
+    'notifications',
+    
 ]
 
 MIDDLEWARE = [

@@ -33,6 +33,11 @@ from django.db.models.functions import TruncDate
 from django.db import transaction
 import logging
 from django.core.paginator import Paginator
+from notifications.models import Notification
+from notifications.signals import notify
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 
 
@@ -619,7 +624,10 @@ def lista_clientes(request):
 
 
 
-    
+@receiver(post_save, sender=Agendamento)
+def enviar_notificacao_agendamento(sender, instance, **kwargs):
+    if kwargs.get('created', False):
+        notify.send(instance, recipient=instance.equipamento.responsavel, verb='Um novo agendamento foi criado para o seu equipamento.')  
     
     
 '''def calendario_mensal(request):

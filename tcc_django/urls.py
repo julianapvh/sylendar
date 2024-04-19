@@ -4,6 +4,7 @@ from agendamentos import views
 from agendamentos.views import cancelar_agendamento, excluir_equipamento, historico_agendamentos, reagendar_agendamento, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
+from django.contrib.auth import views as auth_views
 
 
 
@@ -49,6 +50,10 @@ urlpatterns = [
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
+    path('reset_password/', auth_views.PasswordResetView.as_view(), name="reset_password"),
+    path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
+    path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
+    path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
     #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
 ]
 

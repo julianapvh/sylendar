@@ -51,6 +51,7 @@ urlpatterns = [
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
+    #path('enviar_notificacao_agendamento/' , views.enviar_notificacao_agendamento, name='enviar_notificacao_agendamento'),
     #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

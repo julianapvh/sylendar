@@ -624,10 +624,10 @@ def lista_clientes(request):
 
 
 
-@receiver(post_save, sender=Agendamento)
+'''@receiver(post_save, sender=Agendamento)
 def enviar_notificacao_agendamento(sender, instance, **kwargs):
     if kwargs.get('created', False):
-        notify.send(instance, recipient=instance.equipamento.responsavel, verb='Um novo agendamento foi criado para o seu equipamento.')  
+        notify.send(instance, recipient=instance.equipamento.responsavel, verb='Um novo agendamento foi criado para o seu equipamento.')  '''
     
     
 '''def calendario_mensal(request):

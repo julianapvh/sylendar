@@ -7,6 +7,7 @@ For more information on this file, see
 https://docs.djangoproject.com/en/4.2/topics/settings/
 
 For the full list of settings and their values, see
+
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
 
@@ -162,11 +163,13 @@ USE_TZ = True
 
 # No seu arquivo de configurações settings.py
 
-# O caminho absoluto para o diretório onde collectstatic coletará os arquivos estáticos para implantação.
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # O URL para usar ao se referir aos arquivos estáticos (de onde eles serão servidos).
-STATIC_URL = '/static/'
+STATIC_URL = '/agendamentos/static/'
+# O caminho absoluto para o diretório onde collectstatic coletará os arquivos estáticos para implantação.
+STATIC_ROOT = os.path.join(BASE_DIR, '/agendamentos/staticfiles')
+
+
 
 # Adicione o diretório 'agendamentos/static' aos diretórios de arquivos estáticos
 STATICFILES_DIRS = [

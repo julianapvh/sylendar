@@ -173,7 +173,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, '/agendamentos/staticfiles')
 
 # Adicione o diretório 'agendamentos/static' aos diretórios de arquivos estáticos
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'agendamentos', 'static'),
+    os.path.join(BASE_DIR, 'agendamentos', 'staticfiles'),
 ]
 
 

@@ -33,8 +33,8 @@ from django.db.models.functions import TruncDate
 from django.db import transaction
 import logging
 from django.core.paginator import Paginator
-from notifications.models import Notification
-from notifications.signals import notify
+#from notifications.models import Notification
+#from notifications.signals import notify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 

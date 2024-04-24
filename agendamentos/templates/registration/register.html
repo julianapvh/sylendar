@@ -6,6 +6,7 @@
     <title>Página de Cadastro</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
         /* Estilos para o container */
         .container_home {
@@ -79,11 +80,41 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10 offset-sm-2">
-                        <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        <button id="submit-btn" type="submit" class="btn btn-primary">Cadastrar</button>
                     </div>
                 </div>
             </form>
         </div>
     </div>
+
+    <script>
+        // Event listener for form submission
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.querySelector('form');
+            const submitButton = document.getElementById('submit-btn');
+    
+            // Event listener for form submission
+            form.addEventListener('submit', function (event) {
+                event.preventDefault(); // Prevent default form submission
+    
+                // Simulate form submission
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Usuário cadastrado com sucesso!',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ir para a página de login',
+                    cancelButtonText: 'Permanecer nesta página',
+                    confirmButtonColor: '#007bff',
+                    cancelButtonColor: '#dc3545'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = '/login'; // Redirect to login page
+                    } else {
+                        form.submit(); // If canceled, submit the form
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

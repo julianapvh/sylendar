@@ -7,6 +7,18 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        /* Estilos para o ícone de carregamento */
+        .loading-icon {
+            display: none; /* Inicialmente oculto */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: #007bff;
+        }
+    </style>
 </head>
 
 <body>
@@ -33,7 +45,7 @@
           {% endif %}
           {% endif %}
 
-          <form method="post" action="{% url 'login' %}">
+          <form id="login-form" method="post" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
               <label for="username"><i class="fas fa-user"></i></label>
@@ -43,8 +55,9 @@
               <label for="password"><i class="fas fa-lock"></i></label>
               {{ form.password }}
             </div>
-            <button type="submit" class="btn btn-primary btn-block">Login</button>
+            <button id="login-btn" type="submit" class="btn btn-primary btn-block">Login</button>
             <input type="hidden" name="next" value="{{ next }}" />
+            <i id="loading-icon" class="fas fa-spinner fa-spin loading-icon"></i> <!-- Ícone de carregamento -->
           </form>
 
           <p class="text-center">Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-link">Cadastre-se</a></p>
@@ -56,5 +69,23 @@
     </div>
   </div>
 </div>
+
+<script>
+    // Event listener for form submission
+    document.addEventListener('DOMContentLoaded', function () {
+        const loginForm = document.getElementById('login-form');
+        const loginButton = document.getElementById('login-btn');
+        const loadingIcon = document.getElementById('loading-icon');
+
+        // Event listener for form submission
+        loginButton.addEventListener('click', function () {
+            // Show loading icon
+            loadingIcon.style.display = 'inline';
+
+            // Submit the form
+            loginForm.submit();
+        });
+    });
+</script>
 </body>
 {% endblock %}

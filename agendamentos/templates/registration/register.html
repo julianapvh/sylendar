@@ -39,7 +39,7 @@
             </div>
             {% endif %}
             <!-- Fim do bloco de mensagens -->
-            <form method="post">
+            <form id="register-form" method="post">
                 {% csrf_token %}
                 <div class="form-group row">
                     <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
@@ -80,7 +80,8 @@
                 </div>
                 <div class="form-group row">
                     <div class="col-sm-10 offset-sm-2">
-                        <button id="submit-btn" type="submit" class="btn btn-primary">Cadastrar</button>
+                        <button id="submit-btn" type="button" class="btn btn-primary">Cadastrar</button>
+                        <div id="loading-message" style="display: none;">Enviando cadastro, por favor aguarde...</div>
                     </div>
                 </div>
             </form>
@@ -90,28 +91,51 @@
     <script>
         // Event listener for form submission
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.querySelector('form');
+            const form = document.getElementById('register-form');
             const submitButton = document.getElementById('submit-btn');
+            const loadingMessage = document.getElementById('loading-message');
     
-            // Event listener for form submission
-            form.addEventListener('submit', function (event) {
-                event.preventDefault(); // Prevent default form submission
+            // Event listener for button click
+            submitButton.addEventListener('click', function () {
+                // Show loading message
+                loadingMessage.style.display = 'block';
+                
+                // Serialize form data
+                const formData = new FormData(form);
     
-                // Simulate form submission
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Usuário cadastrado com sucesso!',
-                    showCancelButton: true,
-                    confirmButtonText: 'Ir para a página de login',
-                    cancelButtonText: 'Permanecer nesta página',
-                    confirmButtonColor: '#007bff',
-                    cancelButtonColor: '#dc3545'
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.href = '/login'; // Redirect to login page
-                    } else {
-                        form.submit(); // If canceled, submit the form
+                // Send AJAX request
+                fetch('/register/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest', // Indicate an AJAX request
+                        'X-CSRFToken': '{{ csrf_token }}' // Add CSRF token to the request
                     }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        // If the response is successful, show the success dialog
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Usuário cadastrado com sucesso!',
+                            showCancelButton: false,
+                            confirmButtonText: 'OK',
+                            confirmButtonColor: '#007bff',
+                        }).then((result) => {
+                            window.location.href = '/login'; // Redirect to login page
+                        });
+                    } else {
+                        // If the response is not successful, show an error message
+                        throw new Error('Erro ao processar o formulário de registro.');
+                    }
+                })
+                .catch(error => {
+                    // If an error occurs during the AJAX request
+                    console.error('Erro:', error);
+                })
+                .finally(() => {
+                    // Hide loading message regardless of the outcome
+                    loadingMessage.style.display = 'none';
                 });
             });
         });

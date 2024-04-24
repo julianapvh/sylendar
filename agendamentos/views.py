@@ -610,35 +610,6 @@ def obter_dados_equipamento(request):
     }
     return JsonResponse(data)
     
-@staff_member_required
-def lista_clientes(request):
-    clientes = User.objects.all()  # Busque todos os clientes do banco de dados
-    historico_agendamentos = {}  # Dicionário para mapear ID do cliente ao seu histórico de agendamentos
-
-    # Preencher o dicionário de histórico de agendamentos
-    for cliente in clientes:
-        # Lógica para obter o histórico de agendamentos para cada cliente
-        historico_agendamentos[cliente.id] = HistoricoAgendamento(cliente)
-
-    return render(request, 'lista_clientes.html', {'clientes': clientes, 'historico_agendamentos': historico_agendamentos})
 
 
 
-'''@receiver(post_save, sender=Agendamento)
-def enviar_notificacao_agendamento(sender, instance, **kwargs):
-    if kwargs.get('created', False):
-        notify.send(instance, recipient=instance.equipamento.responsavel, verb='Um novo agendamento foi criado para o seu equipamento.')  '''
-    
-    
-'''def calendario_mensal(request):
-    # Fetch appointments for the logged-in client
-    appointments = Agendamento.objects.filter(cliente_nome=request.user.username)
-    return render(request, 'calendario_mensal.html', {'appointments': appointments})'''
-    
-    
-'''def listar_equipamentos(request):
-    equipamentos = Equipamento.objects.all()
-    paginator = Paginator(equipamentos, 10)  # Dividindo em páginas de 10 equipamentos por página
-    page_number = request.GET.get('page',1)
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'editar_equipamento.html', {'page_obj': page_obj})'''

@@ -7,7 +7,8 @@
     <title>Agendar Equipamento</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
+    <!-- Adicione o link para o CSS do SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
@@ -45,6 +46,9 @@
         <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a>
     </div>
     
+    <!-- Adicione o script do SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('agendarForm').addEventListener('submit', function(e) {
@@ -62,7 +66,14 @@
                 .then(data => {
                     // Exibe uma caixa de diálogo com base na resposta JSON
                     if (data.success) {
-                        alert(data.message); // Agendamento realizado com sucesso
+                        // Exibir mensagem de sucesso com o SweetAlert2
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Sucesso!',
+                            text: data.message,
+                            showConfirmButton: false,
+                            timer: 5000 // Fecha automaticamente após 5 segundos
+                        });
                         window.location.reload(); // Recarrega a página após o agendamento bem-sucedido
                     } else {
                         // Exibe a mensagem de erro na div errorDiv

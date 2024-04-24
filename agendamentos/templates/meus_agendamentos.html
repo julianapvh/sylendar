@@ -7,17 +7,14 @@
     <title>Sistema de Agendamentos - Meus Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Adicione o link para o CSS do SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
 <body>
     <div class="container_home">
         <div class='home-form'>
             <h2>Meus Agendamentos</h2>
-        <table class="table">
-        
-        </table>
-    </div>
-</div>
             <table class="table">
                 <thead>
                     <tr>
@@ -96,45 +93,105 @@
         </div>
     </div>
 
+    <!-- Adicione o script do SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
     <script>
         function confirmarCancelamento(url) {
-            if (confirm("Tem certeza que deseja cancelar este agendamento?")) {
-                window.location.href = url; // Redireciona para a URL de cancelamento se o usuário confirmar
-            }
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Deseja realmente cancelar este agendamento?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, cancelar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        }
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Se o cancelamento for bem-sucedido, exibe uma mensagem de sucesso
+                            Swal.fire(
+                                'Cancelado!',
+                                'O agendamento foi cancelado com sucesso.',
+                                'success'
+                            ).then(() => {
+                                // Recarrega a página após a confirmação do usuário
+                                window.location.reload();
+                            });
+                        } else {
+                            console.error('Erro ao cancelar agendamento:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao cancelar agendamento:', error);
+                    });
+                }
+            });
         }
-
+        
         function mostrarCamposReagendamento(agendamentoId) {
             // Obtém a div dos campos de reagendamento
             const divCamposReagendamento = document.getElementById(`campos_reagendamento_${agendamentoId}`);
             // Mostra os campos
             divCamposReagendamento.style.display = 'block';
         }
-
+        
         function enviarReagendamento(agendamentoId) {
-            if (confirm("Tem certeza de que deseja reagendar este agendamento?")) {
-                const novaData = document.getElementById(`nova_data_${agendamentoId}`).value;
-                const novaHora = document.getElementById(`nova_hora_${agendamentoId}`).value;
-
-                fetch(`/reagendar/${agendamentoId}/`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': '{{ csrf_token }}'
-                    },
-                    body: JSON.stringify({ nova_data: novaData, nova_hora: novaHora })
-                })
-                .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
-                        console.error('Erro ao reagendar agendamento:', response.statusText);
-                    }
-                })
-                .catch(error => {
-                    console.error('Erro ao reagendar agendamento:', error);
-                });
-            }
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: 'Deseja realmente reagendar este agendamento?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Sim, reagendar!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const novaData = document.getElementById(`nova_data_${agendamentoId}`).value;
+                    const novaHora = document.getElementById(`nova_hora_${agendamentoId}`).value;
+        
+                    fetch(`/reagendar/${agendamentoId}/`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': '{{ csrf_token }}'
+                        },
+                        body: JSON.stringify({ nova_data: novaData, nova_hora: novaHora })
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            // Se o reagendamento for bem-sucedido, exibe uma mensagem de sucesso
+                            Swal.fire(
+                                'Reagendado!',
+                                'O agendamento foi reagendado com sucesso.',
+                                'success'
+                            ).then(() => {
+                                // Recarrega a página após a confirmação do usuário
+                                window.location.reload();
+                            });
+                        } else {
+                            console.error('Erro ao reagendar agendamento:', response.statusText);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao reagendar agendamento:', error);
+                    });
+                }
+            });
         }
+        
+        
+        
     </script>
 </body>
 

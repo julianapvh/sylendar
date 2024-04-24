@@ -22,14 +22,12 @@ urlpatterns = [
     path('administrador/', views.administrador, name='administrador'),
     path('cadastrar_equipamento/', views.cadastrar_equipamento, name='cadastrar_equipamento'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'), 
-    #path('adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('visualizar_equipamentos/', views.visualizar_equipamentos, name='visualizar_equipamentos'),
     path('excluir_equipamento/', views.excluir_equipamento, name='excluir_equipamento'),
     path('editar_equipamento/', views.editar_equipamento, name='editar_equipamento'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
-    #path('listar_equipamentos/', views.listar_equipamentos, name='listar_equipamentos'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
     path('user_list/', views.user_list, name='user_list'),
@@ -49,12 +47,10 @@ urlpatterns = [
     path('marcar_como_emprestado/', views.marcar_como_emprestado, name='marcar_como_emprestado'),
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
-    path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
-    #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
 ]
 
 # Mapeie a visualização para lidar com erros

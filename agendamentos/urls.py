@@ -29,6 +29,7 @@ urlpatterns = [
     path('adicionar_agendamento/', views.adicionar_agendamento, name='adicionar_agendamento'),
     path('meus_agendamentos/', views.meus_agendamentos, name='meus_agendamentos'),
     path('excluir_equipamento/<int:equipamento_id>/', views.excluir_equipamento, name='excluir_equipamento'),
+    path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
     path('user_list/', views.user_list, name='user_list'),
@@ -55,8 +56,6 @@ urlpatterns = [
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
-    #path('enviar_notificacao_agendamento/' , views.enviar_notificacao_agendamento, name='enviar_notificacao_agendamento'),
-    #path('calendario_mensal/', views.calendario_mensal, name='calendario_mensal'),
     ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

@@ -610,6 +610,3 @@ def obter_dados_equipamento(request):
     }
     return JsonResponse(data)
     
-
-
-

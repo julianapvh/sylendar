@@ -42,3 +42,14 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+        
+        
+
+
+class UserCreationFormWithExtraFields(UserCreationForm):
+    email = forms.EmailField(label='E-mail')
+    nome_completo = forms.CharField(label='Nome Completo')
+    telefone = forms.CharField(label='Telefone')
+    
+    class Meta(UserCreationForm.Meta):
+        fields = UserCreationForm.Meta.fields + ('email', 'nome_completo', 'telefone')

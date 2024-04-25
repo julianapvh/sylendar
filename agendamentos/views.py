@@ -23,7 +23,7 @@ from django.urls import reverse_lazy
 from django.utils import timezone
 from django.utils.timezone import make_aware
 from requests import request
-from agendamentos.forms import AgendamentoForm, EquipamentoForm, UserRegistrationForm
+from agendamentos.forms import AgendamentoForm, EquipamentoForm, UserCreationFormWithExtraFields, UserRegistrationForm
 from agendamentos.models import Agendamento, Equipamento
 from rolepermissions.decorators import has_permission_decorator, has_role_decorator
 from rolepermissions.permissions import revoke_permission, grant_permission
@@ -66,7 +66,7 @@ def login(request):
         
 def register(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = UserCreationFormWithExtraFields(request.POST)
         if form.is_valid():
             user = form.save()  # Salva o usuário criado
             assign_role(user, 'cliente')  # Atribui o papel (grupo) 'cliente' ao usuário
@@ -78,7 +78,7 @@ def register(request):
                     messages.error(request, f"Erro no campo '{field}': {error}")  # Mensagem de erro para cada campo inválido
             print(form.errors)  # Exibe os erros de validação no console para depuração
     else:
-        form = UserCreationForm()
+        form = UserCreationFormWithExtraFields()
     return render(request, 'registration/register.html', {'form': form})
     
 def home(request):   

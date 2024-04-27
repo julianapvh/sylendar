@@ -268,51 +268,35 @@ def historico(request):
 @login_required
 def meus_agendamentos(request):
     if request.user.is_authenticated:
-        agendamentos = Agendamento.objects.filter(
-            cliente_nome=request.user.username, cancelado=False
-        )
         agora = timezone.now()
+        # Filtra os agendamentos do usuário que não foram cancelados e não foram devolvidos
+        agendamentos = Agendamento.objects.filter(
+            Q(cliente_nome=request.user.username) &
+            Q(cancelado=False) &
+            Q(devolvido=False)
+        )
         for agendamento in agendamentos:
             if agendamento.data_emprestimo:
-                if agendamento.devolvido:  # Verifica se o equipamento foi devolvido
-                    agendamento.prazo_restante = (
-                        None  # Define como None se o equipamento foi devolvido
-                    )
-                else:
-                    agendamento.prazo_restante = agendamento.calcular_prazo_restante()
-                # Define o atributo 'pode_reagendar' como False se o equipamento estiver emprestado
+                agendamento.prazo_restante = agendamento.calcular_prazo_restante()
                 agendamento.pode_reagendar = False
-                # Define o atributo 'pode_cancelar' como False se o equipamento estiver emprestado
                 agendamento.pode_cancelar = False
             else:
-                agendamento.prazo_restante = (
-                    None  # Define como None se não estiver emprestado
-                )
-                # Define o atributo 'pode_reagendar' como True se o equipamento não estiver emprestado
+                agendamento.prazo_restante = None
                 agendamento.pode_reagendar = True
-                # Define o atributo 'pode_cancelar' como True se o equipamento não estiver emprestado
                 agendamento.pode_cancelar = True
 
-            # Verifica se o agendamento pode ser cancelado
             if agendamento.data_entrega_prevista:
-                tempo_minimo_cancelamento = (
-                    agendamento.data_entrega_prevista - timedelta(minutes=30)
-                )
+                tempo_minimo_cancelamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
                 if agora >= tempo_minimo_cancelamento:
                     agendamento.pode_cancelar = False
 
-            # Verifica se o agendamento pode ser reagendado
             if agendamento.data_entrega_prevista:
-                tempo_minimo_reagendamento = (
-                    agendamento.data_entrega_prevista - timedelta(minutes=30)
-                )
+                tempo_minimo_reagendamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
                 if agora >= tempo_minimo_reagendamento:
                     agendamento.pode_reagendar = False
 
-            # Ajustar o prazo restante de acordo com a quantidade de dias escolhida
             if agendamento.data_emprestimo:
                 if agendamento.quantidade_dias > 0:
-                    # Se a quantidade de dias for maior que zero, calcular o prazo restante com base nessa quantidade
                     agendamento.prazo_restante = agendamento.calcular_prazo_restante()
 
         context = {"agendamentos": agendamentos}

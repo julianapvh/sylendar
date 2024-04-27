@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Histórico de Equipamentos</title>
+    <title>Histórico de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
@@ -11,7 +11,7 @@
 <body>
     <div class="container_home">
         <div class="home-form">
-            <h1>Histórico de Equipamentos</h1>
+            <h1>Histórico de Agendamentos</h1>
             
             <table class="table">
                 <thead>
@@ -35,10 +35,10 @@
                                 Cancelado
                             {% elif agendamento.reagendado %}
                                 Reagendado
-                            {% elif agendamento.emprestado %}
-                                Emprestado
                             {% elif agendamento.devolvido %}
                                 Devolvido
+                            {% elif agendamento.emprestado %}
+                                Emprestado
                             {% elif agendamento.data < timezone.now %}
                                 Passado
                             {% elif agendamento.data == timezone.now %}

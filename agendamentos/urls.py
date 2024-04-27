@@ -8,7 +8,6 @@ from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
 from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
-from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from .views import historico_agendamentos
 from django.conf.urls.static import static
 from django.conf import settings
@@ -32,7 +31,6 @@ urlpatterns = [
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
-    path('user_list/', views.user_list, name='user_list'),
     path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('accounts/', include('django.contrib.auth.urls')),

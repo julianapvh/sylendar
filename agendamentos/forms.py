@@ -5,28 +5,37 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from agendamentos.models import User
 
+
 class AgendamentoForm(forms.ModelForm):
     class Meta:
         model = Agendamento
-        fields = ['cliente_nome', 'cliente_cpf', 'equipamento', 'data', 'hora']
-        
-        
+        fields = ["cliente_nome", "cliente_cpf", "equipamento", "data", "hora"]
+
+
 class EquipamentoForm(forms.ModelForm):
     class Meta:
         model = Equipamento
-        fields = ['nome', 'descricao', 'fabricante', 'data_aquisicao', 'quantidade_disponivel']  # Adicione 'quantidade_disponivel'
+        fields = [
+            "nome",
+            "descricao",
+            "fabricante",
+            "data_aquisicao",
+            "quantidade_disponivel",
+        ]  # Adicione 'quantidade_disponivel'
+
 
 ######################################------------MODIFICAÇÕES---------------###################################################
 
 
-
 class UserRegistrationForm(forms.ModelForm):
-    password1 = forms.CharField(label='Senha', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='Confirmação de senha', widget=forms.PasswordInput)
+    password1 = forms.CharField(label="Senha", widget=forms.PasswordInput)
+    password2 = forms.CharField(
+        label="Confirmação de senha", widget=forms.PasswordInput
+    )
 
     class Meta:
         model = User
-        fields = ['nome_completo', 'telefone', 'username', 'email']
+        fields = ["nome_completo", "telefone", "username", "email"]
 
     def clean_password2(self):
         # Verifica se as duas senhas inseridas são iguais
@@ -42,14 +51,12 @@ class UserRegistrationForm(forms.ModelForm):
         if commit:
             user.save()
         return user
-        
-        
 
 
 class UserCreationFormWithExtraFields(UserCreationForm):
-    email = forms.EmailField(label='E-mail')
-    nome_completo = forms.CharField(label='Nome Completo')
-    telefone = forms.CharField(label='Telefone')
-    
+    email = forms.EmailField(label="E-mail")
+    nome_completo = forms.CharField(label="Nome Completo")
+    telefone = forms.CharField(label="Telefone")
+
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ('email', 'nome_completo', 'telefone')
+        fields = UserCreationForm.Meta.fields + ("email", "nome_completo", "telefone")

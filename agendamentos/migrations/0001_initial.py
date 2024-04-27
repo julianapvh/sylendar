@@ -11,86 +11,227 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('auth', '0012_alter_user_first_name_max_length'),
+        ("auth", "0012_alter_user_first_name_max_length"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Equipamento',
+            name="Equipamento",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('nome', models.CharField(max_length=100)),
-                ('descricao', models.CharField(max_length=100)),
-                ('fabricante', models.CharField(max_length=50)),
-                ('data_aquisicao', models.DateField()),
-                ('quantidade_disponivel', models.IntegerField(default=0)),
-                ('status', models.CharField(choices=[('disponivel', 'Disponível'), ('agendado', 'Agendado'), ('cancelado', 'Cancelado')], default='disponivel', max_length=20)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("nome", models.CharField(max_length=100)),
+                ("descricao", models.CharField(max_length=100)),
+                ("fabricante", models.CharField(max_length=50)),
+                ("data_aquisicao", models.DateField()),
+                ("quantidade_disponivel", models.IntegerField(default=0)),
+                (
+                    "status",
+                    models.CharField(
+                        choices=[
+                            ("disponivel", "Disponível"),
+                            ("agendado", "Agendado"),
+                            ("cancelado", "Cancelado"),
+                        ],
+                        default="disponivel",
+                        max_length=20,
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Agendamento',
+            name="Agendamento",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cliente_nome', models.CharField(max_length=100)),
-                ('cliente_cpf', models.CharField(default='00000000000', max_length=11)),
-                ('data', models.DateField(default=django.utils.timezone.now)),
-                ('hora', models.TimeField(default=django.utils.timezone.now)),
-                ('tipo_servico', models.CharField(max_length=100)),
-                ('cancelado', models.BooleanField(default=False)),
-                ('reagendado', models.BooleanField(default=False)),
-                ('data_entrega_prevista', models.DateTimeField(blank=True, default=None, null=True)),
-                ('data_emprestimo', models.DateTimeField(blank=True, default=None, null=True)),
-                ('data_devolucao', models.DateTimeField(blank=True, null=True)),
-                ('situacao', models.CharField(default='Agendado', max_length=100)),
-                ('prazo_restante', models.DurationField(blank=True, null=True)),
-                ('emprestado', models.BooleanField(default=False)),
-                ('devolvido', models.BooleanField(default=False)),
-                ('quantidade_dias', models.IntegerField(choices=[(1, '1 dia'), (2, '2 dias'), (3, '3 dias')], default=3)),
-                ('nova_data', models.DateField(blank=True, null=True)),
-                ('nova_hora', models.TimeField(blank=True, null=True)),
-                ('data_original', models.DateField(blank=True, null=True)),
-                ('hora_original', models.TimeField(blank=True, null=True)),
-                ('equipamento', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='agendamentos.equipamento')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("cliente_nome", models.CharField(max_length=100)),
+                ("cliente_cpf", models.CharField(default="00000000000", max_length=11)),
+                ("data", models.DateField(default=django.utils.timezone.now)),
+                ("hora", models.TimeField(default=django.utils.timezone.now)),
+                ("tipo_servico", models.CharField(max_length=100)),
+                ("cancelado", models.BooleanField(default=False)),
+                ("reagendado", models.BooleanField(default=False)),
+                (
+                    "data_entrega_prevista",
+                    models.DateTimeField(blank=True, default=None, null=True),
+                ),
+                (
+                    "data_emprestimo",
+                    models.DateTimeField(blank=True, default=None, null=True),
+                ),
+                ("data_devolucao", models.DateTimeField(blank=True, null=True)),
+                ("situacao", models.CharField(default="Agendado", max_length=100)),
+                ("prazo_restante", models.DurationField(blank=True, null=True)),
+                ("emprestado", models.BooleanField(default=False)),
+                ("devolvido", models.BooleanField(default=False)),
+                (
+                    "quantidade_dias",
+                    models.IntegerField(
+                        choices=[(1, "1 dia"), (2, "2 dias"), (3, "3 dias")], default=3
+                    ),
+                ),
+                ("nova_data", models.DateField(blank=True, null=True)),
+                ("nova_hora", models.TimeField(blank=True, null=True)),
+                ("data_original", models.DateField(blank=True, null=True)),
+                ("hora_original", models.TimeField(blank=True, null=True)),
+                (
+                    "equipamento",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="agendamentos.equipamento",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='HistoricoAgendamento',
+            name="HistoricoAgendamento",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data_hora_alteracao', models.DateTimeField(default=django.utils.timezone.now)),
-                ('tipo_alteracao', models.CharField(max_length=100)),
-                ('agendamento', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='agendamentos.agendamento')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "data_hora_alteracao",
+                    models.DateTimeField(default=django.utils.timezone.now),
+                ),
+                ("tipo_alteracao", models.CharField(max_length=100)),
+                (
+                    "agendamento",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="agendamentos.agendamento",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='User',
+            name="User",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('password', models.CharField(max_length=128, verbose_name='password')),
-                ('last_login', models.DateTimeField(blank=True, null=True, verbose_name='last login')),
-                ('is_superuser', models.BooleanField(default=False, help_text='Designates that this user has all permissions without explicitly assigning them.', verbose_name='superuser status')),
-                ('username', models.CharField(error_messages={'unique': 'A user with that username already exists.'}, help_text='Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.', max_length=150, unique=True, validators=[django.contrib.auth.validators.UnicodeUsernameValidator()], verbose_name='username')),
-                ('first_name', models.CharField(blank=True, max_length=150, verbose_name='first name')),
-                ('last_name', models.CharField(blank=True, max_length=150, verbose_name='last name')),
-                ('email', models.EmailField(blank=True, max_length=254, verbose_name='email address')),
-                ('is_staff', models.BooleanField(default=False, help_text='Designates whether the user can log into this admin site.', verbose_name='staff status')),
-                ('is_active', models.BooleanField(default=True, help_text='Designates whether this user should be treated as active. Unselect this instead of deleting accounts.', verbose_name='active')),
-                ('date_joined', models.DateTimeField(default=django.utils.timezone.now, verbose_name='date joined')),
-                ('nome_completo', models.CharField(max_length=100)),
-                ('telefone', models.CharField(max_length=15)),
-                ('is_admin', models.BooleanField(default=False)),
-                ('groups', models.ManyToManyField(related_name='custom_user_groups', to='auth.group')),
-                ('user_permissions', models.ManyToManyField(related_name='custom_user_permissions', to='auth.permission')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("password", models.CharField(max_length=128, verbose_name="password")),
+                (
+                    "last_login",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="last login"
+                    ),
+                ),
+                (
+                    "is_superuser",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates that this user has all permissions without explicitly assigning them.",
+                        verbose_name="superuser status",
+                    ),
+                ),
+                (
+                    "username",
+                    models.CharField(
+                        error_messages={
+                            "unique": "A user with that username already exists."
+                        },
+                        help_text="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.",
+                        max_length=150,
+                        unique=True,
+                        validators=[
+                            django.contrib.auth.validators.UnicodeUsernameValidator()
+                        ],
+                        verbose_name="username",
+                    ),
+                ),
+                (
+                    "first_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="first name"
+                    ),
+                ),
+                (
+                    "last_name",
+                    models.CharField(
+                        blank=True, max_length=150, verbose_name="last name"
+                    ),
+                ),
+                (
+                    "email",
+                    models.EmailField(
+                        blank=True, max_length=254, verbose_name="email address"
+                    ),
+                ),
+                (
+                    "is_staff",
+                    models.BooleanField(
+                        default=False,
+                        help_text="Designates whether the user can log into this admin site.",
+                        verbose_name="staff status",
+                    ),
+                ),
+                (
+                    "is_active",
+                    models.BooleanField(
+                        default=True,
+                        help_text="Designates whether this user should be treated as active. Unselect this instead of deleting accounts.",
+                        verbose_name="active",
+                    ),
+                ),
+                (
+                    "date_joined",
+                    models.DateTimeField(
+                        default=django.utils.timezone.now, verbose_name="date joined"
+                    ),
+                ),
+                ("nome_completo", models.CharField(max_length=100)),
+                ("telefone", models.CharField(max_length=15)),
+                ("is_admin", models.BooleanField(default=False)),
+                (
+                    "groups",
+                    models.ManyToManyField(
+                        related_name="custom_user_groups", to="auth.group"
+                    ),
+                ),
+                (
+                    "user_permissions",
+                    models.ManyToManyField(
+                        related_name="custom_user_permissions", to="auth.permission"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
-                'abstract': False,
+                "verbose_name": "user",
+                "verbose_name_plural": "users",
+                "abstract": False,
             },
         ),
         migrations.AddField(
-            model_name='equipamento',
-            name='usuarios',
-            field=models.ManyToManyField(blank=True, related_name='equipamentos', to='agendamentos.user'),
+            model_name="equipamento",
+            name="usuarios",
+            field=models.ManyToManyField(
+                blank=True, related_name="equipamentos", to="agendamentos.user"
+            ),
         ),
     ]

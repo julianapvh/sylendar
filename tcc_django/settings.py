@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     # apps de terceiros
     
     'rolepermissions',
+    'notifications',
     
 ]
 

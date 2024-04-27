@@ -1,12 +1,14 @@
-# Use a imagem base do Python 3.12.2
+# Use a imagem base do Python 3.12.3
 FROM python:3.12.3
 
 # Define o diretório de trabalho dentro do contêiner
-WORKDIR /app/<path>/favicon.ico
+WORKDIR /app
 
+# Copie o arquivo de requisitos e instale as dependências
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
+# Copie todo o conteúdo do diretório atual para o diretório de trabalho
 COPY . .
 
 # Execute o comando para coletar os arquivos estáticos

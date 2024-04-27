@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
@@ -5,6 +6,7 @@ from agendamentos.views import cancelar_agendamento, excluir_equipamento, histor
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
+from django.conf.urls.static import static
 
 
 
@@ -47,7 +49,8 @@ urlpatterns = [
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),
     path('reset_password_complete/', auth_views.PasswordResetCompleteView.as_view(), name="password_reset_complete"),
-]
+    ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
 
 # Mapeie a visualização para lidar com erros
 handler404 = 'agendamentos.views.error_404_view'

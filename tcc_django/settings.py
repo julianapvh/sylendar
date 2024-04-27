@@ -159,8 +159,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
-# No seu arquivo de configurações settings.py
-
 
 # O URL para usar ao se referir aos arquivos estáticos (de onde eles serão servidos).
 STATIC_URL = '/agendamentos/static/'

@@ -1,5 +1,3 @@
-
-#from .models import Event
 from collections import Counter
 from datetime import datetime, timedelta, time
 from imaplib import _Authenticator
@@ -33,13 +31,8 @@ from django.db.models.functions import TruncDate
 from django.db import transaction
 import logging
 from django.core.paginator import Paginator
-#from notifications.models import Notification
-#from notifications.signals import notify
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-
-
-
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
@@ -176,7 +169,6 @@ def agendar_equipamento(request):
     context = {'equipamentos': equipamentos}
     return render(request, 'agendar_equipamento.html', context)
 
-
 def historico(request):
     if request.user.is_authenticated:
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
@@ -198,8 +190,7 @@ def historico(request):
         return render(request, 'historico.html', {'agendamentos': agendamentos, 'status_agendamentos': status_agendamentos})
     else:
         return redirect('login')
-
-        
+   
 @login_required
 def meus_agendamentos(request):
     if request.user.is_authenticated:
@@ -245,7 +236,6 @@ def meus_agendamentos(request):
     else:
         return redirect('login')
 
-    
 def visualizar_equipamentos(request):
     equipamentos = Equipamento.objects.all()
     return render(request, 'listar_equipamentos.html', {'equipamentos': equipamentos})
@@ -380,7 +370,6 @@ def cadastrar_equipamento(request):
     else:
         return render(request, 'cadastrar_equipamento.html')
 
-
 def excluir_equipamento(request):
     if request.method == 'POST':
         equipamento_id = request.POST.get('equipamento_id')
@@ -418,7 +407,6 @@ def buscar_agendamentos(request):
         # Se o método não for POST, exibir a página de busca vazia
         return render(request, 'buscar_agendamentos.html')
 
-
 @staff_member_required
 def devolucao_equipamento(request, agendamento_id):
     try:
@@ -450,12 +438,6 @@ def devolucao_equipamento(request, agendamento_id):
         return redirect('administrador')  # Altere 'admin_dashboard' para o nome da sua view de painel administrativo
     except Agendamento.DoesNotExist:
         raise Http404("O agendamento não foi encontrado.")
-
-
-     
-def user_list(request):
-    users = User.objects.all()
-    return render(request, 'user_list.html', {'users': users})
     
 @login_required
 def marcar_como_emprestado(request):
@@ -520,76 +502,7 @@ def error_500_view(request):
       
 #################  -------Novas Funções---------  ###########################
 
-def sucesso_agendamento(request):
-    return render(request, 'sucesso_agendamento.html')
     
-#################  ------- Views para os relatórios ---------  ###########################
-    
-def relatorios_home(request):
-    return render(request, 'relatorios_home.html')
-     
-# Crie um objeto de logger
-logger = logging.getLogger(__name__)
-def relatorio_padroes_agendamento(request):
-    try:
-        # Calcular estatísticas de agendamento por dia/semana/mês
-        agendamentos_por_dia = Agendamento.objects.annotate(data_trunc=TruncDate('data')).values('data_trunc').annotate(count=Count('id'))
-        agendamentos_por_semana = Agendamento.objects.annotate(data_trunc=TruncDate('data', kind='week')).values('data_trunc').annotate(count=Count('id'))
-        agendamentos_por_mes = Agendamento.objects.annotate(data_trunc=TruncDate('data', kind='month')).values('data_trunc').annotate(count=Count('id'))
-        
-        # Log dos dados recuperados da base de dados
-        logger.info(f"Agendamentos por dia: {agendamentos_por_dia}")
-        logger.info(f"Agendamentos por semana: {agendamentos_por_semana}")
-        logger.info(f"Agendamentos por mês: {agendamentos_por_mes}")
-
-        # Verificar se há agendamentos antes de tentar acessar os elementos
-        if agendamentos_por_dia is not None:
-            logger.info("Agendamentos por dia não é None")
-            agendamentos_por_dia = [{'data_trunc': data['data_trunc'], 'count': data['count']} for data in agendamentos_por_dia if data['data_trunc'] is not None]
-            logger.info(f"Agendamentos por dia após filtragem: {agendamentos_por_dia}")
-        else:
-            logger.info("Agendamentos por dia é None")
-            agendamentos_por_dia = []
-        
-        if agendamentos_por_semana is not None:
-            logger.info("Agendamentos por semana não é None")
-            agendamentos_por_semana = [{'data_trunc': data['data_trunc'], 'count': data['count']} for data in agendamentos_por_semana if data['data_trunc'] is not None]
-            logger.info(f"Agendamentos por semana após filtragem: {agendamentos_por_semana}")
-        else:
-            logger.info("Agendamentos por semana é None")
-            agendamentos_por_semana = []
-        
-        if agendamentos_por_mes is not None:
-            logger.info("Agendamentos por mês não é None")
-            agendamentos_por_mes = [{'data_trunc': data['data_trunc'], 'count': data['count']} for data in agendamentos_por_mes if data['data_trunc'] is not None]
-            logger.info(f"Agendamentos por mês após filtragem: {agendamentos_por_mes}")
-        else:
-            logger.info("Agendamentos por mês é None")
-            agendamentos_por_mes = []
-        
-        # Passar os dados para o template
-        context = {
-            'agendamentos_por_dia': agendamentos_por_dia,
-            'agendamentos_por_semana': agendamentos_por_semana,
-            'agendamentos_por_mes': agendamentos_por_mes,
-        }
-        
-        return render(request, 'relatorio_padroes_agendamento.html', context)
-    
-    except Exception as e:
-        logger.error(f"Ocorreu um erro: {e}")
-        return HttpResponseServerError("Ocorreu um erro ao processar a solicitação. Por favor, tente novamente mais tarde.")
-     
-def relatorio_quantidade_agendamentos_por_dia(request):
-    # Recupera a quantidade de agendamentos por dia
-    agendamentos_por_dia = Agendamento.objects.values('data__day', 'data__month', 'data__year').annotate(data_day_count=Count('id'))
-    
-    # Converte os resultados para um formato mais adequado para exibição no template
-    dados_relatorio = [{'dia': agendamento['data__day'], 'mes': agendamento['data__month'], 'ano': agendamento['data__year'], 'quantidade': agendamento['data_day_count']} for agendamento in agendamentos_por_dia]
-
-    return render(request, 'relatorio_quantidade_agendamentos_por_dia.html', {'dados_relatorio': dados_relatorio})
-
-
 #################  -------  ---------  ###########################
 
 @staff_member_required

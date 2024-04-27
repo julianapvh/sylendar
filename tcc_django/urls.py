@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
-from agendamentos.views import cancelar_agendamento, excluir_equipamento, historico_agendamentos, reagendar_agendamento
+from agendamentos.views import cancelar_agendamento, excluir_equipamento, historico_agendamentos, reagendar_agendamento, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
@@ -30,12 +30,16 @@ urlpatterns = [
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('login/', auth_views.LoginView.as_view(), name='login'),
+    path('user_list/', views.user_list, name='user_list'),
     path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('pagina_de_erro/', views.pagina_erro, name='pagina_erro'),
     path('', RedirectView.as_view(pattern_name='login', permanent=False)),
     path('accounts/', include('django.contrib.auth.urls')),
     path('register/', views.register, name='register'),
+    path('relatorios/', views.relatorios_home, name='relatorios_home'),
+    path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
+    path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
     path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
     path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
     path('historico_agendamentos/', views.historico_agendamentos, name='historico_agendamentos'),

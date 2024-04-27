@@ -8,6 +8,7 @@ from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
 from agendamentos import views as agendamentos_views
 from django.views.generic import RedirectView
+from .views import relatorios_home, relatorio_padroes_agendamento, relatorio_quantidade_agendamentos_por_dia
 from .views import historico_agendamentos
 from django.conf.urls.static import static
 from django.conf import settings
@@ -31,6 +32,7 @@ urlpatterns = [
     path('excluir_equipamento/<int:equipamento_id>/', excluir_equipamento, name='excluir_equipamento'),
     path('administrador_home/', views.administrador_home, name='administrador_home'),
     path('cliente_home/', views.cliente_home, name='cliente_home'),
+    path('user_list/', views.user_list, name='user_list'),
     path('reagendar/<int:agendamento_id>/', reagendar_agendamento, name='reagendar_agendamento'),
     path('cancelar/<int:agendamento_id>/', cancelar_agendamento, name='cancelar_agendamento'),
     path('accounts/', include('django.contrib.auth.urls')),
@@ -39,12 +41,17 @@ urlpatterns = [
     path('sucesso_agendamento/', sucesso_agendamento, name='sucesso_agendamento'),
     path('selecionar_nova_data_hora/<int:agendamento_id>/', views.selecionar_nova_data_hora, name='selecionar_nova_data_hora'),
     path('editar_equipamento/<int:equipamento_id>/', views.editar_equipamento, name='editar_equipamento'),
+    path('relatorios/', views.relatorios_home, name='relatorios_home'),
+    path('relatorio_padroes_agendamento/', relatorio_padroes_agendamento, name='relatorio_padroes_agendamento'),
+    path('relatorio_quantidade_agendamentos_por_dia/', relatorio_quantidade_agendamentos_por_dia, name='relatorio_quantidade_agendamentos_por_dia'),
+    path('buscar_agendamentos/', views.buscar_agendamentos, name='buscar_agendamentos'),
     path('devolucao_equipamento/<int:agendamento_id>/', views.devolucao_equipamento, name='devolucao_equipamento'),
     path('historico_agendamentos/', views.historico_agendamentos, name='historico_agendamentos'),
     path('obter_dados_equipamento/', views.obter_dados_equipamento, name='obter_dados_equipamento'),
     path('marcar_como_emprestado/', views.marcar_como_emprestado, name='marcar_como_emprestado'),
     path('emprestimo_sucesso/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
     path('emprestimo_sucesso/<int:agendamento_id>/', views.emprestimo_sucesso, name='emprestimo_sucesso'),
+    path('lista_clientes/', views.lista_clientes, name='lista_clientes'),
     path('reset_password/', auth_views.PasswordResetView.as_view(), name="reset_password"),
     path('reset_password_sent/', auth_views.PasswordResetDoneView.as_view(), name="password_reset_done"),
     path('reset/<uidb64>/<token>', auth_views.PasswordResetConfirmView.as_view(), name="password_reset_confirm"),

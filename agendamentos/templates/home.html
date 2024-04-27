@@ -19,18 +19,11 @@
             <p class="lead">
             
             <a class="btn btn-success btn-custom" href="{% url 'cliente' %}" role="button">Ir para a página do cliente</a>
-            <div class="mt-3">
-                <!-- Botão para a página do administrador (aparece apenas para superusuários) -->
-                {% if request.user.is_superuser %}
-                    <a href="{% url 'administrador' %}" class="btn btn-success btn-custom">Ir para a Página do Administrador</a>
-                {% endif %}
-                </div>  
-                <div > <br>
+            
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-secondary btn-custom">Logout</button>
                 </form>
-            </div>
                 
             </p>
         </div>

@@ -35,7 +35,13 @@
                     <button type="submit" class="btn btn-primary btn-block">Logout</button>
                 </form>
             </div>
-         
+            <div class="mt-3">
+            <!-- Botão para a página do administrador (aparece apenas para superusuários) -->
+            {% if request.user.is_superuser %}
+                <a href="{% url 'administrador' %}" class="btn btn-danger btn-block">Ir para a Página do Administrador</a>
+            {% endif %}
+            </div>
+            
             <footer class="mt-5">
                 <p class="text-center">&copy; 2024 Sistema de Agendamentos</p>
             </footer>

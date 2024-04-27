@@ -2,7 +2,7 @@
 FROM python:3.12.3
 
 # Define o diretório de trabalho dentro do contêiner
-WORKDIR /app
+WORKDIR /app/agendamentos/staticfiles/
 
 # Copie o arquivo de requisitos e instale as dependências
 COPY requirements.txt requirements.txt

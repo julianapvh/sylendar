@@ -163,7 +163,7 @@ USE_TZ = True
 
 
 # O URL para usar ao se referir aos arquivos estáticos (de onde eles serão servidos).
-STATIC_URL = '/agendamentos/static/'
+STATIC_URL = 'agendamentos'
 
 # O caminho absoluto para o diretório onde collectstatic coletará os arquivos estáticos para implantação.
 STATIC_ROOT = os.path.join(BASE_DIR, 'agendamentos', 'staticfiles')

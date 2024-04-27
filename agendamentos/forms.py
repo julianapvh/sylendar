@@ -52,4 +52,6 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     telefone = forms.CharField(label='Telefone')
     
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ('email', 'nome_completo', 'telefone')
+        fields = list(UserCreationForm.Meta.fields) + ['email', 'nome_completo', 'telefone']
+        fields = tuple(fields)
+

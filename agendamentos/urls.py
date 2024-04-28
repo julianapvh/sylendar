@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 from agendamentos import views
 from agendamentos.views import excluir_equipamento
-from .views import logged_out, register, sucesso_agendamento
+from .views import logged_out, register
 from django.contrib.auth import views as auth_views
 from agendamentos.models import User
 from .views import reagendar_agendamento, cancelar_agendamento
@@ -64,8 +64,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
     path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
-    path("sucesso_agendamento/", sucesso_agendamento, name="sucesso_agendamento"),
-    path(
+        path(
         "selecionar_nova_data_hora/<int:agendamento_id>/",
         views.selecionar_nova_data_hora,
         name="selecionar_nova_data_hora",

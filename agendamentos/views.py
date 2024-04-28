@@ -106,10 +106,6 @@ def administrador_home(request):
     return render(request, "administrador_home.html")
 
 
-def cliente_home(request):
-    return render(request, "cliente_home.html")
-
-
 @login_required
 def cliente(request):
     # Verificar se o usuário está logado e se sim, obter os agendamentos dele

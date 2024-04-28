@@ -163,16 +163,18 @@ class Agendamento(models.Model):
         return None
 
     def save(self, *args, **kwargs):
-        if not self.data_entrega_prevista:
-            self.data_entrega_prevista = self.calcular_data_entrega_prevista()
-
-        if self.data_emprestimo:
-            self.prazo_restante = self.calcular_prazo_restante()
-
-        if self.nova_data and self.nova_hora:
+        if not self.pk:  # Novo agendamento
+            self.data_original = self.data
+            self.hora_original = self.hora
+        elif self.data != self.data_original or self.hora != self.hora_original:  # Reagendamento
             self.reagendado = True
+
+        if self.reagendado:  # Se houve reagendamento
+            self.nova_data = self.data
+            self.nova_hora = self.hora
         else:
-            self.reagendado = False
+            self.nova_data = None
+            self.nova_hora = None
 
         super().save(*args, **kwargs)
 

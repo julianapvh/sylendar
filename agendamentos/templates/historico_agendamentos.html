@@ -4,71 +4,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Histórico de Agendamentos</title>
+    <title>Histórico de Agendamentos dos Clientes</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .card {
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #007bff;
+            color: white;
+        }
+        .card-body {
+            padding: 20px;
+        }
+        .btn-primary {
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-<div class="container_home">
-<div class="home-form">
-    <h1>Histórico de Agendamentos</h1>
-    <table border="1">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Cliente</th>
-                <th>Equipamento</th>
-                <th>Data Original</th>
-                <th>Nova Data</th>
-                <th>Hora</th>
-                <th>Estado</th>
-                <th>Reagendado</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for agendamento in agendamentos %}
-            <tr>
-                <td>{{ agendamento.id }}</td>
-                <td>{{ agendamento.cliente_nome }}</td>
-                <td>{{ agendamento.equipamento.nome }}</td>  <!-- Aqui é onde você acessa o nome do equipamento -->
-                <td>
-                    {% if agendamento.reagendado %}
-                        {{ agendamento.data_original }} {{ agendamento.hora_original }}
-                    {% else %}
-                        {{ agendamento.data }}
-                    {% endif %}
-                </td>
-                <td>
-                    {% if agendamento.reagendado %}
-                        {{ agendamento.nova_data }} {{ agendamento.nova_hora }}
-                    {% else %}
-                        N/A
-                    {% endif %}
-                </td>
-                <td>{{ agendamento.hora }}</td>
-                <td>
-                    {% if agendamento.cancelado %}
-                        Cancelado
-                    {% else %}
-                        Ativo
-                    {% endif %}
-                </td>
-                <td>
-                    {% if agendamento.reagendado %}
-                        Sim
-                    {% else %}
-                        Não
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-
-</div>
-</div>
-</div>
-<a href="{% url 'administrador' %}" class="btn-primary ">Voltar</a>
+<div class="container">
+    <h1 class="mt-4">Histórico de Agendamentos dos Clientes</h1>
+    <form action="{% url 'historico_agendamentos' %}" method="GET" class="mb-4">
+        <div class="form-group">
+            <label for="pesquisa">Pesquisar por Nome do Cliente ou ID do Agendamento:</label>
+            <input type="text" class="form-control" id="pesquisa" name="pesquisa" placeholder="Digite o nome do cliente ou ID do agendamento" value="{{ request.GET.pesquisa }}">
+        </div>
+        <button type="submit" class="btn btn-primary">Pesquisar</button>
+    </form>
+    <div class="row">
+        {% for agendamento in agendamentos %}
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-header">
+                    Agendamento #{{ agendamento.id }}
+                </div>
+                <div class="card-body">
+                    <p><strong>Cliente:</strong> {{ agendamento.cliente_nome }}</p>
+                    <p><strong>Equipamento:</strong> {{ agendamento.equipamento.nome }}</p>
+                    <p><strong>Data Original:</strong> {{ agendamento.data_original }} {{ agendamento.hora_original }}</p>
+                    <p><strong>Nova Data:</strong> {{ agendamento.nova_data|default:"N/A" }} {{ agendamento.nova_hora|default:"N/A" }}</p>
+                    <p><strong>Hora:</strong> {{ agendamento.hora }}</p>
+                    <p><strong>Estado:</strong> 
+                        {% if agendamento.cancelado %}
+                            Cancelado
+                        {% elif agendamento.devolvido %}
+                            Devolvido
+                        {% elif agendamento.emprestado %}
+                            Emprestado
+                        {% else %}
+                            Agendado
+                        {% endif %}
+                    </p>
+                    <p><strong>Reagendado:</strong> {% if agendamento.reagendado %}Sim{% else %}Não{% endif %}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <a href="{% url 'administrador' %}" class="btn btn-primary mt-4">Voltar</a>
 </div>
 </body>
 </html>

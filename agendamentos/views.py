@@ -673,10 +673,23 @@ def error_500_view(request):
 
 @staff_member_required
 def historico_agendamentos(request):
-    agendamentos = Agendamento.objects.all()
+    pesquisa = request.GET.get('pesquisa')
+
+    if pesquisa:
+        # Verifica se a pesquisa é um número (ID do agendamento)
+        if pesquisa.isdigit():
+            agendamentos = Agendamento.objects.filter(id=pesquisa)
+        else:
+            # Caso contrário, pesquisa pelo nome do cliente
+            agendamentos = Agendamento.objects.filter(cliente_nome__icontains=pesquisa)
+    else:
+        # Se nenhum termo de pesquisa foi fornecido, retorna todos os agendamentos
+        agendamentos = Agendamento.objects.all()
+
     return render(
         request, "historico_agendamentos.html", {"agendamentos": agendamentos}
     )
+
 
 
 def obter_dados_equipamento(request):

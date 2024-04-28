@@ -66,7 +66,7 @@ urlpatterns = [
     path("", RedirectView.as_view(pattern_name="login", permanent=False)),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
-    path("buscar_agendamentos/", views.buscar_agendamentos, name="buscar_agendamentos"),
+    path("marcar_devolucao/", views.marcar_devolucao, name="marcar_devolucao"),
     path(
         "devolucao_equipamento/<int:agendamento_id>/",
         views.devolucao_equipamento,

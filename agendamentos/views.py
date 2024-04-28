@@ -271,9 +271,9 @@ def meus_agendamentos(request):
         agora = timezone.now()
         # Filtra os agendamentos do usuário que não foram cancelados e não foram devolvidos
         agendamentos = Agendamento.objects.filter(
-            Q(cliente_nome=request.user.username) &
-            Q(cancelado=False) &
-            Q(devolvido=False)
+            Q(cliente_nome=request.user.username)
+            & Q(cancelado=False)
+            & Q(devolvido=False)
         )
         for agendamento in agendamentos:
             if agendamento.data_emprestimo:
@@ -286,12 +286,16 @@ def meus_agendamentos(request):
                 agendamento.pode_cancelar = True
 
             if agendamento.data_entrega_prevista:
-                tempo_minimo_cancelamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
+                tempo_minimo_cancelamento = (
+                    agendamento.data_entrega_prevista - timedelta(minutes=30)
+                )
                 if agora >= tempo_minimo_cancelamento:
                     agendamento.pode_cancelar = False
 
             if agendamento.data_entrega_prevista:
-                tempo_minimo_reagendamento = agendamento.data_entrega_prevista - timedelta(minutes=30)
+                tempo_minimo_reagendamento = (
+                    agendamento.data_entrega_prevista - timedelta(minutes=30)
+                )
                 if agora >= tempo_minimo_reagendamento:
                     agendamento.pode_reagendar = False
 
@@ -510,7 +514,7 @@ def confirmar_exclusao_equipamento(request, equipamento_id):
 
 
 @staff_member_required
-def buscar_agendamentos(request):
+def marcar_devolucao(request):
     if request.method == "POST":
         cliente_nome = request.POST.get("cliente_nome", None)
         if cliente_nome:
@@ -519,11 +523,11 @@ def buscar_agendamentos(request):
                 cliente_nome__icontains=cliente_nome, cancelado=False, devolvido=False
             )
             return render(
-                request, "buscar_agendamentos.html", {"agendamentos": agendamentos}
+                request, "marcar_devolucao.html", {"agendamentos": agendamentos}
             )
     else:
         # Se o método não for POST, exibir a página de busca vazia
-        return render(request, "buscar_agendamentos.html")
+        return render(request, "marcar_devolucao.html")
 
 
 @staff_member_required

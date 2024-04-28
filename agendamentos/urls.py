@@ -64,7 +64,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
     path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
-        path(
+    path(
         "selecionar_nova_data_hora/<int:agendamento_id>/",
         views.selecionar_nova_data_hora,
         name="selecionar_nova_data_hora",

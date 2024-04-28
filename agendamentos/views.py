@@ -623,7 +623,7 @@ def error_500_view(request):
     )
 
 
-'''def pagina_erro(request):
+"""def pagina_erro(request):
     # Defina as variáveis de exceção
     exception_type = "FastDevVariableDoesNotExist"  # O tipo de exceção que ocorreu
     exception_value = (
@@ -640,7 +640,7 @@ def error_500_view(request):
             "exception_value": exception_value,
             "traceback": traceback,
         },
-    )'''
+    )"""
 
 
 def error_404_view(request, exception):
@@ -669,7 +669,7 @@ def error_500_view(request):
 
 @staff_member_required
 def historico_agendamentos(request):
-    pesquisa = request.GET.get('pesquisa')
+    pesquisa = request.GET.get("pesquisa")
 
     if pesquisa:
         # Verifica se a pesquisa é um número (ID do agendamento)
@@ -685,7 +685,6 @@ def historico_agendamentos(request):
     return render(
         request, "historico_agendamentos.html", {"agendamentos": agendamentos}
     )
-
 
 
 def obter_dados_equipamento(request):

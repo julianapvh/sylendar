@@ -166,7 +166,9 @@ class Agendamento(models.Model):
         if not self.pk:  # Novo agendamento
             self.data_original = self.data
             self.hora_original = self.hora
-        elif self.data != self.data_original or self.hora != self.hora_original:  # Reagendamento
+        elif (
+            self.data != self.data_original or self.hora != self.hora_original
+        ):  # Reagendamento
             self.reagendado = True
 
         if self.reagendado:  # Se houve reagendamento

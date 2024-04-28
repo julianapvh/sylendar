@@ -11,38 +11,30 @@
 <body>
     <div class="container_home">
         <h2>Equipamentos Disponíveis</h2>
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Nome</th>
-                    <th>Descrição</th>
-                    <th>Fabricante</th>
-                    {% if request.user.is_staff %}
-                    <th>Data de Aquisição</th>
-                    {% endif %}
-                    <th>Quantidade Disponível</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for equipamento in equipamentos %}
-                <tr>
-                    <td>{{ equipamento.nome }}</td>
-                    <td>{{ equipamento.descricao }}</td>
-                    <td>{{ equipamento.fabricante }}</td>
-                    {% if request.user.is_staff %}
-                    <td>{{ equipamento.data_aquisicao }}</td>
-                    {% endif %}
-                    <td>
-                        {% if equipamento.quantidade_disponivel > 0 %}
-                            {{ equipamento.quantidade_disponivel }}
-                        {% else %}
-                            Indisponível no momento
+        <!-- Adicione a caixa de pesquisa -->
+        <form method="GET">
+            <div class="form-group">
+                <input type="text" class="form-control" name="q" placeholder="Pesquisar por nome">
+                <button type="submit" class="btn btn-primary mt-2">Pesquisar</button>
+            </div>
+        </form>
+        <div class="row">
+            {% for equipamento in equipamentos %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ equipamento.nome }}</h5>
+                        <p class="card-text">{{ equipamento.descricao }}</p>
+                        <p class="card-text">Fabricante: {{ equipamento.fabricante }}</p>
+                        {% if request.user.is_staff %}
+                        <p class="card-text">Data de Aquisição: {{ equipamento.data_aquisicao }}</p>
                         {% endif %}
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+                        <p class="card-text">Quantidade Disponível: {% if equipamento.quantidade_disponivel > 0 %}{{ equipamento.quantidade_disponivel }}{% else %}Indisponível no momento{% endif %}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
         <a href="javascript:history.back()" class="btn-primary">Voltar</a>
     </div>
 </body>

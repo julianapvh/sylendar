@@ -306,8 +306,17 @@ def meus_agendamentos(request):
 
 
 def visualizar_equipamentos(request):
-    equipamentos = Equipamento.objects.all()
-    return render(request, "listar_equipamentos.html", {"equipamentos": equipamentos})
+    # Filtrar os equipamentos com base na consulta de pesquisa, se houver
+    query = request.GET.get('q')
+    if query:
+        equipamentos = Equipamento.objects.filter(nome__icontains=query)
+    else:
+        equipamentos = Equipamento.objects.all()
+
+    context = {
+        'equipamentos': equipamentos
+    }
+    return render(request, "listar_equipamentos.html", context)
 
 
 @transaction.atomic
@@ -470,7 +479,8 @@ def cadastrar_equipamento(request):
             messages.success(request, "O equipamento foi salvo com sucesso.")
 
             # Redireciona o usuário para a página de visualização de equipamentos
-            return redirect("visualizar_equipamentos")
+            return render(request, "cadastrar_equipamento.html", {'success': True})
+
         except Exception as e:
             # Se ocorrer um erro ao salvar, exibe uma mensagem de erro
             messages.error(request, f"O equipamento não foi salvo. Erro: {e}")

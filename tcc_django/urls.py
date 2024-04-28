@@ -62,7 +62,6 @@ urlpatterns = [
         cancelar_agendamento,
         name="cancelar_agendamento",
     ),
-    path("pagina_de_erro/", views.pagina_erro, name="pagina_erro"),
     path("", RedirectView.as_view(pattern_name="login", permanent=False)),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),

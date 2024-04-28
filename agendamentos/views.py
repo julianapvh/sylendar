@@ -627,7 +627,7 @@ def error_500_view(request):
     )
 
 
-def pagina_erro(request):
+'''def pagina_erro(request):
     # Defina as variáveis de exceção
     exception_type = "FastDevVariableDoesNotExist"  # O tipo de exceção que ocorreu
     exception_value = (
@@ -644,7 +644,7 @@ def pagina_erro(request):
             "exception_value": exception_value,
             "traceback": traceback,
         },
-    )
+    )'''
 
 
 def error_404_view(request, exception):

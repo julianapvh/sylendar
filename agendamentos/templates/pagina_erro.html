@@ -1,68 +1,38 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Erro{% endblock %}</title>
-    <!-- Inclua o Bootstrap -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Inclua seu arquivo CSS personalizado, se houver -->
-    <link href="{% static 'css/style.css' %}" rel="stylesheet">
-    <!-- Adicione um estilo personalizado para o humor -->
+    <title>Erro no Sistema de Agendamentos</title>
+    <!-- Adicione seu estilo personalizado aqui, se necessário -->
     <style>
-        .funny-error {
-            font-size: 3em; /* Letras maiores para chamar mais atenção */
-            text-transform: uppercase; /* Deixa tudo em caixa alta para um toque cômico */
+        /* Estilos personalizados */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            color: #333;
+            text-align: center;
+            padding: 50px;
         }
-        .blink {
-            animation: blinker 1s linear infinite;
+        h1 {
+            font-size: 36px;
+            color: #ff6347; /* Tom de vermelho */
         }
-        @keyframes blinker {
-            50% {
-                opacity: 0;
-            }
-        }
-        .error-message {
-            font-size: 1.5em; /* Aumentar o tamanho da fonte das mensagens de erro */
+        p {
+            font-size: 18px;
             margin-bottom: 20px;
         }
-        /* Cores aleatórias */
-        .red { color: red; }
-        .blue { color: blue; }
-        .green { color: green; }
-        .purple { color: purple; }
-        .orange { color: orange; }
-        .yellow { color: yellow; }
-        /* Centralizar o canvas */
-        #canvas-container {
-            text-align: center;
-        }
-        #canvas {
-            display: inline-block;
-            margin-top: 20px;
-            border: 1px solid black;
-        }
+        /* Adicione mais estilos conforme necessário */
     </style>
-    
 </head>
 <body>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 offset-md-2 text-center">
-                <h1 class="funny-error blink">Ops!</h1>
-                <p class="error-message blink"><span class="red">Parece</span> que algo <span class="blue">deu</span> <span class="green">errado</span>... Mas não foi você, foi o nosso estagiário que tropeçou nos cabos! 🤭</p>
-                <p class="error-message blink">Ele está trabalhando duro para consertar isso. Já que fez 💩!!! Enquanto isso, que tal tomar um café? ☕ </p>
-                <!-- Mantenha os detalhes do erro para referência técnica -->
-                <p>Detalhes do erro:</p>
-                <p>Tipo de Exceção: {{ exception_type }}</p>
-                <p>Valor da Exceção: {{ exception_value }}</p>
-                <p>Rastreamento: {{ traceback }}</p>
-                <!-- Um botão amigável para voltar à página inicial -->
-                <a href="/" class="btn btn-primary">Voltar à página inicial</a>
-            </div>
-        </div>
+    <div>
+        <h1>Ocorreu um Erro no Sistema de Agendamentos</h1>
+        <p>Lamentamos pelo inconveniente, mas parece que ocorreu um erro no sistema de agendamentos.</p>
+        <p>Por favor, tente novamente mais tarde.</p>
+        <!-- Adicione mais detalhes sobre o erro, se desejar -->
     </div>
 </body>
 </html>

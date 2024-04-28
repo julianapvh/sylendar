@@ -1,38 +1,61 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erro no Sistema de Agendamentos</title>
+    <title>Erro 404 - Página não encontrada</title>
     <!-- Adicione seu estilo personalizado aqui, se necessário -->
     <style>
         /* Estilos personalizados */
         body {
             font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            color: #333;
+            background-color: #f7f7f7;
+            color: #404040;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
             text-align: center;
-            padding: 50px;
+        }
+        .error-icon {
+            margin-bottom: 20px;
         }
         h1 {
-            font-size: 36px;
-            color: #ff6347; /* Tom de vermelho */
+            font-size: 32px;
+            color: #404040;
         }
         p {
             font-size: 18px;
             margin-bottom: 20px;
         }
+        .button {
+            display: inline-block;
+            background-color: #4d7afb; /* Azul Mailchimp */
+            color: #fff;
+            font-size: 18px;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            cursor: pointer;
+        }
+        .button:hover {
+            background-color: #335bc8; /* Azul Mailchimp mais escuro */
+        }
         /* Adicione mais estilos conforme necessário */
     </style>
 </head>
 <body>
-    <div>
-        <h1>Ocorreu um Erro no Sistema de Agendamentos</h1>
-        <p>Lamentamos pelo inconveniente, mas parece que ocorreu um erro no sistema de agendamentos.</p>
-        <p>Por favor, tente novamente mais tarde.</p>
-        <!-- Adicione mais detalhes sobre o erro, se desejar -->
+    <div class="container">
+        <iframe src="https://giphy.com/embed/8L0Pky6C83SzkzU55a" width="480" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+        <h1>Erro 404 - Página não encontrada</h1>
+        <p>Perdemos esta página</p>
+        <p>Pesquisamos alto e baixo, mas não conseguimos encontrar o que você procura.</p>
+        <p>Vamos encontrar um lugar melhor para você ir.</p>
+        <a href="https://sistemadeagendamentos2-23lcg0kt.b4a.run/" class="button">Página inicial do Sistema</a>
     </div>
 </body>
 </html>

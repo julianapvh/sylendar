@@ -1,3 +1,4 @@
+<!-- excluir_equipamento.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -10,44 +11,61 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Adicione o link para o CSS do SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .equipamento-card {
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+        }
+        .equipamento-card h3 {
+            margin-top: 0;
+        }
+    </style>
 </head>
 <body>
-    <div class="container_home">
-        <div class="home-form">
-            <h1>Excluir Equipamento</h1>
-            <p>Selecione o equipamento que deseja excluir:</p>
-            <form action="{% url 'excluir_equipamento' %}" method="POST" id="deleteForm">
-                {% csrf_token %}
-                <select name="equipamento_id">
-                    {% for equipamento in equipamentos %}
-                        <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
-                    {% endfor %}
-                </select>
-                <br>
-                <br>
-                <!-- Adicione SweetAlert2 ao clicar no botão Excluir -->
-                <button type="button" class="btn btn-danger ml-2" onclick="confirmarExclusao()">Excluir</button>
-                <br>
-                <br>
-                
-                <a href="{% url 'administrador' %}" class="btn btn-secondary">Voltar</a>
-                
-            </form>
+    <div class="container">
+        <h1 class="mt-4">Excluir Equipamento</h1>
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <form id="searchForm" method="GET">
+                    <div class="form-group">
+                        <label for="search">Pesquisar por Nome do Equipamento:</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Digite o nome do equipamento">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Pesquisar</button>
+                </form>
+            </div>
         </div>
+        <div class="row">
+            {% for equipamento in equipamentos %}
+            <div class="col-md-4">
+                <div class="card equipamento-card">
+                    <div class="card-body">
+                        <h3>{{ equipamento.nome }}</h3>
+                        <p><strong>Descrição:</strong> {{ equipamento.descricao }}</p>
+                        <p><strong>Fabricante:</strong> {{ equipamento.fabricante }}</p>
+                        <p><strong>Data de Aquisição:</strong> {{ equipamento.data_aquisicao }}</p>
+                        <p><strong>Quantidade Disponível:</strong> {{ equipamento.quantidade_disponivel }}</p>
+                        <!-- Adicionar chamada JavaScript para confirmar a exclusão -->
+                        <button type="button" class="btn btn-danger" onclick="confirmarExclusao('{{ equipamento.nome }}', '{{ equipamento.id }}')">Excluir</button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <a href="{% url 'administrador' %}" class="btn btn-primary mt-4">Voltar</a>
     </div>
     
     <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
     <script>
-        function confirmarExclusao() {
-            var equipamentoSelecionado = document.querySelector('select[name="equipamento_id"]').value;
-            var equipamentoNome = document.querySelector('select[name="equipamento_id"] option[value="' + equipamentoSelecionado + '"]').innerText;
-    
+        function confirmarExclusao(nomeEquipamento, idEquipamento) {
             // Use SweetAlert2 para confirmar a exclusão
             Swal.fire({
                 title: 'Tem certeza?',
-                text: "Você deseja excluir o equipamento '" + equipamentoNome + "'?",
+                text: "Você deseja excluir o equipamento '" + nomeEquipamento + "'?",
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#3085d6',
@@ -57,7 +75,7 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     // Se confirmado, faça a exclusão aqui
-                    document.getElementById('deleteForm').submit(); // Submeta o formulário de exclusão
+                    window.location.href = "{% url 'excluir_equipamento' %}?equipamento_id=" + idEquipamento;
                     // Exibir mensagem de sucesso após a exclusão
                     Swal.fire(
                         'Excluído!',

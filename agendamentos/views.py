@@ -506,8 +506,29 @@ def excluir_equipamento(request):
             messages.error(request, f"O equipamento não foi excluído. Erro: {e}")
             # Redireciona o usuário de volta para a página de excluir equipamento
             return redirect("excluir_equipamento")
+    elif request.method == "GET" and "equipamento_id" in request.GET:
+        equipamento_id = request.GET.get("equipamento_id")
+        equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
+        try:
+            # Excluir o equipamento
+            equipamento.delete()
+            # Define a mensagem de sucesso
+            messages.success(request, "O equipamento foi excluído com sucesso.")
+            # Redireciona o usuário para a página de gerenciamento de equipamentos
+            return redirect("gerenciar_equipamentos")
+        except Exception as e:
+            # Se ocorrer um erro ao excluir, exibe uma mensagem de erro
+            messages.error(request, f"O equipamento não foi excluído. Erro: {e}")
+            # Redireciona o usuário de volta para a página de excluir equipamento
+            return redirect("excluir_equipamento")
     else:
-        equipamentos = Equipamento.objects.all()
+        query = request.GET.get('search')
+        if query:
+            equipamentos = Equipamento.objects.filter(
+                nome__icontains=query
+            )
+        else:
+            equipamentos = Equipamento.objects.all()
         return render(
             request, "excluir_equipamento.html", {"equipamentos": equipamentos}
         )

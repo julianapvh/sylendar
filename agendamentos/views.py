@@ -101,7 +101,7 @@ def register(request):
 def home(request):
     return render(request, "home.html")
 
-
+@staff_member_required
 def administrador_home(request):
     return render(request, "administrador_home.html")
 
@@ -233,7 +233,7 @@ def agendar_equipamento(request):
     context = {"equipamentos": equipamentos}
     return render(request, "agendar_equipamento.html", context)
 
-
+@login_required
 def historico(request):
     if request.user.is_authenticated:
         agendamentos = Agendamento.objects.filter(cliente_nome=request.user.username)
@@ -304,7 +304,7 @@ def meus_agendamentos(request):
     else:
         return redirect("login")
 
-
+@login_required
 def visualizar_equipamentos(request):
     # Filtrar os equipamentos com base na consulta de pesquisa, se houver
     query = request.GET.get('q')
@@ -370,7 +370,7 @@ def reagendar_agendamento(request, agendamento_id):
     else:
         return JsonResponse({"erro": "Método não permitido"}, status=405)
 
-
+@login_required
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está autenticado
     if not request.user.is_authenticated:
@@ -418,7 +418,7 @@ def cancelar_agendamento(request, agendamento_id):
         # Se o agendamento não for encontrado, levantar uma exceção Http404
         raise Http404("O agendamento não foi encontrado.")
 
-
+@staff_member_required
 def editar_equipamento(request):
     if request.method == "POST":
         equipamento_id = request.POST.get("equipamento_id")
@@ -448,7 +448,7 @@ def editar_equipamento(request):
             request, "editar_equipamento.html", {"equipamentos": equipamentos}
         )
 
-
+@staff_member_required
 def cadastrar_equipamento(request):
     if request.method == "POST":
         # Obter os dados do formulário
@@ -489,7 +489,7 @@ def cadastrar_equipamento(request):
     else:
         return render(request, "cadastrar_equipamento.html")
 
-
+@staff_member_required
 def excluir_equipamento(request):
     if request.method == "POST":
         equipamento_id = request.POST.get("equipamento_id")
@@ -533,7 +533,7 @@ def excluir_equipamento(request):
             request, "excluir_equipamento.html", {"equipamentos": equipamentos}
         )
 
-
+@staff_member_required
 def confirmar_exclusao_equipamento(request, equipamento_id):
     equipamento = get_object_or_404(Equipamento, pk=equipamento_id)
     equipamento.delete()
@@ -652,26 +652,6 @@ def error_500_view(request):
         {"heading": "Erro 500", "message": "Ocorreu um erro interno no servidor"},
         status=500,
     )
-
-
-"""def pagina_erro(request):
-    # Defina as variáveis de exceção
-    exception_type = "FastDevVariableDoesNotExist"  # O tipo de exceção que ocorreu
-    exception_value = (
-        "exception_value_placeholder"  # O valor da exceção (se necessário)
-    )
-    traceback = "traceback_placeholder"  # O rastreamento da exceção (se necessário)
-
-    # Renderize o template com as variáveis no contexto
-    return render(
-        request,
-        "pagina_erro.html",
-        {
-            "exception_type": exception_type,
-            "exception_value": exception_value,
-            "traceback": traceback,
-        },
-    )"""
 
 
 def error_404_view(request, exception):

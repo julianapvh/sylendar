@@ -101,6 +101,7 @@ def register(request):
 def home(request):
     return render(request, "home.html")
 
+
 @staff_member_required
 def administrador_home(request):
     return render(request, "administrador_home.html")
@@ -233,6 +234,7 @@ def agendar_equipamento(request):
     context = {"equipamentos": equipamentos}
     return render(request, "agendar_equipamento.html", context)
 
+
 @login_required
 def historico(request):
     if request.user.is_authenticated:
@@ -304,18 +306,17 @@ def meus_agendamentos(request):
     else:
         return redirect("login")
 
+
 @login_required
 def visualizar_equipamentos(request):
     # Filtrar os equipamentos com base na consulta de pesquisa, se houver
-    query = request.GET.get('q')
+    query = request.GET.get("q")
     if query:
         equipamentos = Equipamento.objects.filter(nome__icontains=query)
     else:
         equipamentos = Equipamento.objects.all()
 
-    context = {
-        'equipamentos': equipamentos
-    }
+    context = {"equipamentos": equipamentos}
     return render(request, "listar_equipamentos.html", context)
 
 
@@ -370,6 +371,7 @@ def reagendar_agendamento(request, agendamento_id):
     else:
         return JsonResponse({"erro": "Método não permitido"}, status=405)
 
+
 @login_required
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está autenticado
@@ -418,6 +420,7 @@ def cancelar_agendamento(request, agendamento_id):
         # Se o agendamento não for encontrado, levantar uma exceção Http404
         raise Http404("O agendamento não foi encontrado.")
 
+
 @staff_member_required
 def editar_equipamento(request):
     if request.method == "POST":
@@ -447,6 +450,7 @@ def editar_equipamento(request):
         return render(
             request, "editar_equipamento.html", {"equipamentos": equipamentos}
         )
+
 
 @staff_member_required
 def cadastrar_equipamento(request):
@@ -479,7 +483,7 @@ def cadastrar_equipamento(request):
             messages.success(request, "O equipamento foi salvo com sucesso.")
 
             # Redireciona o usuário para a página de visualização de equipamentos
-            return render(request, "cadastrar_equipamento.html", {'success': True})
+            return render(request, "cadastrar_equipamento.html", {"success": True})
 
         except Exception as e:
             # Se ocorrer um erro ao salvar, exibe uma mensagem de erro
@@ -488,6 +492,7 @@ def cadastrar_equipamento(request):
 
     else:
         return render(request, "cadastrar_equipamento.html")
+
 
 @staff_member_required
 def excluir_equipamento(request):
@@ -522,16 +527,15 @@ def excluir_equipamento(request):
             # Redireciona o usuário de volta para a página de excluir equipamento
             return redirect("excluir_equipamento")
     else:
-        query = request.GET.get('search')
+        query = request.GET.get("search")
         if query:
-            equipamentos = Equipamento.objects.filter(
-                nome__icontains=query
-            )
+            equipamentos = Equipamento.objects.filter(nome__icontains=query)
         else:
             equipamentos = Equipamento.objects.all()
         return render(
             request, "excluir_equipamento.html", {"equipamentos": equipamentos}
         )
+
 
 @staff_member_required
 def confirmar_exclusao_equipamento(request, equipamento_id):

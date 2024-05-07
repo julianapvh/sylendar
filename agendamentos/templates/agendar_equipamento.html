@@ -73,8 +73,24 @@
                             text: data.message,
                             showConfirmButton: false,
                             timer: 5000 // Fecha automaticamente após 5 segundos
+                        }).then((result) => {
+                            // Após a mensagem de sucesso, perguntar ao cliente se deseja fazer outro agendamento
+                            Swal.fire({
+                                title: 'Deseja fazer outro agendamento?',
+                                showDenyButton: true,
+                                showCancelButton: true,
+                                confirmButtonText: `Sim`,
+                                denyButtonText: `Não`,
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Se o cliente clicar em "Sim", recarregar a página para fazer outro agendamento
+                                    window.location.reload();
+                                } else if (result.isDenied) {
+                                    // Se o cliente clicar em "Não", redirecionar para a página de seus agendamentos
+                                    window.location.href = "{% url 'cliente' %}";
+                                }
+                            })
                         });
-                        window.location.reload(); // Recarrega a página após o agendamento bem-sucedido
                     } else {
                         // Exibe a mensagem de erro na div errorDiv
                         document.getElementById('errorDiv').innerHTML = '<p class="error_message">' + data.message + '</p>';
@@ -86,6 +102,7 @@
             });
         });
     </script>
+    
     
 </body>
 

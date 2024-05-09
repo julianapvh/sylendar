@@ -37,7 +37,8 @@
                     <option value="3" selected>3 dias</option>
                 </select>
 
-                <input type="submit" value="Agendar">
+                <input type="submit" id="submitBtn" value="Agendar">
+
             </form>
     
             <div id="errorDiv"></div> <!-- Div para exibir mensagens de erro -->
@@ -54,6 +55,10 @@
             document.getElementById('agendarForm').addEventListener('submit', function(e) {
                 e.preventDefault(); // Impede o envio padrão do formulário
                 
+                // Desabilita o botão de envio e exibe "Aguarde..."
+                document.getElementById('submitBtn').setAttribute('disabled', 'disabled');
+                document.getElementById('submitBtn').value = 'Aguarde...';
+    
                 // Envia uma solicitação POST para agendar_equipamento
                 fetch('{% url 'agendar_equipamento' %}', {
                     method: 'POST',
@@ -92,16 +97,25 @@
                             })
                         });
                     } else {
+                        // Habilita o botão de envio e restaura o texto
+                        document.getElementById('submitBtn').removeAttribute('disabled');
+                        document.getElementById('submitBtn').value = 'Agendar';
+                        
                         // Exibe a mensagem de erro na div errorDiv
                         document.getElementById('errorDiv').innerHTML = '<p class="error_message">' + data.message + '</p>';
                     }
                 })
                 .catch(error => {
+                    // Habilita o botão de envio e restaura o texto
+                    document.getElementById('submitBtn').removeAttribute('disabled');
+                    document.getElementById('submitBtn').value = 'Agendar';
+                    
                     console.error('Erro:', error);
                 });
             });
         });
     </script>
+    
     
     
 </body>

@@ -12,6 +12,8 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+
+from tcc_django.settings import EMAIL_HOST_USER
 from .models import HistoricoAgendamento, User
 from django.db.models import Count, DateTimeField, F, Q
 from django.http import (
@@ -44,6 +46,9 @@ import logging
 from django.core.paginator import Paginator
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.core.mail import send_mail
+from django.contrib.auth.models import User
+from django.template.loader import render_to_string
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
@@ -179,17 +184,24 @@ def agendar_equipamento(request):
             # Obtenha o equipamento
             equipamento = Equipamento.objects.get(pk=equipamento_id)
 
+            # Verifique se há equipamentos disponíveis no estoque
+            if equipamento.quantidade_disponivel <= 0:
+                return JsonResponse(
+                    {
+                        "success": False,
+                        "message": "Não há equipamentos disponíveis no estoque para este agendamento.",
+                    },
+                    status=400,
+                )
+            
             # Verifique a disponibilidade do equipamento
             agendamentos_conflitantes = Agendamento.objects.filter(
-                Q(data=data_hora_consciente.date(), hora=data_hora_consciente.time())
-                | Q(data_entrega_prevista__gte=data_hora_consciente)
-                & Q(
-                    data__lte=data_hora_consciente.date(),
-                    hora__lte=data_hora_consciente.time(),
-                    equipamento=equipamento,
-                )
+                Q(data=data_hora_consciente.date(), hora=data_hora_consciente.time()) |
+                (Q(data_entrega_prevista__gte=data_hora_consciente) &
+                 Q(data__lte=data_hora_consciente.date(), hora__lte=data_hora_consciente.time())) &
+                Q(equipamento=equipamento)
             )
-
+            
             if agendamentos_conflitantes.exists():
                 return JsonResponse(
                     {
@@ -198,6 +210,8 @@ def agendar_equipamento(request):
                     },
                     status=400,
                 )
+
+
 
             # Criar o agendamento
             Agendamento.objects.create(
@@ -208,6 +222,20 @@ def agendar_equipamento(request):
                 quantidade_dias=quantidade_dias,
                 tipo_servico=tipo_servico,
             )
+            
+            # Obtenha o objeto de usuário com base no nome de usuário
+            usuario = request.user
+            
+            # Chame a função enviar_email passando os parâmetros necessários
+            enviar_email(
+                usuario, 
+                "Agendamento Confirmado", 
+                "Seu agendamento foi confirmado com sucesso!",
+                equipamento.nome,  # 
+                data_hora_consciente.date(),
+                data_hora_consciente.time()
+            )
+
 
             # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
             return JsonResponse(
@@ -714,3 +742,26 @@ def obter_dados_equipamento(request):
         "quantidade_disponivel": equipamento.quantidade_disponivel,
     }
     return JsonResponse(data)
+
+
+
+################ função para envio de notificações via e-mail ##########################
+
+
+
+def enviar_email(usuario, assunto, mensagem, equipamento, data, hora):    
+    # Renderize o corpo do e-mail usando um template HTML
+    email_html = render_to_string(
+        'email_agendamento_confirmado.html',
+        {'usuario': usuario, 'equipamento': equipamento, 'data': data, 'hora': hora}
+    )
+
+    # Envie o e-mail
+    send_mail(
+        assunto,
+        mensagem,
+        EMAIL_HOST_USER,
+        [usuario.email],
+        html_message=email_html,
+        fail_silently=False,
+    )

@@ -12,11 +12,11 @@ Este é um sistema de agendamentos desenvolvido para auxiliar na gestão e organ
 
 ## Tecnologias Utilizadas
 
-- **Linguagem de Programação:** Python ![Python](https://img.icons8.com/color/48/000000/python.png)
-- **Framework Web:** Django ![Django](https://img.icons8.com/color/48/000000/django.png)
-- **Banco de Dados:** MySQL ![MySQL](https://img.icons8.com/color/48/000000/mysql.png)
-- **Frontend:** HTML, CSS, JavaScript ![HTML](https://img.icons8.com/color/48/000000/html-5.png) ![CSS](https://img.icons8.com/color/48/000000/css3.png) ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png)
-- **Controle de Versão:** Git ![Git](https://img.icons8.com/color/48/000000/git.png)
+- ![Python](https://img.icons8.com/color/48/000000/python.png) **Linguagem de Programação:** Python
+- ![Django](https://img.icons8.com/color/48/000000/django.png) **Framework Web:** Django
+- ![MySQL](https://img.icons8.com/color/48/000000/mysql.png) **Banco de Dados:** MySQL
+- ![HTML](https://img.icons8.com/color/48/000000/html-5.png) ![CSS](https://img.icons8.com/color/48/000000/css3.png) ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png) **Frontend:** HTML, CSS, JavaScript
+- ![Git](https://img.icons8.com/color/48/000000/git.png) **Controle de Versão:** Git
 
 ## Objetivo
 

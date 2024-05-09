@@ -223,17 +223,14 @@ def agendar_equipamento(request):
                 tipo_servico=tipo_servico,
             )
             
-            # Obtenha o objeto de usuário com base no nome de usuário
-            usuario = request.user
-            
-            # Chame a função enviar_email passando os parâmetros necessários
+            # Envio de e-mail de confirmação do novo agendamento
             enviar_email(
-                usuario, 
-                "Agendamento Confirmado", 
-                "Seu agendamento foi confirmado com sucesso!",
-                equipamento.nome,  # 
-                data_hora_consciente.date(),
-                data_hora_consciente.time()
+                usuario=request.user,
+                assunto="Novo Agendamento Confirmado",
+                equipamento_nome=request.POST.get('equipamento_nome'),  # Nome do equipamento
+                data=request.POST.get('data'),
+                hora=request.POST.get('hora'),
+                template='email_agendamento_confirmado.html'  # Template HTML para e-mail de confirmação de novo agendamento
             )
 
 
@@ -384,6 +381,18 @@ def reagendar_agendamento(request, agendamento_id):
                 agendamento.data = nova_data
                 agendamento.hora = nova_hora
                 agendamento.save()
+
+                # Envie o e-mail de notificação de reagendamento
+                enviar_email(
+                
+                    usuario=request.user,  # Usuário do agendamento
+                    assunto="Agendamento Reagendado",
+                    equipamento_nome=agendamento.equipamento.nome,  # Nome do equipamento do agendamento
+                    data=nova_data,
+                    hora=nova_hora,
+                    template='email_reagendamento.html'  # Template HTML para e-mail de notificação de reagendamento
+                )
+
                 return JsonResponse({"mensagem": "Agendamento reagendado com sucesso!"})
             except ValueError:
                 return JsonResponse(
@@ -400,19 +409,20 @@ def reagendar_agendamento(request, agendamento_id):
         return JsonResponse({"erro": "Método não permitido"}, status=405)
 
 
+
+import logging
+
+logger = logging.getLogger(__name__)
+
 @login_required
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está autenticado
     if not request.user.is_authenticated:
-        return redirect(
-            "login"
-        )  # Redirecionar para a página de login se não estiver autenticado
+        return redirect("login")  # Redirecionar para a página de login se não estiver autenticado
 
     try:
         # Obter o agendamento pelo ID
-        agendamento = get_object_or_404(
-            Agendamento, pk=agendamento_id, cliente_nome=request.user
-        )
+        agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
 
         # Verificar se o agendamento já foi cancelado
         if agendamento.cancelado:
@@ -421,9 +431,7 @@ def cancelar_agendamento(request, agendamento_id):
         # Verificar se o agendamento pode ser cancelado
         agora = timezone.now()
         data_hora_agendamento = datetime.combine(agendamento.data, agendamento.hora)
-        data_hora_agendamento = timezone.make_aware(
-            data_hora_agendamento, timezone.get_current_timezone()
-        )
+        data_hora_agendamento = timezone.make_aware(data_hora_agendamento, timezone.get_current_timezone())
         tempo_minimo_cancelamento = data_hora_agendamento - timedelta(minutes=30)
         if agora >= tempo_minimo_cancelamento:
             # Se já passou do tempo mínimo de cancelamento, retorne uma mensagem de erro
@@ -441,12 +449,30 @@ def cancelar_agendamento(request, agendamento_id):
         # Incrementar a quantidade disponível do equipamento associado
         equipamento.quantidade_disponivel += 1
         equipamento.save()
+        
+        # Obtenha o objeto de usuário com base no nome de usuário
+        usuario = request.user
+        
+        # Definir data_hora_consciente
+        data_hora_consciente = data_hora_agendamento
+        
+        # Enviar e-mail de notificação de cancelamento
+        enviar_email(
+            usuario,
+            "Agendamento Cancelado",
+            equipamento.nome,  # Passando apenas o nome do equipamento
+            data_hora_consciente.date(),
+            data_hora_consciente.time(),
+            'email_cancelamento.html'
+        )
+
 
         # Redirecionar para a página de meus agendamentos ou para onde desejar
         return redirect("meus_agendamentos")
     except Agendamento.DoesNotExist:
         # Se o agendamento não for encontrado, levantar uma exceção Http404
         raise Http404("O agendamento não foi encontrado.")
+
 
 
 @staff_member_required
@@ -747,21 +773,25 @@ def obter_dados_equipamento(request):
 
 ################ função para envio de notificações via e-mail ##########################
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
 
-
-def enviar_email(usuario, assunto, mensagem, equipamento, data, hora):    
-    # Renderize o corpo do e-mail usando um template HTML
-    email_html = render_to_string(
-        'email_agendamento_confirmado.html',
-        {'usuario': usuario, 'equipamento': equipamento, 'data': data, 'hora': hora}
-    )
+def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
+    # Renderize o corpo do e-mail usando um template HTML correspondente
+    email_html = render_to_string(template, {
+        'usuario': usuario, 
+        'equipamento_nome': equipamento_nome,  # Passando apenas o nome do equipamento
+        'data': data, 
+        'hora': hora
+    })
 
     # Envie o e-mail
     send_mail(
         assunto,
-        mensagem,
+        '',  # Corpo do e-mail em branco, pois já estamos enviando o HTML
         EMAIL_HOST_USER,
         [usuario.email],
         html_message=email_html,
         fail_silently=False,
     )
+

@@ -1,18 +1,23 @@
-# Sistema de Agendamentos
+# Sistema de Agendamentos para Equipamentos
 
-Este é um sistema de agendamentos desenvolvido para auxiliar na organização e gerenciamento de compromissos e horários. Com este sistema, é possível registrar eventos, consultar disponibilidade, agendar compromissos e muito mais.
+Este é um sistema de agendamentos desenvolvido para auxiliar na gestão e organização do uso de equipamentos em ambientes como escolas, empresas, laboratórios e outros. Com este sistema, os usuários podem facilmente agendar equipamentos, verificar disponibilidade, gerenciar reservas e receber notificações sobre seus agendamentos.
 
-## Funcionalidades
+## Funcionalidades Principais
 
-- **Registro de Eventos:** Os usuários podem registrar eventos, como reuniões, compromissos, etc.
-- **Consulta de Disponibilidade:** Os usuários podem verificar a disponibilidade de horários para agendar novos compromissos.
-- **Agendamento de Compromissos:** Os usuários podem agendar novos compromissos de forma simples e rápida.
-- **Notificações:** O sistema pode enviar notificações para lembrar os usuários sobre compromissos agendados.
+- **Agendamento de Equipamentos:** Os usuários podem agendar equipamentos para uso em datas e horários específicos.
+- **Verificação de Disponibilidade:** O sistema permite aos usuários verificar a disponibilidade dos equipamentos antes de fazer um agendamento.
+- **Notificações Automáticas:** Os usuários recebem notificações automáticas para lembrá-los de seus agendamentos e quaisquer alterações nos mesmos.
+- **Gerenciamento de Reservas:** Os administradores podem visualizar e gerenciar todas as reservas de equipamentos, garantindo um uso eficiente dos recursos.
+- **Interface Intuitiva:** O sistema possui uma interface amigável e fácil de usar, tornando o processo de agendamento simples e acessível para todos os usuários.
 
 ## Tecnologias Utilizadas
 
-- **Linguagem de Programação:** Python
-- **Framework Web:** Django
-- **Banco de Dados:** MYSQL
-- **Frontend:** HTML, CSS, JavaScript
-- **Controle de Versão:** Git
+![Python](https://img.icons8.com/color/48/000000/python.png) ![Django](https://img.icons8.com/color/48/000000/django.png) ![MySQL](https://img.icons8.com/color/48/000000/mysql.png) ![HTML](https://img.icons8.com/color/48/000000/html-5.png) ![CSS](https://img.icons8.com/color/48/000000/css3.png) ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png) ![Git](https://img.icons8.com/color/48/000000/git.png)
+
+## Objetivo
+
+O objetivo principal deste sistema é oferecer uma solução eficiente para o agendamento de equipamentos, contribuindo para a otimização dos processos de reserva e utilização de recursos em diversos contextos, desde instituições educacionais até empresas de pesquisa e desenvolvimento.
+
+## Contribuição
+
+Este projeto está em constante desenvolvimento e melhorias são sempre bem-vindas. Se você tiver sugestões, correções ou desejar contribuir de alguma forma, sinta-se à vontade para abrir uma issue ou enviar um pull request.

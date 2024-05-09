@@ -12,13 +12,7 @@ Este é um sistema de agendamentos desenvolvido para auxiliar na gestão e organ
 
 ## Tecnologias Utilizadas
 
-- ![Python](https://img.icons8.com/color/48/000000/python.png)
-- ![Django](https://img.icons8.com/color/48/000000/django.png)
-- ![MySQL](https://img.icons8.com/color/48/000000/mysql.png)
-- ![HTML](https://img.icons8.com/color/48/000000/html-5.png)
-- ![CSS](https://img.icons8.com/color/48/000000/css3.png)
-- ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png)
-- ![Git](https://img.icons8.com/color/48/000000/git.png)
+![Python](https://img.icons8.com/color/48/000000/python.png) ![Django](https://img.icons8.com/color/48/000000/django.png) ![MySQL](https://img.icons8.com/color/48/000000/mysql.png) ![HTML](https://img.icons8.com/color/48/000000/html-5.png) ![CSS](https://img.icons8.com/color/48/000000/css3.png) ![JavaScript](https://img.icons8.com/color/48/000000/javascript.png) ![Git](https://img.icons8.com/color/48/000000/git.png)
 
 ## Objetivo
 

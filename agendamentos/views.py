@@ -49,6 +49,8 @@ from django.dispatch import receiver
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
+from .forms import UserProfileForm
+
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
@@ -795,3 +797,18 @@ def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
         fail_silently=False,
     )
 
+
+################ view para perfil do usuário #############################################
+
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('cliente')  # Redireciona de volta para a página de perfil após a atualização
+    else:
+        form = UserProfileForm(instance=request.user)  # Preenche o formulário com as informações atuais do usuário
+
+    return render(request, 'profile.html', {'form': form})

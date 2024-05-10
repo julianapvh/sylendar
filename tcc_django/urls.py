@@ -110,6 +110,8 @@ urlpatterns = [
         auth_views.PasswordResetCompleteView.as_view(),
         name="password_reset_complete",
     ),
+    path('perfil/', views.profile, name='perfil'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

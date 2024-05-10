@@ -55,8 +55,15 @@ class UserRegistrationForm(forms.ModelForm):
 
 class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
-    nome_completo = forms.CharField(label="Nome Completo")
-    telefone = forms.CharField(label="Telefone")
+    first_name = forms.CharField(label="Primeiro Nome")  # Corrigido para corresponder ao campo no modelo de usuário
+    last_name = forms.CharField(label="Sobrenome")  # Corrigido para corresponder ao campo no modelo de usuário
+    telefone = forms.CharField(label="Telefone")  # Corrigido para corresponder ao campo no modelo de usuário
 
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + ("email", "nome_completo", "telefone")
+        fields = UserCreationForm.Meta.fields + ("email", "first_name", "last_name", "telefone")  # Corrigido para adicionar o campo "telefone"
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'email', 'telefone']

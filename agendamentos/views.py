@@ -227,7 +227,7 @@ def agendar_equipamento(request):
             enviar_email(
                 usuario=request.user,
                 assunto="Novo Agendamento Confirmado",
-                equipamento_nome=request.POST.get('equipamento_nome'),  # Nome do equipamento
+                equipamento_nome=equipamento.nome,  # Nome do equipamento
                 data=request.POST.get('data'),
                 hora=request.POST.get('hora'),
                 template='email_agendamento_confirmado.html'  # Template HTML para e-mail de confirmação de novo agendamento

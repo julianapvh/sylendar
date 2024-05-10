@@ -6,6 +6,7 @@
     <title>Sistema de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <style>
         /* Estilo para o botão de perfil */
         .profile-button {
@@ -26,8 +27,8 @@
                 </div>
             {% endfor %}
             
-            <!-- Botão de perfil -->
-            <a href="{% url 'perfil' %}" class="btn btn-primary profile-button">Perfil</a>
+            <!-- Botão de perfil com ícone e dica -->
+            <a href="{% url 'perfil' %}" class="btn btn-primary profile-button" title="Editar Perfil"><i class="fas fa-user"></i></a>
 
             
             <h1 class="mb-4">Página de Agendamentos</h1>
@@ -57,4 +58,3 @@
 </body>
 
 </html>
-

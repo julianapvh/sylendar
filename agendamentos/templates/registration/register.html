@@ -44,44 +44,48 @@
                 <div class="form-group row">
                     <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
                     <div class="col-sm-10">
-                        {{ form.email }}
+                        <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
+                        <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
                     <div class="col-sm-10">
-                        {{ form.telefone }}
+                        <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
+                        <small class="form-text text-muted">Ex: (99) 99999-9999 ou (99) 9999-9999</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="id_first_name" class="col-sm-2 col-form-label text-right">Primeiro Nome:</label>
                     <div class="col-sm-10">
-                        {{ form.first_name }}
+                        <input type="text" class="form-control" id="id_first_name" name="first_name" required>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="id_last_name" class="col-sm-2 col-form-label text-right">Sobrenome:</label>
                     <div class="col-sm-10">
-                        {{ form.last_name }}
+                        <input type="text" class="form-control" id="id_last_name" name="last_name" required>
                     </div>
                 </div>
                 
                 <div class="form-group row">
                     <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
                     <div class="col-sm-10">
-                        {{ form.username }}
+                        <input type="text" class="form-control" id="id_username" name="username" required>
+                        <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
                     <div class="col-sm-10">
-                        {{ form.password1 }}
+                        <input type="password" class="form-control" id="id_password1" name="password1" required>
+                        <small class="form-text text-muted">Pelo menos 8 caracteres. Não pode ser inteiramente numérica. Não pode conter o nome de usuário.</small>
                     </div>
                 </div>
                 <div class="form-group row">
                     <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
                     <div class="col-sm-10">
-                        {{ form.password2 }}
+                        <input type="password" class="form-control" id="id_password2" name="password2" required>
                     </div>
                 </div>
                 <div class="form-group row">
@@ -93,7 +97,7 @@
             </form>
         </div>
     </div>
-
+    
     <script>
         // Event listener for form submission
         document.addEventListener('DOMContentLoaded', function () {
@@ -145,7 +149,30 @@
                 });
             });
         });
+        
+        // Função para formatar o número de telefone enquanto o usuário digita
+        function formatarTelefone(input) {
+            // Remove qualquer caracter que não seja número do input
+            var telefone = input.value.replace(/\D/g, '');
+    
+            // Verifica se o telefone tem 11 dígitos (celular)
+            if (telefone.length === 11) {
+                input.value = telefone.replace(/^(\d{2})(\d{5})(\d{4})$/, '($1) $2-$3');
+            } 
+            // Verifica se o telefone tem 10 dígitos (telefone fixo)
+            else if (telefone.length === 10) {
+                input.value = telefone.replace(/^(\d{2})(\d{4})(\d{4})$/, '($1) $2-$3');
+            }
+            // Se não se encaixa em nenhum dos formatos, mantenha o valor original
+            else {
+                input.value = telefone;
+            }
+        }
+    
+        // Event listener para chamar a função formatarTelefone quando o usuário digita
+        document.getElementById('id_telefone').addEventListener('input', function() {
+            formatarTelefone(this);
+        });
     </script>
 </body>
 </html>
-

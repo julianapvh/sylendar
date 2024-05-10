@@ -798,7 +798,7 @@ def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
     )
 
 
-################ view para perfil do usuário #############################################
+################ view para edição de perfil do usuário #############################################
 
 
 @login_required

@@ -4,6 +4,7 @@ from .models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from agendamentos.models import User
+from django.core.validators import RegexValidator
 
 
 class AgendamentoForm(forms.ModelForm):
@@ -55,9 +56,9 @@ class UserRegistrationForm(forms.ModelForm):
 
 class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
-    first_name = forms.CharField(label="Primeiro Nome")  # Corrigido para corresponder ao campo no modelo de usuário
-    last_name = forms.CharField(label="Sobrenome")  # Corrigido para corresponder ao campo no modelo de usuário
-    telefone = forms.CharField(label="Telefone")  # Corrigido para corresponder ao campo no modelo de usuário
+    first_name = forms.CharField(label="Primeiro Nome")
+    last_name = forms.CharField(label="Sobrenome")
+    telefone = forms.CharField(label="Telefone", validators=[RegexValidator(regex=r'^\d{11}$', message='O número de telefone deve ter 11 dígitos.')])
 
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + ("email", "first_name", "last_name", "telefone")  # Corrigido para adicionar o campo "telefone"

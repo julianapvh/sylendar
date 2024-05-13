@@ -3,6 +3,7 @@ from django.contrib.auth.admin import UserAdmin
 from .models import Agendamento, Equipamento, User
 from .forms import UserRegistrationForm, UserCreationFormWithExtraFields
 
+
 class CustomUserAdmin(UserAdmin):
     add_form = UserCreationFormWithExtraFields
     fieldsets = (
@@ -45,6 +46,7 @@ class CustomUserAdmin(UserAdmin):
             },
         ),
     )
+
 
 # Registrar os modelos no painel de administração
 admin.site.register(Equipamento)

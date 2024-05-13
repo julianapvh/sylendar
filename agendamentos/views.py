@@ -74,10 +74,11 @@ def login_view(request):
     else:
         # If the request is GET, render the login page
         return render(request, "registration/login.html")
-        
+
+
 def format_phone_number(phone_number):
     # Remova todos os caracteres não numéricos
-    digits = ''.join(filter(str.isdigit, phone_number))
+    digits = "".join(filter(str.isdigit, phone_number))
     # Formate o número de acordo com o padrão desejado, por exemplo: (99) 99999-9999
     if len(digits) == 11:
         return f"({digits[:2]}) {digits[2:7]}-{digits[7:]}"
@@ -87,14 +88,12 @@ def format_phone_number(phone_number):
         return phone_number  # Retorne o número original se não for possível formatar
 
 
-
-
 def register(request):
     if request.method == "POST":
         form = UserCreationFormWithExtraFields(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.telefone = format_phone_number(form.cleaned_data['telefone'])
+            user.telefone = format_phone_number(form.cleaned_data["telefone"])
             user.save()
             assign_role(user, "cliente")
             messages.success(
@@ -105,14 +104,11 @@ def register(request):
         else:
             for field, errors in form.errors.items():
                 for error in errors:
-                    messages.error(
-                        request, f"Erro no campo '{field}': {error}"
-                    )
+                    messages.error(request, f"Erro no campo '{field}': {error}")
             print(form.errors)
     else:
         form = UserCreationFormWithExtraFields()
     return render(request, "registration/register.html", {"form": form})
-
 
 
 def home(request):

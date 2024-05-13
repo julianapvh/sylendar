@@ -73,8 +73,9 @@
                     <div class="col-sm-10">
                         <input type="text" class="form-control" id="id_username" name="username" required>
                         <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
+                        <div id="username-exists-message" style="color: red; font-size: 0.8em; display: none;">Este nome de usuário já está em uso.</div>
                     </div>
-                </div>
+                </div>                
                 <div class="form-group row">
                     <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
                     <div class="col-sm-10">
@@ -86,10 +87,10 @@
                     <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
                     <div class="col-sm-10">
                         <input type="password" class="form-control" id="id_password2" name="password2" required placeholder="Repita a senha">
+                        <div id="password-match-message" style="color: red; font-size: 0.8em; display: none;">As senhas digitadas não correspondem.</div>
                     </div>
                 </div>
                 
-                </div>
                 <div class="form-group row">
                     <div class="col-sm-10 offset-sm-2">
                         <button id="submit-btn" type="button" class="btn btn-primary">Cadastrar</button>
@@ -106,7 +107,10 @@
             const form = document.getElementById('register-form');
             const submitButton = document.getElementById('submit-btn');
             const loadingMessage = document.getElementById('loading-message');
-    
+            const password1Input = document.getElementById('id_password1');
+            const password2Input = document.getElementById('id_password2');
+            const passwordMatchMessage = document.getElementById('password-match-message');
+
             // Event listener for button click
             submitButton.addEventListener('click', function () {
                 // Show loading message
@@ -114,7 +118,16 @@
                 
                 // Serialize form data
                 const formData = new FormData(form);
-    
+
+                // Compare passwords before submitting the form
+                if (password1Input.value !== password2Input.value) {
+                    // Display error message if passwords don't match
+                    passwordMatchMessage.style.display = 'block';
+                    // Hide loading message
+                    loadingMessage.style.display = 'none';
+                    return; // Prevent form submission
+                }
+
                 // Send AJAX request
                 fetch('/register/', {
                     method: 'POST',
@@ -175,6 +188,41 @@
         document.getElementById('id_telefone').addEventListener('input', function() {
             formatarTelefone(this);
         });
+        
+        // Event listener for username input
+        document.getElementById('id_username').addEventListener('input', function() {
+            const username = this.value;
+            if (username.trim() !== '') {
+                fetch(`/api/check_username/?username=${username}`, {
+                    method: 'GET',
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw new Error('Erro ao verificar o nome de usuário.');
+                    }
+                })
+                .then(data => {
+                    if (data.exists) {
+                        document.getElementById('username-exists-message').style.display = 'block';
+                    } else {
+                        document.getElementById('username-exists-message').style.display = 'none';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                });
+            } else {
+                document.getElementById('username-exists-message').style.display = 'none';
+            }
+        });
+        
+        
     </script>
 </body>
 </html>

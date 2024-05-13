@@ -5,10 +5,13 @@ from .forms import UserRegistrationForm, UserCreationFormWithExtraFields
 
 
 class CustomUserAdmin(UserAdmin):
-    add_form = UserCreationFormWithExtraFields  
+    add_form = UserCreationFormWithExtraFields
     fieldsets = (
         (None, {"fields": ("username", "password")}),
-        ("Informações pessoais", {"fields": ("first_name", "last_name", "telefone", "email")}),  
+        (
+            "Informações pessoais",
+            {"fields": ("first_name", "last_name", "telefone", "email")},
+        ),
         (
             "Permissões",
             {
@@ -24,12 +27,25 @@ class CustomUserAdmin(UserAdmin):
         ("Datas importantes", {"fields": ("last_login", "date_joined")}),
     )
     add_fieldsets = (
-        (None, {
-            'classes': ('wide',),
-            'fields': ('username', 'password1', 'password2', 'first_name', 'last_name', 'telefone', 'email', 'is_active', 'is_staff', 'is_superuser')}
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "password1",
+                    "password2",
+                    "first_name",
+                    "last_name",
+                    "telefone",
+                    "email",
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                ),
+            },
         ),
     )
-
 
 
 # Registrar os modelos no painel de administração

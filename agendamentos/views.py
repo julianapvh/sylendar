@@ -50,33 +50,29 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from .forms import UserProfileForm
-
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.contrib.auth import logout
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
-def login(request):
+def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
         password = request.POST.get("password")
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            # Verifique se o usuário é um superusuário ou um administrador
-            if user.is_superuser:
-                # Se sim, redirecione para a página de administração
-                return redirect("administrador")
-            else:
-                # Se não, redirecione para a página do cliente
-                return redirect("cliente")
+            return redirect("home")  # Redirect to home page after successful login
         else:
-            # Caso as credenciais estejam incorretas
+            # If the credentials are incorrect
             return render(
                 request,
                 "registration/login.html",
-                {"error": "Credenciais inválidas. Tente novamente."},
+                {"error": "Invalid credentials. Please try again."},
             )
     else:
-        # Se a solicitação for GET, renderize a página de login
+        # If the request is GET, render the login page
         return render(request, "registration/login.html")
 
 
@@ -195,15 +191,20 @@ def agendar_equipamento(request):
                     },
                     status=400,
                 )
-            
+
             # Verifique a disponibilidade do equipamento
             agendamentos_conflitantes = Agendamento.objects.filter(
-                Q(data=data_hora_consciente.date(), hora=data_hora_consciente.time()) |
-                (Q(data_entrega_prevista__gte=data_hora_consciente) &
-                 Q(data__lte=data_hora_consciente.date(), hora__lte=data_hora_consciente.time())) &
-                Q(equipamento=equipamento)
+                Q(data=data_hora_consciente.date(), hora=data_hora_consciente.time())
+                | (
+                    Q(data_entrega_prevista__gte=data_hora_consciente)
+                    & Q(
+                        data__lte=data_hora_consciente.date(),
+                        hora__lte=data_hora_consciente.time(),
+                    )
+                )
+                & Q(equipamento=equipamento)
             )
-            
+
             if agendamentos_conflitantes.exists():
                 return JsonResponse(
                     {
@@ -212,8 +213,6 @@ def agendar_equipamento(request):
                     },
                     status=400,
                 )
-
-
 
             # Criar o agendamento
             Agendamento.objects.create(
@@ -224,17 +223,16 @@ def agendar_equipamento(request):
                 quantidade_dias=quantidade_dias,
                 tipo_servico=tipo_servico,
             )
-            
+
             # Envio de e-mail de confirmação do novo agendamento
             enviar_email(
                 usuario=request.user,
                 assunto="Novo Agendamento Confirmado",
                 equipamento_nome=equipamento.nome,  # Nome do equipamento
-                data=request.POST.get('data'),
-                hora=request.POST.get('hora'),
-                template='email_agendamento_confirmado.html'  # Template HTML para e-mail de confirmação de novo agendamento
+                data=request.POST.get("data"),
+                hora=request.POST.get("hora"),
+                template="email_agendamento_confirmado.html",  # Template HTML para e-mail de confirmação de novo agendamento
             )
-
 
             # Retorne uma resposta JSON indicando que o agendamento foi bem-sucedido
             return JsonResponse(
@@ -386,13 +384,12 @@ def reagendar_agendamento(request, agendamento_id):
 
                 # Envie o e-mail de notificação de reagendamento
                 enviar_email(
-                
                     usuario=request.user,  # Usuário do agendamento
                     assunto="Agendamento Reagendado",
                     equipamento_nome=agendamento.equipamento.nome,  # Nome do equipamento do agendamento
                     data=nova_data,
                     hora=nova_hora,
-                    template='email_reagendamento.html'  # Template HTML para e-mail de notificação de reagendamento
+                    template="email_reagendamento.html",  # Template HTML para e-mail de notificação de reagendamento
                 )
 
                 return JsonResponse({"mensagem": "Agendamento reagendado com sucesso!"})
@@ -411,20 +408,22 @@ def reagendar_agendamento(request, agendamento_id):
         return JsonResponse({"erro": "Método não permitido"}, status=405)
 
 
-
-import logging
-
 logger = logging.getLogger(__name__)
+
 
 @login_required
 def cancelar_agendamento(request, agendamento_id):
     # Verificar se o usuário está autenticado
     if not request.user.is_authenticated:
-        return redirect("login")  # Redirecionar para a página de login se não estiver autenticado
+        return redirect(
+            "login"
+        )  # Redirecionar para a página de login se não estiver autenticado
 
     try:
         # Obter o agendamento pelo ID
-        agendamento = get_object_or_404(Agendamento, pk=agendamento_id, cliente_nome=request.user)
+        agendamento = get_object_or_404(
+            Agendamento, pk=agendamento_id, cliente_nome=request.user
+        )
 
         # Verificar se o agendamento já foi cancelado
         if agendamento.cancelado:
@@ -433,7 +432,9 @@ def cancelar_agendamento(request, agendamento_id):
         # Verificar se o agendamento pode ser cancelado
         agora = timezone.now()
         data_hora_agendamento = datetime.combine(agendamento.data, agendamento.hora)
-        data_hora_agendamento = timezone.make_aware(data_hora_agendamento, timezone.get_current_timezone())
+        data_hora_agendamento = timezone.make_aware(
+            data_hora_agendamento, timezone.get_current_timezone()
+        )
         tempo_minimo_cancelamento = data_hora_agendamento - timedelta(minutes=30)
         if agora >= tempo_minimo_cancelamento:
             # Se já passou do tempo mínimo de cancelamento, retorne uma mensagem de erro
@@ -451,13 +452,13 @@ def cancelar_agendamento(request, agendamento_id):
         # Incrementar a quantidade disponível do equipamento associado
         equipamento.quantidade_disponivel += 1
         equipamento.save()
-        
+
         # Obtenha o objeto de usuário com base no nome de usuário
         usuario = request.user
-        
+
         # Definir data_hora_consciente
         data_hora_consciente = data_hora_agendamento
-        
+
         # Enviar e-mail de notificação de cancelamento
         enviar_email(
             usuario,
@@ -465,16 +466,14 @@ def cancelar_agendamento(request, agendamento_id):
             equipamento.nome,  # Passando apenas o nome do equipamento
             data_hora_consciente.date(),
             data_hora_consciente.time(),
-            'email_cancelamento.html'
+            "email_cancelamento.html",
         )
-
 
         # Redirecionar para a página de meus agendamentos ou para onde desejar
         return redirect("meus_agendamentos")
     except Agendamento.DoesNotExist:
         # Se o agendamento não for encontrado, levantar uma exceção Http404
         raise Http404("O agendamento não foi encontrado.")
-
 
 
 @staff_member_required
@@ -772,25 +771,25 @@ def obter_dados_equipamento(request):
     return JsonResponse(data)
 
 
-
 ################ função para envio de notificações via e-mail ##########################
 
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 
 def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
     # Renderize o corpo do e-mail usando um template HTML correspondente
-    email_html = render_to_string(template, {
-        'usuario': usuario, 
-        'equipamento_nome': equipamento_nome,  # Passando apenas o nome do equipamento
-        'data': data, 
-        'hora': hora
-    })
+    email_html = render_to_string(
+        template,
+        {
+            "usuario": usuario,
+            "equipamento_nome": equipamento_nome,  # Passando apenas o nome do equipamento
+            "data": data,
+            "hora": hora,
+        },
+    )
 
     # Envie o e-mail
     send_mail(
         assunto,
-        '',  # Corpo do e-mail em branco, pois já estamos enviando o HTML
+        "",  # Corpo do e-mail em branco, pois já estamos enviando o HTML
         EMAIL_HOST_USER,
         [usuario.email],
         html_message=email_html,
@@ -803,12 +802,16 @@ def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
 
 @login_required
 def profile(request):
-    if request.method == 'POST':
+    if request.method == "POST":
         form = UserProfileForm(request.POST, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect('cliente')  # Redireciona de volta para a página de perfil após a atualização
+            return redirect(
+                "cliente"
+            )  # Redireciona de volta para a página de perfil após a atualização
     else:
-        form = UserProfileForm(instance=request.user)  # Preenche o formulário com as informações atuais do usuário
+        form = UserProfileForm(
+            instance=request.user
+        )  # Preenche o formulário com as informações atuais do usuário
 
-    return render(request, 'profile.html', {'form': form})
+    return render(request, "profile.html", {"form": form})

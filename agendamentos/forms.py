@@ -58,25 +58,12 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
     first_name = forms.CharField(label="Primeiro Nome")
     last_name = forms.CharField(label="Sobrenome")
-    telefone = forms.CharField(
-        label="Telefone",
-        validators=[
-            RegexValidator(
-                regex=r"^\d{11}$", message="O número de telefone deve ter 11 dígitos."
-            )
-        ],
-    )
-
+    telefone = forms.CharField(label="Telefone", required=False)
     class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + (
-            "email",
-            "first_name",
-            "last_name",
-            "telefone",
-        )  # Corrigido para adicionar o campo "telefone"
+        fields = UserCreationForm.Meta.fields + ("email", "first_name", "last_name", "telefone")
 
 
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "telefone"]
+        fields = ['first_name', 'last_name', 'email', 'telefone']

@@ -74,31 +74,45 @@ def login_view(request):
     else:
         # If the request is GET, render the login page
         return render(request, "registration/login.html")
+        
+def format_phone_number(phone_number):
+    # Remova todos os caracteres não numéricos
+    digits = ''.join(filter(str.isdigit, phone_number))
+    # Formate o número de acordo com o padrão desejado, por exemplo: (99) 99999-9999
+    if len(digits) == 11:
+        return f"({digits[:2]}) {digits[2:7]}-{digits[7:]}"
+    elif len(digits) == 10:
+        return f"({digits[:2]}) {digits[2:6]}-{digits[6:]}"
+    else:
+        return phone_number  # Retorne o número original se não for possível formatar
+
+
 
 
 def register(request):
     if request.method == "POST":
         form = UserCreationFormWithExtraFields(request.POST)
         if form.is_valid():
-            user = form.save()  # Salva o usuário criado
-            assign_role(user, "cliente")  # Atribui o papel (grupo) 'cliente' ao usuário
+            user = form.save(commit=False)
+            user.telefone = format_phone_number(form.cleaned_data['telefone'])
+            user.save()
+            assign_role(user, "cliente")
             messages.success(
                 request,
                 "Usuário cadastrado com sucesso! Faça o login para acessar sua conta.",
-            )  # Mensagem de sucesso
-            return redirect(
-                "login"
-            )  # Redireciona para a página de login após o registro bem-sucedido
+            )
+            return redirect("login")
         else:
             for field, errors in form.errors.items():
                 for error in errors:
                     messages.error(
                         request, f"Erro no campo '{field}': {error}"
-                    )  # Mensagem de erro para cada campo inválido
-            print(form.errors)  # Exibe os erros de validação no console para depuração
+                    )
+            print(form.errors)
     else:
         form = UserCreationFormWithExtraFields()
     return render(request, "registration/register.html", {"form": form})
+
 
 
 def home(request):

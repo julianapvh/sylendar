@@ -39,7 +39,7 @@ ALLOWED_HOSTS = ["*"]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://sistemadeagendamentos2-23lcg0kt.b4a.run",
-    "https://agendamentos.azurewebsites.net",
+    "https://sisagendamento.me",
     # Add other trusted origins here if needed
 ]
 

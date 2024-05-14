@@ -145,10 +145,11 @@ def administrador(request):
 def logged_out(request):
     if request.method == "POST":
         logout(request)
-        return redirect("login")
+        # Redirecione para a sua URL personalizada após o logout
+        return redirect("logged_out")
     else:
         # Se a solicitação não for POST, redirecione para onde desejar
-        return redirect("logged_out")
+        return redirect("login")
 
 
 #################  ------- Funções do Sistema ---------  ###########################

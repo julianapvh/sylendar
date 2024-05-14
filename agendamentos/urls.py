@@ -12,11 +12,15 @@ from .views import historico_agendamentos
 from django.conf.urls.static import static
 from django.conf import settings
 from agendamentos.api_views import check_username
+from .views import logged_out
+from agendamentos.views import logged_out
 
 
 tcc_django = "agendamentos"
 urlpatterns = [
     path("login/", views.login, name="login"),
+    path("accounts/logout/", auth_views.LogoutView.as_view(next_page="logged_out"), name="logout"),
+    path("logged_out/", views.logged_out, name="logged_out"),
     path("admin/", admin.site.urls),
     path("home/", views.home, name="home"),
     path("cliente/", views.cliente, name="cliente"),
@@ -64,7 +68,8 @@ urlpatterns = [
     ),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
-    path("logout/", auth_views.LogoutView.as_view(next_page="login"), name="logout"),
+    
+
     path(
         "selecionar_nova_data_hora/<int:agendamento_id>/",
         views.selecionar_nova_data_hora,

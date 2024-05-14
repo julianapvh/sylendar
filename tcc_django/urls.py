@@ -22,6 +22,7 @@ from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
+from agendamentos.views import logged_out
 
 
 tcc_django = "agendamentos"
@@ -72,6 +73,8 @@ urlpatterns = [
         cancelar_agendamento,
         name="cancelar_agendamento",
     ),
+    path("accounts/logout/", auth_views.LogoutView.as_view(next_page="logged_out"), name="logout"),
+    path("logged_out/", views.logged_out, name="logged_out"),
     path("", RedirectView.as_view(pattern_name="login", permanent=False)),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),

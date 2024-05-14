@@ -208,10 +208,17 @@
                     }
                 })
                 .then(data => {
+                    const existsMessage = document.getElementById('username-exists-message');
                     if (data.exists) {
-                        document.getElementById('username-exists-message').style.display = 'block';
+                        // Nome de usuário já em uso
+                        existsMessage.innerText = data.message;
+                        existsMessage.style.color = 'red'; // Cor vermelha para indicar erro
+                        existsMessage.style.display = 'block';
                     } else {
-                        document.getElementById('username-exists-message').style.display = 'none';
+                        // Nome de usuário disponível
+                        existsMessage.innerText = data.message;
+                        existsMessage.style.color = 'green'; // Cor verde para indicar disponibilidade
+                        existsMessage.style.display = 'block';
                     }
                 })
                 .catch(error => {
@@ -221,8 +228,9 @@
                 document.getElementById('username-exists-message').style.display = 'none';
             }
         });
-        
-        
+
+
+    
     </script>
 </body>
 </html>

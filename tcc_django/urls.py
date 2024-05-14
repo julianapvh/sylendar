@@ -16,7 +16,7 @@ from django.conf.urls import handler404, handler500
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from agendamentos import views
+from agendamentos import views, api_views
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
@@ -121,6 +121,9 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
+    path('api/check_username/', api_views.check_username, name='check_username_api'),
+
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

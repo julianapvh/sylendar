@@ -11,6 +11,7 @@ from django.views.generic import RedirectView
 from .views import historico_agendamentos
 from django.conf.urls.static import static
 from django.conf import settings
+from agendamentos.api_views import check_username
 
 
 tcc_django = "agendamentos"
@@ -119,4 +120,5 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
+    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

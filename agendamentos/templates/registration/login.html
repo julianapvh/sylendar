@@ -7,16 +7,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Adicione o link para o CSS do SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <style>
-        /* Estilos para o ícone de carregamento */
-        .loading-icon {
-            display: none; /* Inicialmente oculto */
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            color: #007bff;
+        /* Estilo para a mensagem de carregamento */
+        .swal2-title {
+            font-size: 1.5em;
         }
     </style>
 </head>
@@ -57,7 +53,6 @@
             </div>
             <button id="login-btn" type="submit" class="btn btn-primary btn-block">Login</button>
             <input type="hidden" name="next" value="{{ next }}" />
-            <i id="loading-icon" class="fas fa-spinner fa-spin loading-icon"></i> <!-- Ícone de carregamento -->
           </form>
 
           <p class="text-center">Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-link">Cadastre-se</a></p>
@@ -70,20 +65,34 @@
   </div>
 </div>
 
+<!-- Adicione o script do SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
     // Event listener for form submission
     document.addEventListener('DOMContentLoaded', function () {
         const loginForm = document.getElementById('login-form');
-        const loginButton = document.getElementById('login-btn');
-        const loadingIcon = document.getElementById('loading-icon');
 
         // Event listener for form submission
-        loginButton.addEventListener('click', function () {
-            // Show loading icon
-            loadingIcon.style.display = 'inline';
+        loginForm.addEventListener('submit', function (event) {
+            event.preventDefault(); // Prevent form submission
+            
+            // Exibir mensagem de carregamento do SweetAlert2 com a mensagem "Fazendo login..."
+            Swal.fire({
+                title: 'Fazendo login...',
+                allowOutsideClick: false,
+                onBeforeOpen: () => {
+                    Swal.showLoading();
+                }
+            });
 
-            // Submit the form
-            loginForm.submit();
+            // Submeter o formulário após 3 segundos para simular o processamento
+            setTimeout(() => {
+                loginForm.submit();
+                // Fechar a mensagem de carregamento após 4 segundos
+                setTimeout(() => {
+                    Swal.close();
+                }, 4000);
+            }, 4000);
         });
     });
 </script>

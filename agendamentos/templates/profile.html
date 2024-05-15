@@ -30,6 +30,7 @@
         {{ form.telefone }}
     </div>
     <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
+    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button> <!-- Botão de cancelar -->
 </form>
 
 <!-- Adicione o script do SweetAlert2 -->
@@ -37,6 +38,8 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const form = document.getElementById('profile-form');
+        const cancelBtn = document.getElementById('cancel-btn');
+
         form.addEventListener('submit', async function (event) {
             event.preventDefault();
             const formData = new FormData(form);
@@ -74,6 +77,12 @@
                     text: 'Ocorreu um erro ao atualizar o perfil!',
                 });
             }
+        });
+
+        // Event listener para o botão de cancelar
+        cancelBtn.addEventListener('click', function () {
+            // Redirecionar o usuário para a página anterior
+            window.history.back();
         });
     });
 </script>

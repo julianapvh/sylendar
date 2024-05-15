@@ -73,7 +73,11 @@ urlpatterns = [
         cancelar_agendamento,
         name="cancelar_agendamento",
     ),
-    path("accounts/logout/", auth_views.LogoutView.as_view(next_page="logged_out"), name="logout"),
+    path(
+        "accounts/logout/",
+        auth_views.LogoutView.as_view(next_page="logged_out"),
+        name="logout",
+    ),
     path("logged_out/", views.logged_out, name="logged_out"),
     path("", RedirectView.as_view(pattern_name="login", permanent=False)),
     path("accounts/", include("django.contrib.auth.urls")),
@@ -124,9 +128,7 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
-    path('api/check_username/', api_views.check_username, name='check_username_api'),
-
-    
+    path("api/check_username/", api_views.check_username, name="check_username_api"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 

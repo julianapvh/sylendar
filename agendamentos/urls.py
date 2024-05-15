@@ -19,7 +19,11 @@ from agendamentos.views import logged_out
 tcc_django = "agendamentos"
 urlpatterns = [
     path("login/", views.login, name="login"),
-    path("accounts/logout/", auth_views.LogoutView.as_view(next_page="logged_out"), name="logout"),
+    path(
+        "accounts/logout/",
+        auth_views.LogoutView.as_view(next_page="logged_out"),
+        name="logout",
+    ),
     path("logged_out/", views.logged_out, name="logged_out"),
     path("admin/", admin.site.urls),
     path("home/", views.home, name="home"),
@@ -68,8 +72,6 @@ urlpatterns = [
     ),
     path("accounts/", include("django.contrib.auth.urls")),
     path("register/", views.register, name="register"),
-    
-
     path(
         "selecionar_nova_data_hora/<int:agendamento_id>/",
         views.selecionar_nova_data_hora,
@@ -125,5 +127,4 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
-    
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

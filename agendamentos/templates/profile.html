@@ -1,7 +1,12 @@
 {% load static %}
 {% block content %}
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@12"></script>
+<head>
+    <title>Editar Perfil</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Adicione o link para o CSS do SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
 
 <h2>Meu Perfil</h2>
 <form method="post" id="profile-form">
@@ -25,39 +30,49 @@
     <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
 </form>
 
+<!-- Adicione o script do SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
-document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('profile-form');
-    form.addEventListener('submit', async function (event) {
-        event.preventDefault();
-        const formData = new FormData(form);
-        try {
-            const response = await fetch(form.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-CSRFToken': '{{ csrf_token }}'
-                }
-            });
-            if (response.ok) {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Perfil atualizado com sucesso!',
-                    showConfirmButton: false,
-                    timer: 1500
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('profile-form');
+        form.addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const formData = new FormData(form);
+            try {
+                // Mostrar a mensagem de carregamento
+                Swal.showLoading();
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
                 });
-            } else {
-                throw new Error('Erro ao atualizar perfil');
+                if (response.ok) {
+                    // Fechar a mensagem de carregamento
+                    Swal.close();
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Perfil atualizado com sucesso!',
+                        showConfirmButton: false,
+                        timer: 1500
+                    }).then(() => {
+                        // Redirecionar o usuário para a página anterior
+                        window.history.back();
+                    });
+                } else {
+                    throw new Error('Erro ao atualizar perfil');
+                }
+            } catch (error) {
+                console.error(error);
+                Swal.close();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Ocorreu um erro ao atualizar o perfil!',
+                });
             }
-        } catch (error) {
-            console.error(error);
-            Swal.fire({
-                icon: 'error',
-                title: 'Oops...',
-                text: 'Ocorreu um erro ao atualizar o perfil!',
-            });
-        }
+        });
     });
-});
 </script>
 {% endblock %}

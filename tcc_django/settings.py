@@ -103,7 +103,7 @@ DATABASES = {
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
         "OPTIONS": {
-            "ssl_ca": "https://github.com/julianapvh/sistema_de_agendamentos/blob/main/ssl/DigiCertGlobalRootCA.crt.pem",
+            "ssl_ca": "https://github.com/julianapvh/sistema_de_agendamentos/blob/main/ssl/ca-certificate.crt",
         },
     },
     # banco SQLITE3 para testes off-line

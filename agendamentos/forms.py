@@ -33,7 +33,6 @@ class UserRegistrationForm(forms.ModelForm):
     password2 = forms.CharField(
         label="Confirmação de senha", widget=forms.PasswordInput
     )
-    telefone = forms.CharField(label="Telefone", required=False)
 
     class Meta:
         model = User

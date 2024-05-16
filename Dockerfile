@@ -11,6 +11,7 @@ RUN pip3 install -r requirements.txt
 # Copie todo o conteúdo do diretório atual para o diretório de trabalho
 COPY . .
 
+
 # Execute o comando para coletar os arquivos estáticos
 RUN python manage.py collectstatic --noinput
 

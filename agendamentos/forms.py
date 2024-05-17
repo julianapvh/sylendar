@@ -49,7 +49,7 @@ class UserRegistrationForm(forms.ModelForm):
 
 class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
-    first_name = forms.CharField(label="Primeiro Nome")
+    first_name = forms.CharField(label="Nome")
     last_name = forms.CharField(label="Sobrenome")
     telefone = forms.CharField(label="Telefone", required=True)
 

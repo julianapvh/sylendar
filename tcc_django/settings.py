@@ -103,7 +103,7 @@ DATABASES = {
         "HOST": os.getenv("DB_HOST"),
         "PORT": os.getenv("DB_PORT"),
         "OPTIONS": {
-            "ssl_ca": "https://drive.google.com/file/d/189P13L1C67y2xeFa7mnH9SV6MkRTqd1b/view?usp=sharing",
+            "ssl_ca": os.getenv("SSL_CERTIFICATE_PATH"),
         },
     },
     # banco SQLITE3 para testes off-line

@@ -10,7 +10,7 @@ class CustomUserAdmin(UserAdmin):
         (None, {"fields": ("username", "password")}),
         (
             "Informações pessoais",
-            {"fields": ("first_name", "last_name", "telefone", "email")},
+            {"fields": ("first_name", "last_name", "email", "telefone")},
         ),
         (
             "Permissões",
@@ -37,8 +37,8 @@ class CustomUserAdmin(UserAdmin):
                     "password2",
                     "first_name",
                     "last_name",
-                    "telefone",
                     "email",
+                    "telefone",
                     "is_active",
                     "is_staff",
                     "is_superuser",

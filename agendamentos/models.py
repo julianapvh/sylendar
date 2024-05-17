@@ -32,7 +32,7 @@ class CustomUserManager(BaseUserManager):
 
 class User(AbstractUser):
     nome_completo = models.CharField(max_length=100)
-    telefone = models.CharField(max_length=15, blank=True, null=True)
+    telefone = models.CharField(max_length=15, blank=False, null=True)
     is_admin = models.BooleanField(
         default=False
     )  # Add this field to identify admin users

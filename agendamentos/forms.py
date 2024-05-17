@@ -1,10 +1,6 @@
 from django import forms
-from .models import Agendamento, Equipamento
-from .models import User
+from .models import Agendamento, Equipamento, User
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
-from agendamentos.models import User
-from django.core.validators import RegexValidator
 
 
 class AgendamentoForm(forms.ModelForm):
@@ -22,10 +18,7 @@ class EquipamentoForm(forms.ModelForm):
             "fabricante",
             "data_aquisicao",
             "quantidade_disponivel",
-        ]  # Adicione 'quantidade_disponivel'
-
-
-######################################------------MODIFICAÇÕES---------------###################################################
+        ]
 
 
 class UserRegistrationForm(forms.ModelForm):
@@ -58,7 +51,7 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
     first_name = forms.CharField(label="Primeiro Nome")
     last_name = forms.CharField(label="Sobrenome")
-    telefone = forms.CharField(label="Telefone", required=False)
+    telefone = forms.CharField(label="Telefone", required=True)
 
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + (

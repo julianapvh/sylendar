@@ -7,14 +7,8 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Adicione o link para o CSS do SweetAlert2 -->
+     <!-- Adicione o link para o CSS do SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <style>
-        /* Estilo para a mensagem de carregamento */
-        .swal2-title {
-            font-size: 1.5em;
-        }
-    </style>
 </head>
 
 <body>
@@ -59,40 +53,37 @@
 
           {# Assumes you setup the password_reset view in your URLconf #}
           <p class="text-center"><a href="{% url 'reset_password' %}" class="btn btn-link">Esqueceu a senha?</a></p>
+          
+          <!-- Adicione a div para a mensagem de carregamento -->
+          <div id="loading-message" class="text-center" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="sr-only">Carregando...</span>
+            </div>
+            <p class="mt-2">Fazendo login... Por favor, aguarde!</p>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
-<!-- Adicione o script do SweetAlert2 -->
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 <script>
     // Event listener for form submission
     document.addEventListener('DOMContentLoaded', function () {
         const loginForm = document.getElementById('login-form');
+        const loadingMessage = document.getElementById('loading-message');
 
         // Event listener for form submission
         loginForm.addEventListener('submit', function (event) {
             event.preventDefault(); // Prevent form submission
             
-            // Exibir mensagem de carregamento do SweetAlert2 com a mensagem "Fazendo login..."
-            Swal.fire({
-                title: 'Fazendo login...Por Favor Aguarde!',
-                allowOutsideClick: false,
-                onBeforeOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
+            // Exibir a mensagem de carregamento
+            loadingMessage.style.display = 'block';
+            
             // Submeter o formulário após 3 segundos para simular o processamento
             setTimeout(() => {
                 loginForm.submit();
-                // Fechar a mensagem de carregamento após 4 segundos
-                setTimeout(() => {
-                    Swal.close();
-                }, 4000);
-            }, 4000);
+            }, 3000);
         });
     });
 </script>

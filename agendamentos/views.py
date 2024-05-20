@@ -96,6 +96,10 @@ def register(request):
             user.telefone = format_phone_number(form.cleaned_data["telefone"])
             user.save()
             assign_role(user, "cliente")
+            
+            # Envie o e-mail de boas-vindas
+            enviar_email_boas_vindas(user)
+            
             messages.success(
                 request,
                 "Usuário cadastrado com sucesso! Faça o login para acessar sua conta.",
@@ -108,7 +112,7 @@ def register(request):
             print(form.errors)
     else:
         form = UserCreationFormWithExtraFields()
-    return render(request, "registration/register.html", {"form": form})
+    return render(request, "registration/register.html", {"form": form, "messages": messages.get_messages(request)})
 
 
 def home(request):
@@ -745,9 +749,6 @@ def error_500_view(request):
 #################  -------Novas Funções---------  ###########################
 
 
-#################  -------  ---------  ###########################
-
-
 @staff_member_required
 def historico_agendamentos(request):
     pesquisa = request.GET.get("pesquisa")
@@ -791,9 +792,33 @@ def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
         template,
         {
             "usuario": usuario,
-            "equipamento_nome": equipamento_nome,  # Passando apenas o nome do equipamento
+            "equipamento_nome": equipamento_nome, 
             "data": data,
             "hora": hora,
+        },
+    )
+
+    # Envie o e-mail
+    send_mail(
+        assunto,
+        "",  # Corpo do e-mail em branco, pois já estamos enviando o HTML
+        EMAIL_HOST_USER,
+        [usuario.email],
+        html_message=email_html,
+        fail_silently=False,
+    )
+    
+    
+
+def enviar_email_boas_vindas(usuario):
+    assunto = "Bem-vindo ao Sisagendamentos"
+    template = "email_boas_vindas.html"
+
+    # Renderize o corpo do e-mail usando um template HTML correspondente
+    email_html = render_to_string(
+        template,
+        {
+            "usuario": usuario,
         },
     )
 

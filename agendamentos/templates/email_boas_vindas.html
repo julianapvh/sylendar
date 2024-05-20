@@ -1,0 +1,54 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Sistema de Agendamentos de Equipamentos</title>
+    <style>
+        /* Estilos CSS */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        p {
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo ao Sistema de Agendamentos de Equipamentos</h1>
+        <p>Olá {{ usuario.first_name }},</p>
+        <p>Obrigado por criar uma conta no nosso sistema de agendamentos de equipamentos.</p>
+        <p>Nossa empresa está comprometida em oferecer uma solução eficiente para o gerenciamento de reservas de equipamentos, ajudando a otimizar processos e garantir um uso mais eficaz dos recursos disponíveis.</p>
+        <p>Visite nossa página para saber mais sobre a variedade de ferramentas e recursos disponíveis em nosso sistema.</p>
+        <p>Não hesite em entrar em contato com nossa equipe de suporte em agendamentossistema9@gmail.com se tiver alguma dúvida. Estamos aqui para ajudar!</p>
+        <div class="footer">
+            <p>Cumprimentos,</p>
+            <p>A Equipe do Sistema de Agendamentos de Equipamentos</p>
+        </div>
+    </div>
+</body>
+</html>

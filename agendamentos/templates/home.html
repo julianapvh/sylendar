@@ -1,38 +1,48 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
- </head>
+    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+    <style>
+        /* Estilos adicionais personalizados podem ser adicionados aqui */
+        .container_home {
+            text-align: center;
+            padding: 50px;
+        }
+
+        .jumbotron {
+            background-color: #f8f9fa;
+            padding: 2rem 1rem;
+            border-radius: 10px;
+        }
+
+        .btn-custom {
+            margin-top: 20px;
+        }
+    </style>
+</head>
 
 <body>
     <div class="container_home">
-        <div class="home-form">
-            <h1 class="display-4">Bem-vindo(a), {{ user.username }}, à Página Inicial</h1>
-            <p class="lead">Sistema de Agendamentos.</p>
+        <div class="jumbotron">
+            <h1 class="display-4">Bem-vindo(a), {{ user.username }}!</h1>
+            <p class="lead">Sistema de Agendamentos</p>
             <hr class="my-4">
-            <p>Esta é a página inicial do sistema de agendamentos.</p>
-            <p class="lead">
-            
-            <a class="btn btn-success btn-custom" href="{% url 'cliente' %}" role="button">Ir para a página do cliente</a>
-            <div class="mt-3">
-                <!-- Botão para a página do administrador (aparece apenas para superusuários) -->
-                {% if request.user.is_superuser %}
-                    <a href="{% url 'administrador' %}" class="btn btn-success btn-custom">Ir para a Página do Administrador</a>
-                {% endif %}
-                </div>  
-                <div > <br>
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary btn-custom">Logout</button>
-                </form>
-            </div>
-                
-            </p>
+            <p>Esta é a página inicial do sistema de agendamentos. Faça o agendamento dos seus compromissos de forma fácil e eficiente.</p>
+            <a class="btn btn-success btn-lg btn-custom" href="{% url 'cliente' %}" role="button">Ir para a Página do Cliente</a>
+            {% if request.user.is_superuser %}
+            <a class="btn btn-success btn-lg btn-custom" href="{% url 'administrador' %}" role="button">Ir para a Página do Administrador</a>
+            {% endif %}
+            <form action="{% url 'logout' %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary btn-lg btn-custom">Logout</button>
+            </form>
         </div>
     </div>
 </body>

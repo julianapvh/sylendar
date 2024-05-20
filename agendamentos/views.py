@@ -168,7 +168,6 @@ def agendar_equipamento(request):
             equipamento_id = request.POST["equipamento"]
             data = request.POST["data"]
             hora = request.POST["hora"]
-            tipo_servico = request.POST["tipo_servico"]
             quantidade_dias = int(
                 request.POST.get("quantidade_dias", 3)
             )  # Default: 3 dias
@@ -240,7 +239,6 @@ def agendar_equipamento(request):
                 data=data_hora_consciente.date(),
                 hora=data_hora_consciente.time(),
                 quantidade_dias=quantidade_dias,
-                tipo_servico=tipo_servico,
             )
 
             # Envio de e-mail de confirmação do novo agendamento

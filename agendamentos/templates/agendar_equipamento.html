@@ -26,10 +26,7 @@
                 <label for="data">Data:</label>
                 <input type="date" id="data" name="data" required>
                 <label for="hora">Hora:</label>
-                <input type="time" id="hora" name="hora" required {% if not data_atual == data %}min="00:00" max="23:59"{% endif %}>
-                <label for="tipo_servico">Tipo de Serviço:</label>
-                <input type="text" id="tipo_servico" name="tipo_servico" required>
-                
+                <input type="time" id="hora" name="hora" required {% if not data_atual == data %}min="00:00" max="23:59"{% endif %}>                
                 <label for="quantidade_dias">Quantidade de Dias:</label>
                 <select id="quantidade_dias" name="quantidade_dias">
                     <option value="1">1 dia</option>

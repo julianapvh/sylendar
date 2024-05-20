@@ -75,7 +75,6 @@ class Agendamento(models.Model):
     equipamento = models.ForeignKey(Equipamento, on_delete=models.CASCADE)
     data = models.DateField(default=timezone.now)
     hora = models.TimeField(default=timezone.now)
-    tipo_servico = models.CharField(max_length=100)
     cancelado = models.BooleanField(default=False)
     reagendado = models.BooleanField(default=False)
     data_entrega_prevista = models.DateTimeField(default=None, null=True, blank=True)

@@ -22,6 +22,7 @@ from django.http import (
     HttpResponseForbidden,
     HttpResponseServerError,
     JsonResponse,
+    HttpResponseNotFound,
 )
 from django.http import HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect, render
@@ -704,45 +705,6 @@ def emprestimo_sucesso(request, agendamento_id):
 
     context = {"agendamento": agendamento}
     return render(request, "emprestimo_sucesso.html", context)
-
-
-#################  ------- Páginas de erro ---------  ###########################
-
-
-def error_404_view(request, exception):
-    return render(
-        request,
-        "pagina_erro.html",
-        {"heading": "Erro 404", "message": "Página não encontrada"},
-        status=404,
-    )
-
-
-def error_500_view(request):
-    return render(
-        request,
-        "pagina_erro.html",
-        {"heading": "Erro 500", "message": "Ocorreu um erro interno no servidor"},
-        status=500,
-    )
-
-
-def error_404_view(request, exception):
-    return render(
-        request,
-        "pagina_erro.html",
-        {"heading": "Erro 404", "message": "Página não encontrada"},
-        status=404,
-    )
-
-
-def error_500_view(request):
-    return render(
-        request,
-        "pagina_erro.html",
-        {"heading": "Erro 500", "message": "Ocorreu um erro interno no servidor"},
-        status=500,
-    )
 
 
 #################  -------Novas Funções---------  ###########################

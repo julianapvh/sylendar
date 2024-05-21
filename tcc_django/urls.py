@@ -12,7 +12,6 @@ from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
 from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
-from django.conf.urls import handler404, handler500
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
@@ -129,9 +128,10 @@ urlpatterns = [
     ),
     path("perfil/", views.profile, name="perfil"),
     path("api/check_username/", api_views.check_username, name="check_username_api"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 
-# Mapeie a visualização para lidar com erros
-handler404 = "agendamentos.views.error_404_view"
-handler500 = "agendamentos.views.error_500_view"
+

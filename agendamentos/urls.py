@@ -14,6 +14,7 @@ from django.conf import settings
 from agendamentos.api_views import check_username
 from .views import logged_out
 from agendamentos.views import logged_out
+from django.conf.urls import handler404, handler500
 
 
 tcc_django = "agendamentos"
@@ -128,3 +129,6 @@ urlpatterns = [
     ),
     path("perfil/", views.profile, name="perfil"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+
+

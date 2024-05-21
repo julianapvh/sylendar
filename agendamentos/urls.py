@@ -132,6 +132,7 @@ urlpatterns = [
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas
-handler500 = "agendamentos.views.custom_403_view"
+handler400 = "agendamentos.views.custom_400_view"
+handler403 = "agendamentos.views.custom_403_view"
 handler404 = "agendamentos.views.custom_404_view"
 handler500 = "agendamentos.views.custom_500_view"

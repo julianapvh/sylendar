@@ -54,6 +54,7 @@ from .forms import UserProfileForm
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.contrib.auth import logout
+from django.core.exceptions import PermissionDenied
 
 
 #################  ------- Views de login, cadastro e home ---------  ###########################
@@ -815,8 +816,10 @@ def profile(request):
 
 ################ Configurações para páginas de erro personalizadas #############################################
 
+def custom_400_view(request, exception):
+    return render(request, "400.html", status=400)
 
-def custom_403_view(request):
+def custom_403_view(request, exception):
     return render(request, "403.html", status=403)
 
 
@@ -824,5 +827,5 @@ def custom_404_view(request, exception):
     return render(request, "404.html", status=404)
 
 
-def custom_500_view(request):
+def custom_500_view(request, exception):
     return render(request, "500.html", status=500)

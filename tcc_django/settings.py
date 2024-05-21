@@ -39,7 +39,7 @@ DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 ALLOWED_HOSTS = [
     "sistemadeagendamentos2-23lcg0kt.b4a.run",
     "sisagendamento.me",
-    "127.0.0.1",
+    "127.0.0.1", "node84a.containers.back4app.com",
 ]
 
 CSRF_TRUSTED_ORIGINS = [

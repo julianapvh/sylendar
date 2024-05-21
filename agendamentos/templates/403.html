@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Erro 500 - Erro Interno do Servidor</title>
+    <title>Erro 403 - Acesso Proibido</title>
     <!-- Adicione seu estilo personalizado aqui, se necessário -->
     <style>
         /* Estilos personalizados */
@@ -50,11 +50,12 @@
 </head>
 <body>
     <div class="container">
-        <img src="https://github.com/julianapvh/sistema_de_agendamentos/blob/main/static/gifs/giphy_500.gif" alt="Erro 500" class="error-icon">
-        <h1>Erro 500 - Erro Interno do Servidor</h1>
-        <p>Ocorreu um problema no nosso servidor.</p>
-        <p>Estamos trabalhando para corrigir isso. Por favor, tente novamente mais tarde.</p>
+        <img src="{% static 'gifs/giphy_403.gif' %}" alt="Erro 403" class="error-icon">
+        <h1>Erro 403 - Acesso Proibido</h1>
+        <p>Você não tem permissão para acessar este recurso.</p>
+        <p>Por favor, entre em contato com o administrador do sistema para obter assistência.</p>
         <a href="https://sisagendamento.me/" class="button">Página inicial do Sistema</a>
     </div>
 </body>
 </html>
+g

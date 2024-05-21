@@ -818,13 +818,16 @@ def profile(request):
 ################ Configurações para páginas de erro personalizadas #############################################
     
     
+def custom_403_view(request):
+    return render(request, '500.html', status=500)
+    
 def custom_404_view(request, exception):
     return render(request, '404.html', status=404)
 
 def custom_500_view(request):
     return render(request, '500.html', status=500)
     
-from django.http import HttpResponseServerError
 
-def erro_500_view(request):
-    raise Exception("Erro 500 - Simulado para teste")
+    
+
+

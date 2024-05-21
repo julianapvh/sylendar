@@ -729,7 +729,7 @@ def historico_agendamentos(request):
         request, "historico_agendamentos.html", {"agendamentos": agendamentos}
     )
 
-
+@login_required
 def obter_dados_equipamento(request):
     equipamento_id = request.GET.get("equipamento_id")
     equipamento = Equipamento.objects.get(pk=equipamento_id)
@@ -817,7 +817,7 @@ def profile(request):
 
 
 def custom_403_view(request):
-    return render(request, "403.html", status=500)
+    return render(request, "403.html", status=403)
 
 
 def custom_404_view(request, exception):

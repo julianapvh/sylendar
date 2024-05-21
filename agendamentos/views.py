@@ -811,23 +811,18 @@ def profile(request):
         )  # Preenche o formulário com as informações atuais do usuário
 
     return render(request, "profile.html", {"form": form})
-    
-    
-    
-    
+
+
 ################ Configurações para páginas de erro personalizadas #############################################
-    
-    
+
+
 def custom_403_view(request):
-    return render(request, '403.html', status=500)
-    
+    return render(request, "403.html", status=500)
+
+
 def custom_404_view(request, exception):
-    return render(request, '404.html', status=404)
+    return render(request, "404.html", status=404)
+
 
 def custom_500_view(request):
-    return render(request, '500.html', status=500)
-    
-
-    
-
-
+    return render(request, "500.html", status=500)

@@ -129,14 +129,10 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
-    
-    path('erro-500/', erro_500_view, name='erro_500'),
+    path("erro-500/", erro_500_view, name="erro_500"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas
 handler500 = "agendamentos.views.custom_403_view"
 handler404 = "agendamentos.views.custom_404_view"
 handler500 = "agendamentos.views.custom_500_view"
-
-
-

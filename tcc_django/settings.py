@@ -36,8 +36,11 @@ SECRET_KEY = os.environ.get(
 DEBUG = os.environ.get("DJANGO_DEBUG", "True") == "True"
 
 
-ALLOWED_HOSTS = ["sistemadeagendamentos2-23lcg0kt.b4a.run",
-    "sisagendamento.me","127.0.0.1"]
+ALLOWED_HOSTS = [
+    "sistemadeagendamentos2-23lcg0kt.b4a.run",
+    "sisagendamento.me",
+    "127.0.0.1",
+]
 
 CSRF_TRUSTED_ORIGINS = [
     "https://sistemadeagendamentos2-23lcg0kt.b4a.run",

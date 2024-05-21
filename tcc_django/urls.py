@@ -132,6 +132,11 @@ urlpatterns = [
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    
+    
+# Configurações para páginas de erro personalizadas
+handler404 = "agendamentos.views.custom_404_view"
+handler500 = "agendamentos.views.custom_500_view"
 
 
 

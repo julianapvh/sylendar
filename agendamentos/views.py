@@ -811,3 +811,20 @@ def profile(request):
         )  # Preenche o formulário com as informações atuais do usuário
 
     return render(request, "profile.html", {"form": form})
+    
+    
+    
+    
+################ Configurações para páginas de erro personalizadas #############################################
+    
+    
+def custom_404_view(request, exception):
+    return render(request, '404.html', status=404)
+
+def custom_500_view(request):
+    return render(request, '500.html', status=500)
+    
+from django.http import HttpResponseServerError
+
+def erro_500_view(request):
+    raise Exception("Erro 500 - Simulado para teste")

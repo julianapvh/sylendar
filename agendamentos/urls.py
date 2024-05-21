@@ -15,6 +15,7 @@ from agendamentos.api_views import check_username
 from .views import logged_out
 from agendamentos.views import logged_out
 from django.conf.urls import handler404, handler500
+from .views import erro_500_view
 
 
 tcc_django = "agendamentos"
@@ -128,7 +129,12 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
+    
+    path('erro-500/', erro_500_view, name='erro_500'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
+# Configurações para páginas de erro personalizadas
+handler404 = "agendamentos.views.custom_404_view"
+handler500 = "agendamentos.views.custom_500_view"
 
 

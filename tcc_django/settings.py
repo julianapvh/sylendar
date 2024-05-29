@@ -176,8 +176,9 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "home"
 
 
-# Configurações de e-mail
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
+# Configurações de envio do e-mail
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = os.getenv("EMAIL_HOST")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT"))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS").lower() == "true"

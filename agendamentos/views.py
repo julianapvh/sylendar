@@ -65,16 +65,16 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect("home")  
+            return redirect("home")  # Redirect to home page after successful login
         else:
-        
+            # If the credentials are incorrect
             return render(
                 request,
                 "registration/login.html",
                 {"error": "Invalid credentials. Please try again."},
             )
     else:
-       
+        # If the request is GET, render the login page
         return render(request, "registration/login.html")
 
 

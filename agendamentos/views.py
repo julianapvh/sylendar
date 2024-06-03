@@ -730,7 +730,6 @@ def historico_agendamentos(request):
         request, "historico_agendamentos.html", {"agendamentos": agendamentos}
     )
 
-
 @login_required
 def obter_dados_equipamento(request):
     equipamento_id = request.GET.get("equipamento_id")
@@ -817,10 +816,8 @@ def profile(request):
 
 ################ Configurações para páginas de erro personalizadas #############################################
 
-
 def custom_400_view(request, exception):
     return render(request, "400.html", status=400)
-
 
 def custom_403_view(request, exception):
     return render(request, "403.html", status=403)

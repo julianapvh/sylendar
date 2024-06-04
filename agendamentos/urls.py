@@ -20,6 +20,8 @@ from .views import erro_500_view
 
 tcc_django = "agendamentos"
 urlpatterns = [
+    path("index/", views.index, name="index"),
+    path("cadastro/", views.cadastro, name="cadastro"),
     path("login/", views.login, name="login"),
     path(
         "accounts/logout/",

@@ -26,6 +26,8 @@ from agendamentos.views import logged_out
 
 tcc_django = "agendamentos"
 urlpatterns = [
+    path("index/", views.index, name="index"),
+    path("cadastro/", views.cadastro, name="cadastro"),
     path("admin/", admin.site.urls),
     path("cliente/", views.cliente, name="cliente"),
     path("home/", views.home, name="home"),

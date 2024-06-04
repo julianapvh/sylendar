@@ -125,6 +125,14 @@ def home(request):
     return render(request, "home.html")
 
 
+def index(request):
+    return render(request, "index.html")
+
+
+def cadastro(request):
+    return render(request, "register.html")
+
+
 @staff_member_required
 def administrador_home(request):
     return render(request, "administrador_home.html")

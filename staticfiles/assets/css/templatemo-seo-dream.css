@@ -1481,8 +1481,10 @@ contact
 */
 
 .contact-us {
-  /*margin-top: 90px;*/
-  padding: 120px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
   background-image: url(../images/contact-bg.jpg);
   background-repeat: no-repeat;
   background-position: center center;
@@ -1531,10 +1533,12 @@ contact
 form#contact {
   position: relative;
   background-color: #fff;
-  padding: 60px 80px;
+  padding: 90px 80px;
   border-radius: 50px;
   text-align: center;
-  margin-top: 100px;
+  margin-left: 10px;
+  margin-right: 10px;
+  /margin-top: 100px;/
 }
 
 form#contact input {
@@ -1631,7 +1635,7 @@ responsive
     font-size: 24px;
   }
   .header-area .main-nav .logo h4 img {
-    max-width: 25px;
+    max-width: 250px;
     margin-left: 0px;
   }
   .header-area .main-nav .nav li:last-child {

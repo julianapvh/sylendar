@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
-from agendamentos import views
 from agendamentos.views import (
     cancelar_agendamento,
     excluir_equipamento,
@@ -10,15 +9,7 @@ from agendamentos.views import (
 )
 from django.contrib.auth import views as auth_views
 from django.views.generic import RedirectView
-from django.contrib.auth import views as auth_views
-from django.conf.urls.static import static
-from django.conf import settings
-from django.contrib import admin
-from django.urls import path, include
 from agendamentos import views, api_views
-from django.contrib.auth import views as auth_views
-from django.views.generic import RedirectView
-from django.contrib.auth import views as auth_views
 from django.conf.urls.static import static
 from django.conf.urls import handler404, handler500
 from agendamentos.views import logged_out

@@ -12,7 +12,6 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-
 from tcc_django.settings import EMAIL_HOST_USER
 from .models import HistoricoAgendamento, User
 from django.db.models import Count, DateTimeField, F, Q
@@ -51,13 +50,11 @@ from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.template.loader import render_to_string
 from .forms import UserProfileForm
-from django.core.mail import send_mail
-from django.template.loader import render_to_string
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
 
 
-#################  ------- Views de login, cadastro e home ---------  ###########################
+#################  ------- Views de login, cadastro e homes ---------  ###########################
 def login_view(request):
     if request.method == "POST":
         username = request.POST.get("username")
@@ -76,6 +73,16 @@ def login_view(request):
     else:
         # If the request is GET, render the login page
         return render(request, "registration/login.html")
+
+
+def logged_out(request):
+    if request.method == "POST":
+        logout(request)
+        # Redirecione para a sua URL personalizada após o logout
+        return redirect("logged_out")
+    else:
+        # Se a solicitação não for POST, redirecione para onde desejar
+        return redirect("login")
 
 
 def format_phone_number(phone_number):
@@ -160,14 +167,7 @@ def administrador(request):
     return render(request, "administrador.html")
 
 
-def logged_out(request):
-    if request.method == "POST":
-        logout(request)
-        # Redirecione para a sua URL personalizada após o logout
-        return redirect("logged_out")
-    else:
-        # Se a solicitação não for POST, redirecione para onde desejar
-        return redirect("login")
+###################################################  THE END  #############################################################################
 
 
 #################  ------- Funções do Sistema ---------  ###########################

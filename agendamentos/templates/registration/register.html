@@ -52,78 +52,75 @@
                         <!-- Fim do bloco de mensagens -->
                         
                         <div class="col-lg-9 offset-lg-3">
-    <div class="row">
-        <div class="col-lg-8">
-            <fieldset>
-                <div class="form-group row">
-                    <label for="id_first_name" class="col-sm-2 col-form-label text-right">Nome:</label>
-                    <div class="col-lg-8">
-                        <input type="name" class="form-control" id="id_first_name" name="first_name" placeholder="Nome" autocomplete="on" required>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label for="id_last_name" class="col-sm-2 col-form-label text-right">Sobrenome:</label>
-                    <div class="col-lg-8">
-                        <input type="surname" class="form-control" id="id_last_name" name="last_name" placeholder="Sobrenome" autocomplete="on" required>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
-                    <div class="col-lg-8">
-                        <input type="text" class="form-control" id="id_username" name="username" placeholder="Nome de Usuário" pattern="[^ @]@[^ @]" required>
-                        <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
-                        <div id="username-exists-message" style="color: red; font-size: 0.8em; display: none;">Este nome de usuário já está em uso.</div>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
-                    <div class="col-lg-8">
-                        <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
-                        <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
-                    <div class="col-lg-8">
-                        <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
-                        <small class="form-text text-muted"> </small>
-                    </div>
-                </div>
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <fieldset>
+                                        <div class="form-group row">
+                                            <label for="id_first_name" class="col-sm-2 col-form-label text-right">Nome:</label>
+                                            <div class="col-lg-8">
+                                                <input type="name" class="form-control" id="id_first_name" name="first_name" placeholder="Nome" autocomplete="on" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="id_last_name" class="col-sm-2 col-form-label text-right">Sobrenome:</label>
+                                            <div class="col-lg-8">
+                                                <input type="surname" class="form-control" id="id_last_name" name="last_name" placeholder="Sobrenome" autocomplete="on" required>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
+                                            <div class="col-lg-8">
+                                                <input type="text" class="form-control" id="id_username" name="username" placeholder="Nome de Usuário" pattern="[^ @]@[^ @]" required>
+                                                <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
+                                                <div id="username-exists-message" style="color: red; font-size: 0.8em; display: none;">Este nome de usuário já está em uso.</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
+                                            <div class="col-lg-8">
+                                                <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
+                                                <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
+                                            <div class="col-lg-8">
+                                                <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
+                                                <small class="form-text text-muted"> </small>
+                                            </div>
+                                        </div>
 
-                <div class="form-group row">
-                    <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
-                    <div class="col-lg-8">
-                        <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Senha" required>
-                        <small class="form-text text-muted">Pelo menos 8 caracteres. Não pode ser inteiramente numérica. Não pode conter o nome de usuário.</small>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
-                    <div class="col-lg-8">
-                        <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmação de Senha" required>
-                        <div id="password-match-message" style="color: red; font-size: 0.8em; display: none;">As senhas digitadas não correspondem.</div>
-                    </div>
-                </div>
-                
-                <div class="form-group row">
-                    <div class="col-lg-8 offset-sm-2">
-                        <button id="submit-btn" type="button" class="btn btn-primary">Cadastrar</button>
-                        <div id="loading-message" style="display: none;">Enviando cadastro, por favor aguarde...</div>
-                    </div>
-                </div>
-            </fieldset>
-        </div>
-    </div>
-</div>
-
+                                        <div class="form-group row">
+                                            <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
+                                            <div class="col-lg-8">
+                                                <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Senha" required>
+                                                <small class="form-text text-muted">Pelo menos 8 caracteres. Não pode ser inteiramente numérica. Não pode conter o nome de usuário.</small>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
+                                            <div class="col-lg-8">
+                                                <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmação de Senha" required>
+                                                <div id="password-match-message" style="color: red; font-size: 0.8em; display: none;">As senhas digitadas não correspondem.</div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="form-group row">
+                                            <div class="col-lg-8 offset-sm-2">
+                                                <button id="submit-btn" type="button" class="main-button" style="margin-left: 150px;">Cadastrar</button>
+                                                <div id="loading-message" style="display: none;">Enviando cadastro, por favor aguarde...</div>
+                                            </div>
+                                        </div>
+                                    </fieldset>
                                 </div>
                             </div>
                         </div>
+
                     </form>
                 </div>
             </div>
@@ -147,6 +144,9 @@
     <script src="{% static 'assets/js/animation.js' %}"></script>
     <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
     <script src="{% static 'assets/js/custom.js' %}"></script>
+</body>
+</html>
+
     
     <script>
         // Event listener for form submission

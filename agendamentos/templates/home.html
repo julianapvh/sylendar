@@ -73,28 +73,25 @@
   
     <div class="container_home">
         <div class="jumbotron">
-            <h1 class="display-4">Bem-vindo(a), {{ user.username }}!</h1>
-            <p class="lead">Sylendar</p>
+            <h1 class="display-4">Olá, {{ user.username }}!</h1>
             <hr class="my-4">
-            <p>Faça o agendamento dos seus compromissos de forma fácil e eficiente.</p>
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                  <a href="{% url 'cliente' %}">Ir para Pagina do cliente</a>
+                  <a href="{% url 'cliente' %}">Página do cliente</a>
                 </div>
             </div>
-            <br>
             {% if request.user.is_superuser %}
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                  <a href="{% url 'administrador' %}">Ir para pagina de administrador</a>
+                  <a href="{% url 'administrador' %}">Página do administrador</a>
                 </div>
             </div>
             {% endif %}
             <form action="{% url 'logout' %}" method="post">
-                {% csrf_token %}
-                
-                <button type="submit" class="btn btn-secondary btn-lg btn-custom">Logout</button>
-            </form>
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-custom">Logout</button>
+          </form>
+          
         </div>
     </div>
       <!-- Scripts -->

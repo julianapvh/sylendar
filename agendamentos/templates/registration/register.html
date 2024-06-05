@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -26,6 +27,44 @@
 
 </head>
 <body>
+
+    <!-- ***** Preloader Start ***** -->
+    <div id="js-preloader" class="js-preloader">
+      <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </div>
+    <!-- ***** Preloader End ***** -->
+  
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <nav class="main-nav">
+              <!-- ***** Logo Start ***** -->
+              <a href="{% url 'index' %}" class="logo">
+  
+                <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
+              </a>
+              <!-- ***** Logo End ***** -->
+              <!-- ***** Menu Start ***** -->
+  
+              <a class='menu-trigger'>
+                <span>Menu</span>
+              </a>
+              <!-- ***** Menu End ***** -->
+            </nav>
+          </div>
+        </div>
+      </div>
+    </header>
+    <!-- ***** Header Area End ***** -->
     <div id="contact" class="contact-us section">
         <div class="container">
             <div class="row">
@@ -81,7 +120,7 @@
                                         <div class="form-group row">
                                             <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
                                             <div class="col-lg-8">
-                                                <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
+                                                <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail" required>
                                                 <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
                                             </div>
                                         </div>
@@ -89,7 +128,7 @@
                                         <div class="form-group row">
                                             <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
                                             <div class="col-lg-8">
-                                                <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
+                                                <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="(99) 99999-9999" required>
                                                 <small class="form-text text-muted"> </small>
                                             </div>
                                         </div>

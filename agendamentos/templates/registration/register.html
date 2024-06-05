@@ -3,108 +3,155 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Página de Cadastro</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <style>
-        /* Estilos para o container */
-        .container_home {
-            padding: 50px;
-        }
-        
-        /* Estilos para o botão de cadastrar */
-        .btn-primary {
-            background-color: #007bff;
-            border: none;
-        }
+    
+    <title>Cadastre-se</title>
+    
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
 
-        .btn-primary:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 </head>
 <body>
-    <div class="container_home container">
-        <div class="home-form">
-            <h2 class="mb-4">Cadastre-se</h2>
-            <!-- Adicione o bloco de mensagens aqui -->
-            {% if messages %}
-            <div class="messages">
-                {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}" role="alert">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-            <!-- Fim do bloco de mensagens -->
-            <form id="register-form" method="post">
-                {% csrf_token %}
-                <div class="form-group row">
-                    <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
-                    <div class="col-sm-10">
-                        <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
-                        <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
-                    </div>
-                </div>
-                <div class="form-group row">
-                    <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
-                    <div class="col-sm-10">
-                        <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
-                        <small class="form-text text-muted"> </small>
-                    </div>
-                </div>
+    <div id="contact" class="contact-us section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+                    <form id="contact-form" action="" method="post">
+                        <div class="row">
+                            <div class="col-lg-6 offset-lg-3">
+                                <div class="section-heading">
+                                    <h2>Cadastre-se<span></span></h2>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Adicione o bloco de mensagens aqui -->
+                        {% if messages %}
+                        <div class="messages">
+                            {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }}" role="alert">
+                                {{ message }}
+                            </div>
+                            {% endfor %}
+                        </div>
+                        {% endif %}
+                        <!-- Fim do bloco de mensagens -->
+                        
+                        <div class="col-lg-9 offset-lg-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <fieldset>
                 <div class="form-group row">
                     <label for="id_first_name" class="col-sm-2 col-form-label text-right">Nome:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="id_first_name" name="first_name" required>
+                    <div class="col-lg-8">
+                        <input type="name" class="form-control" id="id_first_name" name="first_name" placeholder="Nome" autocomplete="on" required>
                     </div>
                 </div>
+                
                 <div class="form-group row">
                     <label for="id_last_name" class="col-sm-2 col-form-label text-right">Sobrenome:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="id_last_name" name="last_name" required>
+                    <div class="col-lg-8">
+                        <input type="surname" class="form-control" id="id_last_name" name="last_name" placeholder="Sobrenome" autocomplete="on" required>
                     </div>
                 </div>
                 
                 <div class="form-group row">
                     <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" id="id_username" name="username" required>
+                    <div class="col-lg-8">
+                        <input type="text" class="form-control" id="id_username" name="username" placeholder="Nome de Usuário" pattern="[^ @]@[^ @]" required>
                         <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
                         <div id="username-exists-message" style="color: red; font-size: 0.8em; display: none;">Este nome de usuário já está em uso.</div>
                     </div>
-                </div>                
+                </div>
+                
+                <div class="form-group row">
+                    <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
+                    <div class="col-lg-8">
+                        <input type="email" class="form-control" id="id_email" name="email" placeholder="E-mail válido" required>
+                        <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
+                    </div>
+                </div>
+                
+                <div class="form-group row">
+                    <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
+                    <div class="col-lg-8">
+                        <input type="tel" class="form-control" id="id_telefone" name="telefone" placeholder="Telefone no formato: (99) 99999-9999" required>
+                        <small class="form-text text-muted"> </small>
+                    </div>
+                </div>
+
                 <div class="form-group row">
                     <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="id_password1" name="password1" required>
+                    <div class="col-lg-8">
+                        <input type="password" class="form-control" id="id_password1" name="password1" placeholder="Senha" required>
                         <small class="form-text text-muted">Pelo menos 8 caracteres. Não pode ser inteiramente numérica. Não pode conter o nome de usuário.</small>
                     </div>
                 </div>
+                
                 <div class="form-group row">
                     <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
-                    <div class="col-sm-10">
-                        <input type="password" class="form-control" id="id_password2" name="password2" required placeholder="Repita a senha">
+                    <div class="col-lg-8">
+                        <input type="password" class="form-control" id="id_password2" name="password2" placeholder="Confirmação de Senha" required>
                         <div id="password-match-message" style="color: red; font-size: 0.8em; display: none;">As senhas digitadas não correspondem.</div>
                     </div>
                 </div>
                 
                 <div class="form-group row">
-                    <div class="col-sm-10 offset-sm-2">
+                    <div class="col-lg-8 offset-sm-2">
                         <button id="submit-btn" type="button" class="btn btn-primary">Cadastrar</button>
                         <div id="loading-message" style="display: none;">Enviando cadastro, por favor aguarde...</div>
                     </div>
                 </div>
-            </form>
+            </fieldset>
         </div>
     </div>
+</div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>© 2024 Sylendar.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Scripts -->
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/animation.js' %}"></script>
+    <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
+    <script src="{% static 'assets/js/custom.js' %}"></script>
     
     <script>
         // Event listener for form submission
         document.addEventListener('DOMContentLoaded', function () {
-            const form = document.getElementById('register-form');
+            const form = document.getElementById('contact-form');
             const submitButton = document.getElementById('submit-btn');
             const loadingMessage = document.getElementById('loading-message');
             const password1Input = document.getElementById('id_password1');
@@ -228,9 +275,7 @@
                 document.getElementById('username-exists-message').style.display = 'none';
             }
         });
-
-
-    
     </script>
+
 </body>
 </html>

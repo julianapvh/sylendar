@@ -73,7 +73,7 @@
                         <div class="row">
                             <div class="col-lg-6 offset-lg-3">
                                 <div class="section-heading">
-                                    <h2>Cadastre-se<span></span></h2>
+                                    <h2 style="text-transform: capitalize;">Cadastre-se no Sylendar<span></span></h2>
                                 </div>
                             </div>
                         </div>
@@ -97,26 +97,26 @@
                                         <div class="form-group row">
                                             <label for="id_first_name" class="col-sm-2 col-form-label text-right">Nome:</label>
                                             <div class="col-lg-8">
-                                                <input type="name" class="form-control" id="id_first_name" name="first_name" placeholder="Nome" autocomplete="on" required>
+                                                <input type="text" class="form-control" id="id_first_name" name="first_name" placeholder="Nome" autocomplete="on" required>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <label for="id_last_name" class="col-sm-2 col-form-label text-right">Sobrenome:</label>
                                             <div class="col-lg-8">
-                                                <input type="surname" class="form-control" id="id_last_name" name="last_name" placeholder="Sobrenome" autocomplete="on" required>
+                                                <input type="text" class="form-control" id="id_last_name" name="last_name" placeholder="Sobrenome" autocomplete="on" required>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <label for="id_username" class="col-sm-2 col-form-label text-right">Nome de Usuário:</label>
                                             <div class="col-lg-8">
-                                                <input type="text" class="form-control" id="id_username" name="username" placeholder="Nome de Usuário" pattern="[^ @]@[^ @]" required>
+                                                <input type="text" class="form-control" id="id_username" name="username" placeholder="Nome de Usuário" pattern="[\w]+" required>
                                                 <small class="form-text text-muted">Pelo menos 5 caracteres. Não use caracteres especiais.</small>
                                                 <div id="username-exists-message" style="color: red; font-size: 0.8em; display: none;">Este nome de usuário já está em uso.</div>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <label for="id_email" class="col-sm-2 col-form-label text-right">E-mail:</label>
                                             <div class="col-lg-8">
@@ -124,7 +124,7 @@
                                                 <small class="form-text text-muted">Ex: exemplo@dominio.com</small>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <label for="id_telefone" class="col-sm-2 col-form-label text-right">Telefone:</label>
                                             <div class="col-lg-8">
@@ -132,7 +132,7 @@
                                                 <small class="form-text text-muted"> </small>
                                             </div>
                                         </div>
-
+                        
                                         <div class="form-group row">
                                             <label for="id_password1" class="col-sm-2 col-form-label text-right">Senha:</label>
                                             <div class="col-lg-8">
@@ -140,7 +140,7 @@
                                                 <small class="form-text text-muted">Pelo menos 8 caracteres. Não pode ser inteiramente numérica. Não pode conter o nome de usuário.</small>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <label for="id_password2" class="col-sm-2 col-form-label text-right">Confirmação de Senha:</label>
                                             <div class="col-lg-8">
@@ -148,7 +148,7 @@
                                                 <div id="password-match-message" style="color: red; font-size: 0.8em; display: none;">As senhas digitadas não correspondem.</div>
                                             </div>
                                         </div>
-                                        
+                        
                                         <div class="form-group row">
                                             <div class="col-lg-8 offset-sm-2">
                                                 <button id="submit-btn" type="button" class="main-button" style="margin-left: 150px;">Cadastrar</button>
@@ -156,6 +156,10 @@
                                             </div>
                                         </div>
                                     </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                        
                                 </div>
                             </div>
                         </div>

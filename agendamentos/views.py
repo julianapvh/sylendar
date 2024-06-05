@@ -127,6 +127,7 @@ def register(request):
         {"form": form, "messages": messages.get_messages(request)},
     )
 
+
 @login_required
 def home(request):
     return render(request, "home.html")

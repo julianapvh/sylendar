@@ -1,60 +1,144 @@
 {% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Sistema de Agendamentos</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <style>
-        /* Estilo para o botão de perfil */
-        .profile-button {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            z-index: 9999;
-        }
-    </style>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <title>Cliente - SYLENDAR</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+  <!-- TemplateMo 563 SEO Dream -->
+  
+  <style>
+    /* Estilo para o botão de perfil */
+    .profile-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+  </style>
+
 </head>
 
 <body>
-    <div class="container_home">
-        <div class="home-form">
-            {% for message in messages %}
-                <div class="alert alert-{{ message.tags }}">
-                    {{ message }}
-                </div>
-            {% endfor %}
-            
-            <!-- Botão de perfil com ícone e dica -->
-            <a href="{% url 'perfil' %}" class="btn btn-primary profile-button" title="Editar Perfil"><i class="fas fa-user"></i></a>
-
-            
-            <h1 class="mb-4">Meus Agendamentos</h1>
-            <p>Logado como: {{ request.user.username }}</p>
-            <a href="{% url 'agendar_equipamento' %}" class="btn btn-primary btn-block">Agendar Equipamento</a>
-            <a href="{% url 'meus_agendamentos' %}" class="btn btn-primary btn-block">Meus Agendamentos</a>
-            <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Listar Equipamentos Disponíveis</a>
-            
-            <!-- Div separando o botão de historico -->
-            <div class="mt-3">
-                <a href="{% url 'historico' %}" class="btn btn-primary btn-block">Histórico de Agendamentos</a>
-            </div>
-            
-            <!--Botão para o logout-->
-            <div class="mt-3">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-block">Logout</button>
-                </form>
-            </div>
-         
-            <footer class="mt-5">
-                <p class="text-center">&copy; 2024 Sistema de Agendamentos</p>
-            </footer>
-        </div>
+<!-- ***** Preloader Start ***** -->
+<div id="js-preloader" class="js-preloader">
+  <div class="preloader-inner">
+    <span class="dot"></span>
+    <div class="dots">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
+</div>
+<!-- ***** Preloader End ***** -->
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+  
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Your content area -->
+  <div class="container_home" style="margin-top: 100px;">
+      <div class="home-form">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+          
+          <!-- Botão de perfil com ícone e dica -->
+          <a href="{% url 'perfil' %}" class="btn btn-primary profile-button" title="Editar Perfil"><i class="fas fa-user"></i></a>
+  
+          
+          <h1 class="mb-4">Minha Agenda</h1>
+          <p>Logado como: {{ request.user.username }}</p>
+          
+            <div class="col-lg-12">
+                <div class="main-green-button scroll-to-section">
+                    <a href="{% url 'agendar_equipamento' %}" class="btn btn-primary btn-block">Agendar Equipamento</a>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="main-green-button scroll-to-section">
+                    <a href="{% url 'meus_agendamentos' %}" class="btn btn-primary btn-block">Meus Agendamentos</a>
+                </div>
+            </div>
+            <div class="col-lg-12">
+                <div class="main-green-button scroll-to-section">
+                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Listar Equipamentos Disponíveis</a>
+                </div>
+            </div>
+      
+            <div class="col-lg-12">
+                <div class="main-green-button scroll-to-section">
+                    <a href="{% url 'historico' %}" class="btn btn-primary btn-block">Histórico de Agendamentos</a>
+                </div>
+            </div>
+        </div>
+        
+        <!--Botão para o logout-->
+        
+            <div class="col-lg-12">
+                <form action="{% url 'logout' %}" method="post">
+              {% csrf_token %}
+              <button type="submit" class="btn btn-secondary btn-custom">Logout</button>
+          </form>
+            </div>
+        </div>
+       
+          <footer class="mt-5">
+              <p class="text-center">&copy; 2024 Sylendar</p>
+          </footer>
+      </div>
+  </div>
+  
+  <!-- Scripts -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets/js/animation.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
 
 </html>

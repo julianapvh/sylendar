@@ -6,7 +6,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta charset="UTF-8">
-    <title>Buscar Agendamentos para Devolução</title>
+    <title>Devolução</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function confirmarDevolucao(agendamentoId) {
@@ -47,6 +47,19 @@
                 }
             });
         }
+
+        function validarBusca() {
+            var clienteNome = document.getElementById("cliente_nome").value;
+            if (clienteNome.trim() === "") {
+                Swal.fire(
+                    'Atenção!',
+                    'Por favor, digite o nome do cliente antes de buscar.',
+                    'warning'
+                );
+                return false; // Impede o envio do formulário
+            }
+            return true; // Permite o envio do formulário
+        }
     </script>
 </head>
 
@@ -54,8 +67,8 @@
     <center>
         <div class="container_home">
             <div class="home-form">
-                <h1>Buscar Agendamentos para Devolução</h1>
-                <form method="post">
+                <h1>Buscar agendamentos para devolução</h1>
+                <form method="post" onsubmit="return validarBusca()">
                     {% csrf_token %}
                     <label for="cliente_nome">Nome do Cliente:</label>
                     <input type="text" name="cliente_nome" id="cliente_nome">

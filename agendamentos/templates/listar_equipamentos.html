@@ -1,23 +1,75 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
-
+<html lang="pt-BR">
 <head>
-    <title>Listar Equipamentos</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <title>Equipamentos Cadastrados - SYLENDAR</title>
+    <!-- Bootstrap core CSS -->
+    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+    <!-- Adicione o SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <style>
+        /* Adiciona espaço superior ao conteúdo para evitar sobreposição com o cabeçalho */
+        .content {
+            padding-top: 100px; /* Ajuste conforme necessário */
+        }
+        /* Centraliza verticalmente o conteúdo */
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100%;
+        }
+    </style>
 </head>
-
 <body>
-    <div class="container_home">
-        <h2>Equipamentos Disponíveis</h2>
-        <!-- Adicione a caixa de pesquisa -->
-        <form method="GET">
-            <div class="form-group">
-                <input type="text" class="form-control" name="q" placeholder="Pesquisar por nome">
-                <button type="submit" class="btn btn-primary mt-2">Pesquisar</button>
+    <!-- ***** Preloader End ***** -->
+    <!-- ***** Header Area Start ***** -->
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+                        <!-- ***** Logo Start ***** -->
+                        <a href="{% url 'index' %}" class="logo">
+                            <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
+                        </a>
+                        <!-- ***** Logo End ***** -->
+                        <!-- ***** Menu Start ***** -->
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                        <!-- ***** Menu End ***** -->
+                    </nav>
+                </div>
             </div>
-        </form>
+        </div>
+    </header>
+
+    <!-- Conteúdo da página -->
+    <div class="container content">
+        <div class="center-content">
+            <h2 class="text-center mb-4">Equipamentos Cadastrados</h2>
+            <!-- Adicione a caixa de pesquisa -->
+            <form method="GET" class="form-inline justify-content-center mb-4">
+                <input type="text" class="form-control mr-sm-2" name="q" placeholder="Pesquisar equipamento">
+                <button type="submit" class="btn btn-primary">Pesquisar</button>
+            </form>
+        </div>
         <div class="row">
             {% for equipamento in equipamentos %}
             <div class="col-md-4 mb-4">
@@ -35,8 +87,12 @@
             </div>
             {% endfor %}
         </div>
-        <a href="javascript:history.back()" class="btn-primary">Voltar</a>
+        <a href="{% url 'administrador' %}" class="btn btn-primary">Voltar</a>
     </div>
+    
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+    <script src="{% static 'assets/js/animation.js' %}"></script>
 </body>
-
 </html>

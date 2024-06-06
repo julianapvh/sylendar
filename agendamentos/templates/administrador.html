@@ -1,93 +1,163 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Painel Administrativo - Sistema de Agendamentos</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    <style>
-        /* Adicione estilos personalizados aqui, se necessário */
-        .container_home {
-            background-color: #f8f9fa; /* Cor de fundo padrão */
-            padding: 50px;
-            text-align: center; /* Centralizar conteúdo */
-        }
 
-        .home-form {
-            display: inline-block;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
-        .btn_separado {
-            display: block;
-            margin-top: 20px; /* Adicionar espaço acima do botão */
-            border-radius: 20px; /* Adicionar bordas arredondadas */
-            padding: 10px 20px; /* Adicionar preenchimento interno */
-            font-size: 16px; /* Tamanho da fonte */
-            font-weight: bold; /* Negrito */
-            background-color: #007bff; /* Cor de fundo do botão */
-            color: #fff; /* Cor do texto */
-            border: none; /* Remover borda */
-            cursor: pointer; /* Cursor do mouse */
-            transition: background-color 0.3s; /* Transição suave de cor */
-        }
+  <title>Cliente - SYLENDAR</title>
 
-        .btn_separado:hover {
-            background-color: #0056b3; /* Mudar a cor de fundo ao passar o mouse */
-        }
-    </style>
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+  <!-- TemplateMo 563 SEO Dream -->
+  
+  <style>
+    /* Estilo para o botão de perfil */
+    .profile-button {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 9999;
+    }
+  </style>
+
 </head>
 
 <body>
-    <div class="container_home">
-        <div class="home-form">
-            <h1>Painel Administrativo</h1>
-            
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block btn_separado btn_separado">Cadastrar um Equipamento</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block btn_separado btn_separado">Excluir um Equipamento</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block btn_separado">Editar um Equipamento</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block btn_separado">Equipamentos Cadastrados</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block btn_separado">Histórico de Agendamentos dos Clientes</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'marcar_como_emprestado'%}" class="btn btn-primary btn-block btn_separado">Marcar Como Emprestado</a>
-                </li>
-                <li class="list-group-item">
-                    <a href="{% url 'marcar_devolucao' %}" class="btn btn-primary btn-block btn_separado">Marcar Como Devolvido</a>
-            </ul>
-            </div>
-      
-            <div class="row justify-content-center mt-5">
-                <div class="col-md-6">
-                    <a href="{% url 'administrador_home' %}" class="btn btn-primary btn-block btn_separado">Voltar</a>
-                </div>
-                <div class="col-md-6">
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary btn-block btn_separado">Logout</button>
-                    </form>
-                </div>
-            </div>
-            
-
-        
-
-        <footer class="mt-5">
-            <p class="text-center">&copy; 2024 Sistema de Agendamentos</p>
-        </footer>
+<!-- ***** Preloader Start ***** -->
+<div id="js-preloader" class="js-preloader">
+  <div class="preloader-inner">
+    <span class="dot"></span>
+    <div class="dots">
+      <span></span>
+      <span></span>
+      <span></span>
     </div>
+  </div>
+</div>
+<!-- ***** Preloader End ***** -->
+
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+  
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <!-- Your content area -->
+  <div class="container_home" style="margin-top: 100px;">
+      <div class="home-form">
+          {% for message in messages %}
+              <div class="alert alert-{{ message.tags }}">
+                  {{ message }}
+              </div>
+          {% endfor %}
+
+          
+  
+          
+          <h1 class="mb-4">Painel Adminisrativo</h1>
+          
+          <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block">Cadastrar um Equipamento</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir um Equipamento</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar um Equipamento</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block">Histórico de Agendamentos dos Clientes</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'marcar_como_emprestado' %}" class="btn btn-primary btn-block">Marcar Como Emprestado</a>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="main-green-button scroll-to-section">
+                <a href="{% url 'marcar_devolucao' %}" class="btn btn-primary btn-block">Marcar Como Devolvido</a>
+            </div>
+        </div>
+        
+   
+        
+        <!--Botão para o logout-->
+        
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-6">
+                <a href="{% url 'administrador' %}" class="btn btn-primary btn-block btn_separado main-green-button">Voltar</a>
+            </div>
+            <div class="col-md-6">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: green !important;">Logout</button>
+                </form>
+            </div>
+        </div>
+        
+        
+       
+          <footer class="mt-5">
+              <p class="text-center">&copy; 2024 Sylendar</p>
+          </footer>
+      </div>
+  </div>
+  
+  <!-- Scripts -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets/js/animation.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
 
 </html>

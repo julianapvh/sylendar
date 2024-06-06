@@ -47,6 +47,7 @@
     <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
+    ...
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('agendarForm').addEventListener('submit', function(e) {
@@ -98,8 +99,36 @@
                         document.getElementById('submitBtn').removeAttribute('disabled');
                         document.getElementById('submitBtn').value = 'Agendar';
                         
-                        // Exibe a mensagem de erro na div errorDiv
-                        document.getElementById('errorDiv').innerHTML = '<p class="error_message">' + data.message + '</p>';
+                        // Verifica os casos de erro e exibe alertas apropriados
+                        if (data.message.includes("hora de antecedência")) {
+                            // Exibe alerta para agendamento com menos de 1 hora de antecedência
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'É necessário agendar com pelo menos 1 hora de antecedência.',
+                            });
+                        } else if (data.message.includes("equipamento não está disponível")) {
+                            // Exibe alerta para equipamento não disponível no estoque
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'Não há equipamentos disponíveis no estoque para este agendamento.',
+                            });
+                        } else if (data.message.includes("equipamento não está disponível para o horário solicitado")) {
+                            // Exibe alerta para equipamento não disponível para o horário solicitado
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: 'Este equipamento não está disponível para o horário solicitado.',
+                            });
+                        } else {
+                            // Exibe a mensagem de erro na div errorDiv
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Erro!',
+                                text: data.message,
+                            });
+                        }
                     }
                 })
                 .catch(error => {
@@ -113,8 +142,7 @@
         });
     </script>
     
-    
-    
+
 </body>
 
 </html>

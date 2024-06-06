@@ -26,7 +26,6 @@
   <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
-  <!-- TemplateMo 563 SEO Dream -->
   
   <style>
     /* Estilo para o botão de perfil */
@@ -93,17 +92,17 @@
           
           <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
-                <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block">Cadastrar um Equipamento</a>
+                <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block">Cadastrar Equipamento</a>
             </div>
         </div>
         <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
-                <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir um Equipamento</a>
+                <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir Equipamento</a>
             </div>
         </div>
         <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
-                <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar um Equipamento</a>
+                <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar Equipamento</a>
             </div>
         </div>
         <div class="col-lg-12">
@@ -133,12 +132,12 @@
         
         <div class="row justify-content-center mt-5">
             <div class="col-md-6">
-                <a href="{% url 'administrador' %}" class="btn btn-primary btn-block btn_separado main-green-button">Voltar</a>
+                <a href="{% url 'administrador' %}" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: blue !important;">Voltar</a>
             </div>
             <div class="col-md-6">
                 <form action="{% url 'logout' %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: green !important;">Logout</button>
+                    <button type="submit" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: blue !important;">Logout</button>
                 </form>
             </div>
         </div>

@@ -1,80 +1,133 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Sistema de Agendamentos</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Adicione o SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+  <title>Cadastrar Equipamentos - SYLENDAR</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+  <!-- Additional CSS Files -->
+  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
+  <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+ 
 </head>
 
 <body>
-    <center>
-        {% if messages %}
-            {% for message in messages %}
-                <p class="alert alert-{{ message.tags }}">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
+<!-- ***** Preloader End ***** -->
 
-        <div class="container_home">
-            <div class="home-form">
-                <h1>Cadastro</h1>
-
-                <form action="{% url 'cadastrar_equipamento' %}" method="post">
-                    {% csrf_token %}
-                    <div class="form-group">
-                        <label for="nome">Nome</label>
-                        <input type="text" class="form-control" id="nome" name="nome_equipamento" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="descricao">Descrição</label>
-                        <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="fabricante">Fabricante</label>
-                        <input type="text" class="form-control" id="fabricante" name="fabricante">
-                    </div>
-                    <div class="form-group">
-                        <label for="data_aquisicao">Data de Aquisição</label>
-                        <input type="date" class="form-control" id="data_aquisicao" name="data_aquisicao">
-                    </div>
-                    <div class="form-group">
-                        <label for="quantidade">Quantidade Disponível</label>
-                        <input type="number" class="form-control" id="quantidade" name="quantidade_disponivel" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                    <a href="{% url 'administrador' %}" class="btn btn-secondary">Cancelar</a>
-                </form>
-            </div>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
+    <div class="container">
+      <div class="row">
+        <div class="col-12">
+          <nav class="main-nav">
+            <!-- ***** Logo Start ***** -->
+            <a href="{% url 'index' %}" class="logo">
+              <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
+            </a>
+            <!-- ***** Logo End ***** -->
+            <!-- ***** Menu Start ***** -->
+  
+            <a class='menu-trigger'>
+              <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
         </div>
-    </center>
+      </div>
+    </div>
+  </header>
 
-    <!-- Script JavaScript para exibir o alerta SweetAlert2 -->
-    <script>
-        {% if success %}
-            Swal.fire({
-                icon: 'success',
-                title: 'Cadastro realizado com sucesso!',
-                showConfirmButton: true,
-                showCancelButton: true,
-                confirmButtonText: 'Cadastrar outro equipamento',
-                cancelButtonText: 'Voltar para o administrador',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    window.location.href = "{% url 'cadastrar_equipamento' %}";
-                } else {
-                    window.location.href = "{% url 'administrador' %}";
-                }
-            });
-        {% endif %}
-    </script>
+<!-- Espaço adicional -->
+<div style="height: 100px;"></div>
 
-    <footer>
-        <p>&copy; 2024 Sistema de Agendamentos</p>
-    </footer>
+<center>
+    {% if messages %}
+        {% for message in messages %}
+            <p class="alert alert-{{ message.tags }}">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div class="container_home">
+        <div class="home-form">
+            <h1>Cadastro de Equipamentos</h1>
+
+            <form action="{% url 'cadastrar_equipamento' %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" class="form-control" id="nome" name="nome_equipamento" required>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <textarea class="form-control" id="descricao" name="descricao" rows="3"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="fabricante">Fabricante</label>
+                    <input type="text" class="form-control" id="fabricante" name="fabricante">
+                </div>
+                <div class="form-group">
+                    <label for="data_aquisicao">Data de Aquisição</label>
+                    <input type="date" class="form-control" id="data_aquisicao" name="data_aquisicao">
+                </div>
+                <div class="form-group">
+                    <label for="quantidade">Quantidade Disponível</label>
+                    <input type="number" class="form-control" id="quantidade" name="quantidade_disponivel" required>
+                </div>
+                <button type="submit" class="btn btn-primary" style="background-color: blue !important;">Salvar</button>
+                <a href="{% url 'administrador' %}" class="btn btn-secondary" style="background-color: blue !important;">Cancelar</a>
+            </form>
+        </div>
+    </div>
+</center>
+
+<!-- Script JavaScript para exibir o alerta SweetAlert2 -->
+<script>
+    {% if success %}
+        Swal.fire({
+            icon: 'success',
+            title: 'Cadastro realizado com sucesso!',
+            showConfirmButton: true,
+            showCancelButton: true,
+            confirmButtonText: 'Cadastrar outro equipamento',
+            cancelButtonText: 'Voltar para o administrador',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                window.location.href = "{% url 'cadastrar_equipamento' %}";
+            } else {
+                window.location.href = "{% url 'administrador' %}";
+            }
+        });
+    {% endif %}
+</script>
+
+<footer>
+    <p>&copy; 2024 Sylendar</p>
+</footer>
+  <!-- Scripts -->
+<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/owl-carousel.js' %}"></script>
+<script src="{% static 'assets/js/animation.js' %}"></script>
+<script src="{% static 'assets/js/imagesloaded.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
 
 </html>

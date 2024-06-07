@@ -177,11 +177,17 @@ AUTHENTICATION_BACKENDS = [
 LOGIN_REDIRECT_URL = "home"
 
 
-# Configurações de envio do e-mail
+# Load environment variables
+load_dotenv()
 
-EMAIL_BACKEND = os.getenv("EMAIL_BACKEND")
-EMAIL_HOST = os.getenv("EMAIL_HOST")
-EMAIL_PORT = int(os.getenv("EMAIL_PORT", "587"))
+# Email settings
+EMAIL_BACKEND = os.getenv("EMAIL_BACKEND", "django.core.mail.backends.smtp.EmailBackend")
+EMAIL_HOST = os.getenv("EMAIL_HOST", "us2.smtp.mailhostbox.com")
+EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "agendamentos@sisagenda.tech")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "XP@%Hs$2")
+
+# Default email address for various automated correspondence from your site
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "agendamentos@sisagenda.tech")
+

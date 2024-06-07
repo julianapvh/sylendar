@@ -156,6 +156,9 @@ body {
 }
 
 @media (max-width: 991px) {
+
+
+
   html, body {
     overflow-x: hidden;
   }
@@ -1624,6 +1627,11 @@ footer p a:hover {
   color: #4771cb;
 }
 
+.header-area .main-nav .logo h4 img {
+  max-width: auto !important;
+  margin-left: 0px;
+}
+
 /* 
 ---------------------------------------------
 responsive
@@ -1635,7 +1643,6 @@ responsive
     font-size: 24px;
   }
   .header-area .main-nav .logo h4 img {
-    max-width: 250px;
     margin-left: 0px;
   }
   .header-area .main-nav .nav li:last-child {

@@ -1,4 +1,6 @@
+{% extends 'base_pages.html' %}
 {% load static %}
+{% block content %}
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -21,20 +23,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
     <!-- Adicione o SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <style>
-        /* Adiciona espaço superior ao conteúdo para evitar sobreposição com o cabeçalho */
-        .content {
-            padding-top: 100px; /* Ajuste conforme necessário */
-        }
-        /* Centraliza verticalmente o conteúdo */
-        .center-content {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100%;
-        }
-    </style>
+
 </head>
 <body>
     <!-- ***** Preloader End ***** -->
@@ -96,3 +85,4 @@
     <script src="{% static 'assets/js/animation.js' %}"></script>
 </body>
 </html>
+{% endblock %}

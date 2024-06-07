@@ -1,4 +1,6 @@
+{% extends 'base_pages.html' %}
 {% load static %}
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -117,10 +119,6 @@
         });
     {% endif %}
 </script>
-
-<footer>
-    <p>&copy; 2024 Sylendar</p>
-</footer>
   <!-- Scripts -->
 <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
 <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -131,3 +129,4 @@
 </body>
 
 </html>
+{% endblock %}

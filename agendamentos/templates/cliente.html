@@ -76,6 +76,14 @@
             text-align: center;
             margin-top: 10px;
         }
+
+        .btn-uniform {
+            width: 100%;
+            display: inline-block;
+            text-align: center;
+            padding: 10px 20px; /* Ajuste os valores conforme necessário */
+            font-size: 16px; /* Ajuste o tamanho da fonte conforme necessário */
+        }
     </style>
 
 </head>
@@ -155,23 +163,23 @@
 
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                    <a href="{% url 'agendar_equipamento' %}" class="btn btn-primary btn-block">Agendar Equipamento</a>
+                    <a href="{% url 'agendar_equipamento' %}" class="btn btn-primary btn-block btn-uniform">Agendar Equipamento</a>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                    <a href="{% url 'meus_agendamentos' %}" class="btn btn-primary btn-block">Meus Agendamentos</a>
+                    <a href="{% url 'meus_agendamentos' %}" class="btn btn-primary btn-block btn-uniform">Meus Agendamentos</a>
                 </div>
             </div>
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
+                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block btn-uniform">Equipamentos Cadastrados</a>
                 </div>
             </div>
 
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                    <a href="{% url 'historico' %}" class="btn btn-primary btn-block">Histórico de Agendamentos</a>
+                    <a href="{% url 'historico' %}" class="btn btn-primary btn-block btn-uniform">Histórico de Agendamentos</a>
                 </div>
             </div>
         </div>

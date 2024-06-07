@@ -15,86 +15,90 @@
 
 <body>
     <div class="container_home">
-        <div class='home-form'>
-            <h2>Meus Agendamentos</h2>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>ID do Agendamento</th>
-                        <th>Equipamento</th>
-                        <th>Data</th>
-                        <th>Hora</th>
-                        <th>Situação</th>
-                        <th>Prazo Restante</th>
-                        <th>Data Prevista</th>
-                        <th>Devolvido</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for agendamento in agendamentos %}
-                        <tr>
-                            <td>{{ agendamento.id }}</td>
-                            <td>{{ agendamento.equipamento }}</td>
-                            <td>{{ agendamento.data|date:"d/m/Y" }}</td>
-                            <td>{{ agendamento.hora|time:"H:i" }}</td>
-                            <td>
-                                {% if agendamento.data_emprestimo %}
-                                    Emprestado
-                                {% else %}
-                                    Agendado
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if agendamento.prazo_restante %}
-                                    {% if agendamento.prazo_restante.days > 0 %}
-                                        {{ agendamento.prazo_restante.days }} dias
-                                    {% else %}
-                                        {% if not agendamento.devolvido %}
-                                            {{ agendamento.prazo_restante|timesince }} restante
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Meus Agendamentos</h2>
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID do Agendamento</th>
+                                <th>Equipamento</th>
+                                <th>Data</th>
+                                <th>Hora</th>
+                                <th>Situação</th>
+                                <th>Prazo Restante</th>
+                                <th>Data Prevista</th>
+                                <th>Devolvido</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for agendamento in agendamentos %}
+                                <tr>
+                                    <td>{{ agendamento.id }}</td>
+                                    <td>{{ agendamento.equipamento }}</td>
+                                    <td>{{ agendamento.data|date:"d/m/Y" }}</td>
+                                    <td>{{ agendamento.hora|time:"H:i" }}</td>
+                                    <td>
+                                        {% if agendamento.data_emprestimo %}
+                                            Emprestado
+                                        {% else %}
+                                            Agendado
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if agendamento.prazo_restante %}
+                                            {% if agendamento.prazo_restante.days > 0 %}
+                                                {{ agendamento.prazo_restante.days }} dias
+                                            {% else %}
+                                                {% if not agendamento.devolvido %}
+                                                    {{ agendamento.prazo_restante|timesince }} restante
+                                                {% else %}
+                                                    N/A
+                                                {% endif %}
+                                            {% endif %}
                                         {% else %}
                                             N/A
                                         {% endif %}
-                                    {% endif %}
-                                {% else %}
-                                    N/A
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if agendamento.data_entrega_prevista %}
-                                    {{ agendamento.data_entrega_prevista|date:"d/m/Y" }}
-                                {% else %}
-                                    N/A
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if agendamento.devolvido %}
-                                    Sim
-                                {% else %}
-                                    Não
-                                {% endif %}
-                            </td>
-                            <td>
-                                {% if agendamento.situacao == "Agendado" %}
-                                    <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary" {% if not agendamento.pode_reagendar %}disabled{% endif %}>Reagendar</button>
-                                    {% if agendamento.pode_cancelar %}
-                                        <button onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</button>
-                                    {% else %}
-                                        <button class="btn btn-danger" disabled>Cancelar</button>
-                                    {% endif %}
-                                    <div id="campos_reagendamento_{{ agendamento.id }}" style="display: none;">
-                                        <input type="date" id="nova_data_{{ agendamento.id }}" name="nova_data_{{ agendamento.id }}">
-                                        <input type="time" id="nova_hora_{{ agendamento.id }}" name="nova_hora_{{ agendamento.id }}">
-                                        <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-success">Enviar Reagendamento</button>
-                                        <button onclick="cancelarReagendamento({{ agendamento.id }})" class="btn btn-secondary">Cancelar</button>
-                                    </div>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <a href="{% url 'cliente' %}" class="btn btn-primary">Voltar</a>
+                                    </td>
+                                    <td>
+                                        {% if agendamento.data_entrega_prevista %}
+                                            {{ agendamento.data_entrega_prevista|date:"d/m/Y" }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if agendamento.devolvido %}
+                                            Sim
+                                        {% else %}
+                                            Não
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if agendamento.situacao == "Agendado" %}
+                                            <button onclick="mostrarCamposReagendamento({{ agendamento.id }})" class="btn btn-primary" {% if not agendamento.pode_reagendar %}disabled{% endif %}>Reagendar</button>
+                                            {% if agendamento.pode_cancelar %}
+                                                <button onclick="confirmarCancelamento('{% url 'cancelar_agendamento' agendamento.id %}')" class="btn btn-danger">Cancelar</button>
+                                            {% else %}
+                                                <button class="btn btn-danger" disabled>Cancelar</button>
+                                            {% endif %}
+                                            <div id="campos_reagendamento_{{ agendamento.id }}" style="display: none;">
+                                                <input type="date" id="nova_data_{{ agendamento.id }}" name="nova_data_{{ agendamento.id }}">
+                                                <input type="time" id="nova_hora_{{ agendamento.id }}" name="nova_hora_{{ agendamento.id }}">
+                                                <button onclick="enviarReagendamento({{ agendamento.id }})" class="btn btn-primary">Enviar</button>
+                                                <button onclick="cancelarReagendamento({{ agendamento.id }})" class="btn btn-secondary">Cancelar</button>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                <a href="{% url 'cliente' %}" class="btn btn-primary">Voltar</a>
+            </div>
         </div>
     </div>
 
@@ -163,8 +167,8 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     const novaData = document.getElementById(`nova_data_${agendamentoId}`).value;
-                    const novaHora = document.getElementById(`nova_hora_${agendamentoId}`).value;
-        
+                    const novaHora = document.getElementById(`nova_hora_${agendamentoId
+}`).value;
                     fetch(`/reagendar/${agendamentoId}/`, {
                         method: 'POST',
                         headers: {

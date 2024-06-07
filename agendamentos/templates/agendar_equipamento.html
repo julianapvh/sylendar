@@ -11,42 +11,77 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Adicione o link para o CSS do SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Cor de fundo clara */
+        }
+        .container_home {
+            margin-top: 50px;
+            background: #ffffff; /* Fundo branco para o contêiner */
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave */
+        }
+        .form-control {
+            margin-bottom: 15px;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            transition: background-color 0.3s ease;
+        }
+        .btn-primary:hover {
+            background-color: #0056b3;
+            border-color: #004085;
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container_home">
-        <div class="container">
-        <div class="row">
-            <h2>Agendar Equipamento</h2>
-            <form id="agendarForm" method="post" action="{% url 'agendar_equipamento' %}">
-                {% csrf_token %}
-                <label for="equipamento">Selecione o Equipamento:</label>
-                <select id="equipamento" name="equipamento">
-                    {% for equipamento in equipamentos %}
-                    <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
-                    {% endfor %}
-                </select>
-                <label for="data">Data:</label>
-                <input type="date" id="data" name="data" required>
-                <label for="hora">Hora:</label>
-                <input type="time" id="hora" name="hora" required {% if not data_atual == data %}min="00:00" max="23:59"{% endif %}>                
-                <label for="quantidade_dias">Quantidade de Dias:</label>
-                <select id="quantidade_dias" name="quantidade_dias">
-                    <option value="1">1 dia</option>
-                    <option value="2">2 dias</option>
-                    <option value="3" selected>3 dias</option>
-                </select>
+    <div class="container">
+        <div class="container_home">
+            <div class="row justify-content-center">
+                <div class="col-md-8">
+                    <h2 class="mb-4 text-center">Agendar Equipamento</h2>
+                    <form id="agendarForm" method="post" action="{% url 'agendar_equipamento' %}">
+                        {% csrf_token %}
+                        <div class="form-group">
+                            <label for="equipamento">Selecione o Equipamento:</label>
+                            <select id="equipamento" name="equipamento" class="form-control">
+                                {% for equipamento in equipamentos %}
+                                <option value="{{ equipamento.id }}">{{ equipamento.nome }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data">Data:</label>
+                            <input type="date" id="data" name="data" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="hora">Hora:</label>
+                            <input type="time" id="hora" name="hora" class="form-control" required {% if not data_atual == data %}min="00:00" max="23:59"{% endif %}>
+                        </div>
+                        <div class="form-group">
+                            <label for="quantidade_dias">Quantidade de Dias:</label>
+                            <select id="quantidade_dias" name="quantidade_dias" class="form-control">
+                                <option value="1">1 dia</option>
+                                <option value="2">2 dias</option>
+                                <option value="3" selected>3 dias</option>
+                            </select>
+                        </div>
+                        <div class="text-center">
+                            <input type="submit" id="submitBtn" value="Agendar" class="btn btn-primary btn-md">
+                        </div>
+                    </form>
+                    <div id="errorDiv"></div> <!-- Div para exibir mensagens de erro -->
+                    <br>
+                    <a href="{% url 'cliente' %}" class="btn btn-secondary btn-md">Voltar</a>
 
-                <input type="submit" id="submitBtn" value="Agendar">
-
-            </form>
-    
-            <div id="errorDiv"></div> <!-- Div para exibir mensagens de erro -->
+                </div>
+            </div>
         </div>
-        <br>
-        <a href="{% url 'cliente' %}" class="btn btn-primary">Voltar</a>
     </div>
-    
+
     <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
@@ -143,8 +178,6 @@
             });
         });
     </script>
-    
-
 </body>
 
 </html>

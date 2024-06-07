@@ -20,7 +20,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
@@ -28,13 +27,58 @@
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
   
   <style>
-    /* Estilo para o botão de perfil */
-    .profile-button {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        z-index: 9999;
+    /* Estilo para o contêiner dos botões de perfil e logout */
+    .profile-logout-container {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column; /* Muda para coluna */
+      gap: 10px; /* Adiciona um espaço entre os botões */
     }
+
+    /* Estilo para cada botão de perfil e logout */
+    .profile-button,
+    .logout-button {
+      font-size: 14px;
+      border: none; /* Remover a borda */
+      background-color: transparent; /* Remover a cor de fundo */
+      color: #ffffff; /* Cor do texto */
+      transition: all 0.3s ease; /* Transição suave */
+    }
+
+    /* Estilo para alterar a cor do botão ao passar o mouse */
+    .profile-button:hover,
+    .logout-button:hover {
+      background-color: rgba(255, 255, 255, 0.1); /* Cor do fundo ao passar o mouse */
+      color: #ffffff; /* Cor do texto ao passar o mouse */
+      text-decoration: none; /* Remover sublinhado ao passar o mouse */
+    }
+
+    /* Estilo para o ícone de desligamento */
+    .logout-button i {
+      margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+    }
+
+    /* Estilo para o botão "Voltar" */
+    .btn-voltar {
+      background-color: #007bff; /* Cor azul padrão do Bootstrap */
+      color: #ffffff;
+      border: none;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-voltar:hover {
+      background-color: #0056b3; /* Cor azul mais escura ao passar o mouse */
+      color: #ffffff;
+    }
+
+    .main-green-button {
+      text-align: center;
+      margin-top: 10px;
+    }
+
   </style>
 
 </head>
@@ -84,66 +128,70 @@
                   {{ message }}
               </div>
           {% endfor %}
+          
+          <!-- Contêiner para os botões de perfil e logout -->
+          <div class="profile-logout-container">
+            <!-- Botão de perfil -->
+            <div class="profile-button">
+                <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
+                    <i class="fas fa-user"></i> Perfil
+                </a>
+            </div>
+            <!-- Botão de logout -->
+            <div class="logout-button">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn"> <i class="fas fa-sign-out-alt"></i> Logout</button>
+                </form>
+            </div>
+          </div>
 
-          
-  
-          
-          <h1 class="mb-4">Painel Adminisrativo</h1>
+          <h1 class="mb-4">Painel Administrativo</h1>
           
           <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
                 <a href="{% url 'cadastrar_equipamento' %}" class="btn btn-primary btn-block">Cadastrar Equipamento</a>
             </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir Equipamento</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar Equipamento</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block">Histórico de Agendamentos dos Clientes</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'marcar_como_emprestado' %}" class="btn btn-primary btn-block">Marcar Como Emprestado</a>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-green-button scroll-to-section">
-                <a href="{% url 'marcar_devolucao' %}" class="btn btn-primary btn-block">Marcar Como Devolvido</a>
-            </div>
-        </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'excluir_equipamento' %}" class="btn btn-primary btn-block">Excluir Equipamento</a>
+              </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'editar_equipamento' %}" class="btn btn-primary btn-block">Editar Equipamento</a>
+              </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
+              </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'historico_agendamentos' %}" class="btn btn-primary btn-block">Histórico de Agendamentos dos Clientes</a>
+              </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'marcar_como_emprestado' %}" class="btn btn-primary btn-block">Marcar Como Emprestado</a>
+              </div>
+          </div>
+          <div class="col-lg-12">
+              <div class="main-green-button scroll-to-section">
+                  <a href="{% url 'marcar_devolucao' %}" class="btn btn-primary btn-block">Marcar Como Devolvido</a>
+              </div>
+          </div>
         
-   
+          <!--Botão para o logout-->
         
-        <!--Botão para o logout-->
+          <div class="row justify-content-center mt-5">
+              <div class="col-md-6">
+                  <a href="{% url 'administrador' %}" class="btn btn-primary btn-block btn-voltar">Voltar</a>
+              </div>
+          </div>
         
-        <div class="row justify-content-center mt-5">
-            <div class="col-md-6">
-                <a href="{% url 'administrador' %}" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: blue !important;">Voltar</a>
-            </div>
-            <div class="col-md-6">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-primary btn-block btn_separado main-green-button" style="background-color: blue !important;">Logout</button>
-                </form>
-            </div>
-        </div>
-        
-        
-       
           <footer class="mt-5">
               <p class="text-center">&copy; 2024 Sylendar</p>
           </footer>

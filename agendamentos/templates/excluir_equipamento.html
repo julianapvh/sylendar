@@ -1,5 +1,8 @@
+{% extends 'perfil_logout.html' %}
 {% load static %}
 
+
+{% block content %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -21,6 +24,7 @@
     <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
     <!-- Estilos adicionais -->
+   
     <style>
         body {
             padding-top: 80px; /* Adiciona espaço extra acima do conteúdo para compensar a altura do cabeçalho */
@@ -141,6 +145,7 @@
             });
         }
     </script>
+   
     <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
@@ -150,3 +155,4 @@
 </body>
 
 </html>
+{% endblock %}

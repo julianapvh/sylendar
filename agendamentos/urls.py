@@ -131,6 +131,7 @@ urlpatterns = [
         name="password_reset_complete",
     ),
     path("perfil/", views.profile, name="perfil"),
+    path("base/", views.base, name="base"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas

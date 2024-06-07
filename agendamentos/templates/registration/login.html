@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,6 +18,16 @@
   <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
+  
+  <!-- Custom CSS -->
+  <style>
+    /* Estilos para o spinner de carregamento */
+    .spinner-border {
+      width: 3rem;
+      height: 3rem;
+      border-width: 0.25em;
+    }
+  </style>
 </head>
 <body>
 <!-- ***** Preloader Start ***** -->
@@ -71,6 +80,29 @@
             <div class="col-lg-9 offset-lg-3">
               <div class="row">
                 <div class="col-lg-8">
+                  {% if form.errors %}
+                  <div class="alert alert-danger" role="alert">
+                    Seu nome de usuário ou senha não correspondem. Por favor, tente novamente.
+                  </div>
+                  {% endif %}
+        
+                  {% if next %}
+                  {% if user.is_authenticated %}
+                  <div class="alert alert-warning" role="alert">
+                    Sua conta não tem acesso a esta página. Para prosseguir, faça login com uma conta que tenha acesso.
+                  </div>
+                  {% else %}
+                  <div class="alert alert-info" role="alert">
+                    Faça login para ver esta página.
+                  </div>
+                  {% endif %}
+                  {% endif %}
+         
+                                    <!-- Spinner de carregamento -->
+                  <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+                    <span class="sr-only"></span>
+                  </div>
+                                  
                   <fieldset>
                     <input type="text" name="username" id="username" class="form-control" placeholder="Nome de Usuário" required="">
                   </fieldset>
@@ -110,5 +142,15 @@
 <script src="{% static 'assets/js/animation.js' %}"></script>
 <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
 <script src="{% static 'assets/js/custom.js' %}"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+      // Mostra o spinner de carregamento ao enviar o formulário
+      document.querySelector('form').addEventListener('submit', function () {
+          document.getElementById('loading-spinner').style.display = 'inline-block';
+      });
+  });
+  </script>
+  
 </body>
 </html>

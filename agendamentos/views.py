@@ -134,7 +134,7 @@ def home(request):
     
 #função de visualização para o template base
 def base(request):
-    return render(request, "perfil_logout.html")
+    return render(request, "base_pages.html")
 
 
 def index(request):

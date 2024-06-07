@@ -76,6 +76,22 @@
       text-align: center;
       margin-top: 10px;
     }
+    
+    ./* Estilos do footer */
+    .footer {
+      background-color: #333;
+      color: #fff;
+      padding: 20px 0;
+      text-align: center;
+    }
+
+    .footer p {
+      margin-bottom: 0;
+    }
+    
+    
+    
+    
   </style>
 </head>
 
@@ -129,7 +145,7 @@
     {% if request.user.is_superuser %}
     <div class="admin-button">
       <a href="{% url 'administrador' %}" class="btn" title="Página do administrador">
-        <i class="fas fa-tools"></i> Página do administrador
+        <i class="fas fa-tools"></i> Administrador
       </a>
     </div>
     {% endif %}
@@ -148,9 +164,16 @@
     {% endblock %}
   </div>
 
-  <!-- Footer -->
-  <footer class="text-center mt-5">
-    <p>&copy; 2024 Sylendar</p>
+
+   <!-- ***** Footer ***** -->
+   <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <p>&copy; 2024 Sylendar</p>
+        </div>
+      </div>
+    </div>
   </footer>
 
   <!-- Scripts -->

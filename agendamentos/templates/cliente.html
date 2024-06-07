@@ -1,4 +1,9 @@
+{% extends 'base_pages.html' %}
 {% load static %}
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
 <!DOCTYPE html>
 <html lang="en">
 
@@ -133,30 +138,6 @@
             </div>
             {% endfor %}
 
-            <!-- Contêiner para os botões de perfil e logout -->
-            <div class="profile-logout-container">
-                <!-- Botão de perfil -->
-                <div class="profile-button">
-                    <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
-                        <i class="fas fa-user"></i> Perfil
-                    </a>
-                </div>
-                <!-- Botão de logout -->
-                <div class="logout-button">
-                    <form action="{% url 'logout' %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
-                    </form>
-                </div>
-                <!-- Botão de administrador, visível apenas para superusuários -->
-                {% if request.user.is_superuser %}
-                <div class="admin-button">
-                    <a href="{% url 'administrador' %}" class="btn" title="Página do administrador">
-                        <i class="fas fa-tools"></i> Administrador
-                    </a>
-                </div>
-                {% endif %}
-            </div>
 
             <h1 class="mb-4">Minha Agenda</h1>
             <p>Logado como: {{ request.user.username }}</p>
@@ -183,10 +164,7 @@
                 </div>
             </div>
         </div>
-        
-        <footer class="mt-5">
-            <p class="text-center">&copy; 2024 Sylendar</p>
-        </footer>
+
     </div>
 
     <!-- Scripts -->
@@ -199,3 +177,4 @@
 </body>
 
 </html>
+{% endblock %}

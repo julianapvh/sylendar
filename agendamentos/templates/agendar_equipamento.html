@@ -43,13 +43,12 @@
             <div id="errorDiv"></div> <!-- Div para exibir mensagens de erro -->
         </div>
         <br>
-        <a href="{% url 'cliente' %}" class="btn-primary">Voltar</a>
+        <a href="{% url 'cliente' %}" class="btn btn-primary">Voltar</a>
     </div>
     
     <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
 
-    ...
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('agendarForm').addEventListener('submit', function(e) {

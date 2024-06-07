@@ -8,17 +8,14 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
     <title>Cliente - SYLENDAR</title>
 
     <!-- Bootstrap core CSS -->
     <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
 
     <!-- Additional CSS Files -->
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
@@ -36,12 +33,12 @@
             z-index: 9999;
             display: flex;
             flex-direction: column;
+            gap: 10px; /* Adiciona um espaço entre os botões */
         }
 
         /* Estilo para cada botão de perfil e logout */
         .profile-button,
         .logout-button {
-            margin-bottom: 1px;
             font-size: 14px;
             border: none; /* Remover a borda */
             background-color: transparent; /* Remover a cor de fundo */
@@ -60,6 +57,24 @@
         /* Estilo para o ícone de desligamento */
         .logout-button i {
             margin-right: 5px; /* Espaçamento entre o ícone e o texto */
+        }
+
+        /* Estilo para o botão "Voltar" */
+        .btn-voltar {
+            background-color: #007bff; /* Cor azul padrão do Bootstrap */
+            color: #ffffff;
+            border: none;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn-voltar:hover {
+            background-color: #0056b3; /* Cor azul mais escura ao passar o mouse */
+            color: #ffffff;
+        }
+
+        .main-green-button {
+            text-align: center;
+            margin-top: 10px;
         }
     </style>
 
@@ -80,8 +95,7 @@
     <!-- ***** Preloader End ***** -->
 
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s"
-        style="position: absolute; top: 0; width: 100%;">
+    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -92,7 +106,6 @@
                         </a>
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
-
                         <a class='menu-trigger'>
                             <span>Menu</span>
                         </a>
@@ -114,20 +127,28 @@
 
             <!-- Contêiner para os botões de perfil e logout -->
             <div class="profile-logout-container">
-              <!-- Botão de perfil -->
-              <div class="profile-button">
-                  <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
-                      <i class="fas fa-user"></i> Perfil
-                  </a>
-              </div>
-              <!-- Botão de logout -->
-              <div class="logout-button">
-                  <form action="{% url 'logout' %}" method="post">
-                      {% csrf_token %}
-                      <button type="submit" class="btn"> <i class="fas fa-sign-out-alt"></i> Logout</button>
-                  </form>
-              </div>
-          </div>
+                <!-- Botão de perfil -->
+                <div class="profile-button">
+                    <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
+                        <i class="fas fa-user"></i> Perfil
+                    </a>
+                </div>
+                <!-- Botão de logout -->
+                <div class="logout-button">
+                    <form action="{% url 'logout' %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn"><i class="fas fa-sign-out-alt"></i> Logout</button>
+                    </form>
+                </div>
+                <!-- Botão de administrador, visível apenas para superusuários -->
+                {% if request.user.is_superuser %}
+                <div class="admin-button">
+                    <a href="{% url 'administrador' %}" class="btn" title="Página do administrador">
+                        <i class="fas fa-tools"></i> Administrador
+                    </a>
+                </div>
+                {% endif %}
+            </div>
 
             <h1 class="mb-4">Minha Agenda</h1>
             <p>Logado como: {{ request.user.username }}</p>
@@ -144,8 +165,7 @@
             </div>
             <div class="col-lg-12">
                 <div class="main-green-button scroll-to-section">
-                    <a href="{% url 'visualizar_equipamentos' %}"
-                        class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
+                    <a href="{% url 'visualizar_equipamentos' %}" class="btn btn-primary btn-block">Equipamentos Cadastrados</a>
                 </div>
             </div>
 
@@ -155,12 +175,10 @@
                 </div>
             </div>
         </div>
-
-
+        
         <footer class="mt-5">
             <p class="text-center">&copy; 2024 Sylendar</p>
         </footer>
-    </div>
     </div>
 
     <!-- Scripts -->

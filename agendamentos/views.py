@@ -131,8 +131,9 @@ def register(request):
 @login_required
 def home(request):
     return render(request, "home.html")
-    
-#função de visualização para o template base
+
+
+# função de visualização para o template base
 def base(request):
     return render(request, "base_pages.html")
 
@@ -845,5 +846,3 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, "500.html", status=500)
-    
-

@@ -728,6 +728,15 @@ def marcar_como_emprestado(request):
 
     context = {"agendamentos": agendamentos}
     return render(request, "marcar_como_emprestado.html", context)
+    
+@login_required
+def agendamentos_emprestados(request):
+    # Filtrar apenas os agendamentos que estão marcados como emprestados
+    agendamentos_emprestados = Agendamento.objects.filter(emprestado=True)
+    context = {
+        'agendamentos_emprestados': agendamentos_emprestados,
+    }
+    return render(request, 'agendamentos_emprestados.html', context)
 
 
 def emprestimo_sucesso(request, agendamento_id):

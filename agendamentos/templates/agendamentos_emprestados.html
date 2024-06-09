@@ -1,0 +1,22 @@
+{% extends 'base_pages.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendamentos Emprestados</title>
+</head>
+<body>
+    <h1>Agendamentos Emprestados</h1>
+    <ul>
+        {% for agendamento in agendamentos_emprestados %}
+            <li>{{ agendamento.cliente_nome }} - {{ agendamento.equipamento.nome }} - {{ agendamento.data }} {{ agendamento.hora }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
+
+
+{% endblock %}

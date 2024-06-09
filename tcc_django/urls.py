@@ -128,6 +128,7 @@ urlpatterns = [
         views.equipamentos_disponiveis,
         name="equipamentos_disponiveis",
     ),
+    path("agendamentos_emprestados/", views.agendamentos_emprestados, name="agendamentos_emprestados"),
 ]
 
 if settings.DEBUG:

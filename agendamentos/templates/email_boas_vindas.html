@@ -5,9 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-vindo ao Sistema de Agendamentos de Equipamentos</title>
+    <title>Bem-vindo ao Sylendar</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <style>
-        /* Estilos CSS */
+        /* Estilos CSS internos */
         body {
             font-family: Arial, sans-serif;
             background-color: #f4f4f4;
@@ -39,15 +40,15 @@
 </head>
 <body>
     <div class="container">
-        <h1>Bem-vindo ao Sistema de Agendamentos de Equipamentos</h1>
+        <h1>Bem-vindo ao Sylendar</h1>
         <p>Olá {{ usuario.first_name }},</p>
-        <p>Obrigado por criar uma conta no nosso sistema de agendamentos de equipamentos.</p>
-        <p>Nossa empresa está comprometida em oferecer uma solução eficiente para o gerenciamento de reservas de equipamentos, ajudando a otimizar processos e garantir um uso mais eficaz dos recursos disponíveis.</p>
-        <p>Visite nossa página para saber mais sobre a variedade de ferramentas e recursos disponíveis em nosso sistema.</p>
-        <p>Não hesite em entrar em contato com nossa equipe de suporte em suporte@sisagenda.tech se tiver alguma dúvida. Estamos aqui para ajudar!</p>
+        <p>Agradecemos por criar uma conta em nosso sistema de agendamentos.</p>
+        <p>Nossa equipe está comprometida em oferecer uma solução eficiente para o gerenciamento de reservas de equipamentos, ajudando a otimizar processos e garantir um uso mais eficaz dos recursos disponíveis.</p>
+        <p>Visite nossa página para saber mais.</p>
+        <p>Em caso de dúvidas entre em contato com nossa equipe de suporte em <a href="mailto:suporte@sisagenda.tech">suporte@sisagenda.tech</a> se tiver alguma dúvida. Estamos aqui para ajudar!</p>
         <div class="footer">
             <p>Cumprimentos,</p>
-            <p>A Equipe do Sistema de Agendamentos de Equipamentos</p>
+            <p>A Equipe do Sylendar</p>
         </div>
     </div>
 </body>

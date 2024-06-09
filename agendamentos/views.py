@@ -539,14 +539,15 @@ def editar_equipamento(request):
         equipamento.quantidade_disponivel = quantidade_disponivel
         equipamento.save()
 
+        # Adicione uma mensagem de sucesso
+        messages.success(request, "O equipamento foi editado com sucesso.")
+
         # Redireciona o usuário para a página de gerenciamento de equipamentos
         return redirect("editar_equipamento")
     else:
         # Se não for uma solicitação POST, renderize o formulário de edição
         equipamentos = Equipamento.objects.all()
-        return render(
-            request, "editar_equipamento.html", {"equipamentos": equipamentos}
-        )
+        return render(request, "editar_equipamento.html", {"equipamentos": equipamentos})
 
 
 @staff_member_required

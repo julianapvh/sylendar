@@ -183,6 +183,26 @@
             console.log("Botão Cancelar clicado");
             $('#editModal').modal('hide');
         });
+        
+         // Função para exibir alerta de sucesso quando o equipamento é editado
+         {% if messages %}
+         {% for message in messages %}
+             {% if message.tags == 'success' %}
+                 Swal.fire({
+                     icon: 'success',
+                     title: 'Sucesso!',
+                     text: '{{ message }}',
+                 });
+             {% elif message.tags == 'error' %}
+                 Swal.fire({
+                     icon: 'error',
+                     title: 'Erro!',
+                     text: '{{ message }}',
+                 });
+             {% endif %}
+         {% endfor %}
+     {% endif %}
+ </script>
 
 
     </script>

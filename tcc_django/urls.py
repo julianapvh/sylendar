@@ -123,6 +123,8 @@ urlpatterns = [
     path("perfil/", views.profile, name="perfil"),
     path("api/check_username/", api_views.check_username, name="check_username_api"),
     path("base/", views.base, name="base"),
+    path("equipamentos_disponiveis/", views.equipamentos_disponiveis, name="equipamentos_disponiveis"),
+    
 ]
 
 if settings.DEBUG:

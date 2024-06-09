@@ -73,11 +73,17 @@
         }
 
         .home-form button.confirm-devolucao {
-            background-color: #28a745;
+            background-color: #5F9EA0; /* Verde claro */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            padding: 8px 16px; /* Consistência com outros botões */
+            transition: background-color 0.3s ease;
         }
 
         .home-form button.confirm-devolucao:hover {
-            background-color: #218838;
+            background-color: #66CDAA; /* Verde um pouco mais escuro para hover */
         }
 
         .btn-primary {
@@ -90,6 +96,61 @@
             border-color: #0056b3;
         }
     </style>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        function confirmarDevolucao(agendamentoId) {
+            // Confirmar a devolução com o usuário
+            Swal.fire({
+                title: 'Tem certeza?',
+                text: "Deseja confirmar a devolução deste agendamento?",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim, devolver!',
+                cancelButtonText: 'Cancelar'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Enviar uma requisição AJAX para devolver o equipamento
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("POST", "{% url 'devolucao_equipamento' 0 %}".replace("0", agendamentoId));
+                    xhr.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+                    xhr.onload = function () {
+                        if (xhr.status == 200) {
+                            Swal.fire(
+                                'Devolvido!',
+                                'O equipamento foi devolvido com sucesso.',
+                                'success'
+                            ).then(() => {
+                                location.reload(); // Recarregar a página após a devolução
+                            });
+                        } else {
+                            Swal.fire(
+                                'Erro!',
+                                'Ocorreu um erro ao devolver o equipamento. Tente novamente.',
+                                'error'
+                            );
+                        }
+                    };
+                    xhr.send();
+                }
+            });
+        }
+
+        function validarBusca() {
+            var clienteNome = document.getElementById("cliente_nome").value;
+            if (clienteNome.trim() === "") {
+                Swal.fire(
+                    'Atenção!',
+                    'Por favor, digite o nome do cliente antes de buscar.',
+                    'warning'
+                );
+                return false; // Impede o envio do formulário
+            }
+            return true; // Permite o envio do formulário
+        }
+    </script>
+
 </head>
 
 <body>

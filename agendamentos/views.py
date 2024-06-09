@@ -377,6 +377,18 @@ def visualizar_equipamentos(request):
     context = {"equipamentos": equipamentos}
     return render(request, "listar_equipamentos.html", context)
 
+@login_required
+def equipamentos_disponiveis(request):
+    # Filtrar os equipamentos com base na consulta de pesquisa, se houver
+    query = request.GET.get("q")
+    if query:
+        equipamentos = Equipamento.objects.filter(nome__icontains=query)
+    else:
+        equipamentos = Equipamento.objects.all()
+
+    context = {"equipamentos": equipamentos}
+    return render(request, "equipamentos_disponiveis.html", context)
+
 
 @transaction.atomic
 def reagendar_agendamento(request, agendamento_id):

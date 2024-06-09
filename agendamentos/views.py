@@ -589,7 +589,7 @@ def excluir_equipamento(request):
             # Define a mensagem de sucesso
             messages.success(request, "O equipamento foi excluído com sucesso.")
             # Redireciona o usuário para a página de gerenciamento de equipamentos
-            return redirect("gerenciar_equipamentos")
+            return redirect("excluir_equipamento")
         except Exception as e:
             # Se ocorrer um erro ao excluir, exibe uma mensagem de erro
             messages.error(request, f"O equipamento não foi excluído. Erro: {e}")
@@ -604,7 +604,7 @@ def excluir_equipamento(request):
             # Define a mensagem de sucesso
             messages.success(request, "O equipamento foi excluído com sucesso.")
             # Redireciona o usuário para a página de gerenciamento de equipamentos
-            return redirect("gerenciar_equipamentos")
+            return redirect("excluir_equipamento")
         except Exception as e:
             # Se ocorrer um erro ao excluir, exibe uma mensagem de erro
             messages.error(request, f"O equipamento não foi excluído. Erro: {e}")

@@ -123,9 +123,12 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCancelar">Cancelar</button>
+
                     <button type="button" class="btn btn-primary" onclick="submitEditForm()">Salvar Alterações</button>
                 </div>
+                
+                
             </div>
         </div>
     </div>
@@ -141,12 +144,49 @@
             document.getElementById('quantidade_disponivel').value = quantidade_disponivel;
             $('#editModal').modal('show');
         }
-
+    
+        // Função para validar o formulário de edição antes de enviar
+        function validateEditForm() {
+            // Obter os valores dos campos do formulário
+            var nome = document.getElementById('nome').value.trim();
+            var descricao = document.getElementById('descricao').value.trim();
+            var fabricante = document.getElementById('fabricante').value.trim();
+            var data_aquisicao = document.getElementById('data_aquisicao').value.trim();
+            var quantidade_disponivel = document.getElementById('quantidade_disponivel').value.trim();
+    
+            // Verificar se algum campo está em branco
+            if (nome === '' || descricao === '' || fabricante === '' || data_aquisicao === '' || quantidade_disponivel === '') {
+                // Exibir mensagem de erro
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Por favor, preencha todos os campos antes de enviar o formulário!',
+                });
+                // Retornar false para evitar o envio do formulário
+                return false;
+            }
+    
+            // Se todos os campos estiverem preenchidos, permitir o envio do formulário
+            return true;
+        }
+    
         // Função para enviar o formulário de edição quando o botão "Salvar Alterações" é clicado
         function submitEditForm() {
-            document.getElementById('editForm').submit();
+            // Validar o formulário antes de enviar
+            if (validateEditForm()) {
+                document.getElementById('editForm').submit();
+            }
         }
+        
+                // Função para fechar o modal quando o botão "Cancelar" é clicado
+        document.getElementById('btnCancelar').addEventListener('click', function() {
+            console.log("Botão Cancelar clicado");
+            $('#editModal').modal('hide');
+        });
+
+
     </script>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>

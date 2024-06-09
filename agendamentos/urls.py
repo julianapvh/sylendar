@@ -132,7 +132,11 @@ urlpatterns = [
     ),
     path("perfil/", views.profile, name="perfil"),
     path("base/", views.base, name="base"),
-    path("equipamentos_disponiveis/", views.equipamentos_disponiveis, name="equipamentos_disponiveis"),
+    path(
+        "equipamentos_disponiveis/",
+        views.equipamentos_disponiveis,
+        name="equipamentos_disponiveis",
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas

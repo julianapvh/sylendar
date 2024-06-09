@@ -377,6 +377,7 @@ def visualizar_equipamentos(request):
     context = {"equipamentos": equipamentos}
     return render(request, "listar_equipamentos.html", context)
 
+
 @login_required
 def equipamentos_disponiveis(request):
     # Filtrar os equipamentos com base na consulta de pesquisa, se houver
@@ -547,7 +548,9 @@ def editar_equipamento(request):
     else:
         # Se não for uma solicitação POST, renderize o formulário de edição
         equipamentos = Equipamento.objects.all()
-        return render(request, "editar_equipamento.html", {"equipamentos": equipamentos})
+        return render(
+            request, "editar_equipamento.html", {"equipamentos": equipamentos}
+        )
 
 
 @staff_member_required

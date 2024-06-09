@@ -187,8 +187,8 @@ EMAIL_BACKEND = os.getenv(
 EMAIL_HOST = os.getenv("EMAIL_HOST", "us2.smtp.mailhostbox.com")
 EMAIL_PORT = int(os.getenv("EMAIL_PORT", 587))
 EMAIL_USE_TLS = os.getenv("EMAIL_USE_TLS", "true").lower() == "true"
-EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "agendamentos@sisagenda.tech")
-EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD", "XP@%Hs$2")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER", "sylendar@sisagenda.tech")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
 
 # Default email address for various automated correspondence from your site
-DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "agendamentos@sisagenda.tech")
+DEFAULT_FROM_EMAIL = os.getenv("DEFAULT_FROM_EMAIL", "sylendar@sisagenda.tech")

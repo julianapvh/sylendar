@@ -800,7 +800,7 @@ def enviar_email(usuario, assunto, equipamento_nome, data, hora, template):
 
 
 def enviar_email_boas_vindas(usuario):
-    assunto = "Bem-vindo ao Sisagendamentos"
+    assunto = "Bem-vindo ao Sylendar"
     template = "email_boas_vindas.html"
 
     # Renderize o corpo do e-mail usando um template HTML correspondente

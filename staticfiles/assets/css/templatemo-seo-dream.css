@@ -190,6 +190,7 @@ body {
 
 .section-heading h2 {
   font-size: 30px;
+  
   color: #2a2a2a;
   font-weight: 800;
   position: relative;
@@ -212,6 +213,7 @@ body {
   font-size: 15px;
   font-weight: 400;
   color: #fff;
+  
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;
@@ -231,6 +233,7 @@ body {
   font-size: 15px;
   font-weight: 400;
   color: #fff;
+  
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;
@@ -316,7 +319,7 @@ header
 .header-area .main-nav .logo h4 {
     font-size: 30px;
     font-weight: 800;
-
+    
     color: #fff;
     line-height: 100px;
     float: left;
@@ -379,6 +382,7 @@ header
   font-weight: 500;
   font-size: 15px;
   color: #fff;
+  
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -879,6 +883,7 @@ Banner Style
 }
 
 .main-banner .left-content h6 {
+  
   font-size: 15px;
   font-weight: 400;
   color: #2a2a2a;
@@ -893,24 +898,70 @@ Banner Style
   color: #2a2a2a;
 }
 
-@media (min-width: 200px) and (max-width: 1920px) {
+
+.main-banner .left-content h2 {
+  border-top: 1px solid #eee;
+  margin-top: 3vw; /* Margem superior proporcional à viewport */
+  padding-top: 2vw; /* Padding superior proporcional à viewport */
+  margin-bottom: 4.5vw; /* Margem inferior proporcional à viewport */
+  font-size: 10vw; /* Ajuste a fonte proporcionalmente à largura da viewport */
+  font-weight: 800;
+  color: #2a2a2a;
+  line-height: 1.2; /* Use uma unidade relativa para o line-height */
+  background: #FA9D4D;
+  background: -webkit-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+  background: -moz-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+  background: linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@media (min-width: 600px) {
   .main-banner .left-content h2 {
-    border-top: 1px solid #eee;
-    margin-top: 30px;
-    padding-top: 20px;
-    margin-bottom: 45px;
-    font-size: 10vw; /* Ajuste a fonte proporcionalmente à largura da viewport */
-    font-weight: 800;
-    color: #2a2a2a;
-    line-height: 1.2; /* Use uma unidade relativa para o line-height */
-    background: #FA9D4D;
-    background: -webkit-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-    background: -moz-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-    background: linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 8vw; /* Ajuste o tamanho da fonte para telas maiores */
+    margin-top: 2.5vw;
+    padding-top: 1.5vw;
+    margin-bottom: 3.5vw;
   }
 }
+
+@media (min-width: 768px) {
+  .main-banner .left-content h2 {
+    font-size: 6vw; /* Ajuste o tamanho da fonte para telas maiores */
+    margin-top: 2vw;
+    padding-top: 1vw;
+    margin-bottom: 2.5vw;
+  }
+}
+
+@media (min-width: 1024px) {
+  .main-banner .left-content h2 {
+    font-size: 4vw; /* Ajuste o tamanho da fonte para telas ainda maiores */
+    margin-top: 1.5vw;
+    padding-top: 0.5vw;
+    margin-bottom: 2vw;
+  }
+}
+
+@media (min-width: 1440px) {
+  .main-banner .left-content h2 {
+    font-size: 3vw; /* Ajuste o tamanho da fonte para telas maiores, como 1920x1080 */
+    margin-top: 1vw; 
+    padding-top: 0.5vw; 
+    margin-bottom: 1.5vw;
+  }
+}
+
+@media (min-width: 1920px) {
+  .main-banner .left-content h2 {
+    font-size: 2.5vw; /* Ajuste o tamanho da fonte especificamente para telas de 1920x1080 */
+    margin-top: 1vw;
+    padding-top: 0.5vw;
+    margin-bottom: 1.5vw;
+  }
+}
+
+
 
 .main-banner .right-image {
   text-align: right;
@@ -1303,6 +1354,7 @@ About Us Style
   margin-top: 5px;
   font-weight: 400;
   color: #2a2a2a;
+  
 }
 
 .about-us p {
@@ -1578,6 +1630,7 @@ form#contact button {
   font-weight: 400;
   color: #fff;
   margin-top: 20px;
+  
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;

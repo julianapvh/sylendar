@@ -137,7 +137,11 @@ urlpatterns = [
         views.equipamentos_disponiveis,
         name="equipamentos_disponiveis",
     ),
-    path("agendamentos_emprestados/", views.agendamentos_emprestados, name="agendamentos_emprestados"),
+    path(
+        "agendamentos_emprestados/",
+        views.agendamentos_emprestados,
+        name="agendamentos_emprestados",
+    ),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas

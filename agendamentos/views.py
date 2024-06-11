@@ -702,9 +702,7 @@ def devolucao_equipamento(request, agendamento_id):
 @login_required
 def marcar_como_emprestado(request):
     if not request.user.is_superuser:
-        return redirect(
-            "login"
-        )  # Redirecionar para a página de login se não for um superusuário
+        return redirect("login")
 
     agendamentos = Agendamento.objects.filter(
         cancelado=False, data_emprestimo__isnull=True
@@ -712,31 +710,42 @@ def marcar_como_emprestado(request):
 
     if request.method == "POST":
         agendamento_ids = request.POST.getlist("agendamento")
+        if not agendamento_ids:
+            return render(
+                request,
+                "marcar_como_emprestado.html",
+                {
+                    "agendamentos": agendamentos,
+                    "error_message": "Nenhum agendamento foi selecionado.",
+                },
+            )
+
         for agendamento_id in agendamento_ids:
-            agendamento = Agendamento.objects.get(pk=agendamento_id)
+            agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
             agendamento.situacao = "Emprestado"
             agendamento.data_emprestimo = timezone.now()
             agendamento.emprestado = True
             agendamento.save()
 
             # Decrementar o estoque do equipamento associado ao agendamento
-            agendamento.equipamento.quantidade_disponivel -= 1
-            agendamento.equipamento.save()
+            equipamento = agendamento.equipamento
+            equipamento.quantidade_disponivel -= 1
+            equipamento.save()
 
-        return redirect("emprestimo_sucesso", agendamento_id=agendamento.id)
-    # Redirecione para a página desejada após marcar os agendamentos como emprestados
+        return redirect("emprestimo_sucesso", agendamento_id=agendamento_ids[-1])
 
     context = {"agendamentos": agendamentos}
     return render(request, "marcar_como_emprestado.html", context)
-    
+
+
 @login_required
 def agendamentos_emprestados(request):
     # Filtrar apenas os agendamentos que estão marcados como emprestados
     agendamentos_emprestados = Agendamento.objects.filter(emprestado=True)
     context = {
-        'agendamentos_emprestados': agendamentos_emprestados,
+        "agendamentos_emprestados": agendamentos_emprestados,
     }
-    return render(request, 'agendamentos_emprestados.html', context)
+    return render(request, "agendamentos_emprestados.html", context)
 
 
 def emprestimo_sucesso(request, agendamento_id):

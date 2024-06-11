@@ -190,7 +190,6 @@ body {
 
 .section-heading h2 {
   font-size: 30px;
-  text-transform: capitalize;
   color: #2a2a2a;
   font-weight: 800;
   position: relative;
@@ -213,7 +212,6 @@ body {
   font-size: 15px;
   font-weight: 400;
   color: #fff;
-  text-transform: capitalize;
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;
@@ -233,7 +231,6 @@ body {
   font-size: 15px;
   font-weight: 400;
   color: #fff;
-  text-transform: capitalize;
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;
@@ -319,7 +316,7 @@ header
 .header-area .main-nav .logo h4 {
     font-size: 30px;
     font-weight: 800;
-    text-transform: capitalize;
+
     color: #fff;
     line-height: 100px;
     float: left;
@@ -382,7 +379,6 @@ header
   font-weight: 500;
   font-size: 15px;
   color: #fff;
-  text-transform: capitalize;
   -webkit-transition: all 0.3s ease 0s;
   -moz-transition: all 0.3s ease 0s;
   -o-transition: all 0.3s ease 0s;
@@ -883,7 +879,6 @@ Banner Style
 }
 
 .main-banner .left-content h6 {
-  text-transform: capitalize;
   font-size: 15px;
   font-weight: 400;
   color: #2a2a2a;
@@ -1308,7 +1303,6 @@ About Us Style
   margin-top: 5px;
   font-weight: 400;
   color: #2a2a2a;
-  text-transform: capitalize;
 }
 
 .about-us p {
@@ -1584,7 +1578,6 @@ form#contact button {
   font-weight: 400;
   color: #fff;
   margin-top: 20px;
-  text-transform: capitalize;
   padding: 12px 25px;
   border-radius: 23px;
   letter-spacing: 0.25px;

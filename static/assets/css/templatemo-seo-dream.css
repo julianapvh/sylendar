@@ -156,9 +156,6 @@ body {
 }
 
 @media (max-width: 991px) {
-
-
-
   html, body {
     overflow-x: hidden;
   }
@@ -901,21 +898,23 @@ Banner Style
   color: #2a2a2a;
 }
 
-.main-banner .left-content h2 {
-  border-top: 1px solid #eee;
-  margin-top: 30px;
-  padding-top: 20px;
-  margin-bottom: 45px;
-  font-size: 60px;
-  font-weight: 800;
-  color: #2a2a2a;
-  line-height: 72px;
-  background: #FA9D4D;
-  background: -webkit-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-  background: -moz-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-  background: linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+@media (min-width: 200px) and (max-width: 1920px) {
+  .main-banner .left-content h2 {
+    border-top: 1px solid #eee;
+    margin-top: 30px;
+    padding-top: 20px;
+    margin-bottom: 45px;
+    font-size: 10vw; /* Ajuste a fonte proporcionalmente à largura da viewport */
+    font-weight: 800;
+    color: #2a2a2a;
+    line-height: 1.2; /* Use uma unidade relativa para o line-height */
+    background: #FA9D4D;
+    background: -webkit-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+    background: -moz-linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+    background: linear-gradient(to right, #FA9D4D 0%, #FF4F6B 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
 .main-banner .right-image {
@@ -1484,15 +1483,12 @@ contact
 */
 
 .contact-us {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0;
+  margin-top: 90px;
+  padding: 120px 0px;
   background-image: url(../images/contact-bg.jpg);
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
-  min-height: 100vh;
 }
 .contact-us .section-heading {
   text-align: center;
@@ -1536,12 +1532,9 @@ contact
 form#contact {
   position: relative;
   background-color: #fff;
-  padding: 90px 80px;
+  padding: 60px 80px;
   border-radius: 50px;
   text-align: center;
-  margin-left: 10px;
-  margin-right: 10px;
-  /margin-top: 100px;/
 }
 
 form#contact input {
@@ -1627,11 +1620,6 @@ footer p a:hover {
   color: #4771cb;
 }
 
-.header-area .main-nav .logo h4 img {
-  max-width: auto !important;
-  margin-left: 0px;
-}
-
 /* 
 ---------------------------------------------
 responsive
@@ -1643,6 +1631,7 @@ responsive
     font-size: 24px;
   }
   .header-area .main-nav .logo h4 img {
+    max-width: 25px;
     margin-left: 0px;
   }
   .header-area .main-nav .nav li:last-child {

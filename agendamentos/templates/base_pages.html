@@ -84,11 +84,13 @@
     </div>
   </li>
   <li class="scroll-to-section">
+    {% if request.user.is_superuser %}
     <div class="admin-button">
       <a href="{% url 'administrador' %}" class="btn" title="Página do administrador">
         <i class="fas fa-tools"></i> Administrador
       </a>
     </div>
+    {% endif %}
   </li>
   <li class="scroll-to-section">
     <div class="logout-button">

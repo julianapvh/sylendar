@@ -18,6 +18,7 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
   
+  
 
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
@@ -91,15 +92,16 @@
       </a>
     </div>
     {% endif %}
-  </li>
-  <li class="scroll-to-section">
-    <div class="logout-button">
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn"> <i class="fas fa-sign-out-alt"></i> Logout</button>
-      </form>
-    </div>
-  </li>
+    <li class="scroll-to-section">
+      <div class="logout-button">
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <button type="submit" class="btn" title="Logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button>
+        </form>
+      </div>
+    </li>
 </ul>
             <a class='menu-trigger'>
                 <span>Menu</span>

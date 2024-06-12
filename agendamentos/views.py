@@ -134,6 +134,7 @@ def home(request):
 
 
 # função de visualização para o template base
+@staff_member_required
 def base(request):
     return render(request, "base_pages.html")
 
@@ -699,7 +700,7 @@ def devolucao_equipamento(request, agendamento_id):
         raise Http404("O agendamento não foi encontrado.")
 
 
-@login_required
+@staff_member_required
 def marcar_como_emprestado(request):
     if not request.user.is_superuser:
         return redirect("login")
@@ -738,7 +739,7 @@ def marcar_como_emprestado(request):
     return render(request, "marcar_como_emprestado.html", context)
 
 
-@login_required
+@staff_member_required
 def agendamentos_emprestados(request):
     # Filtrar apenas os agendamentos que estão marcados como emprestados
     agendamentos_emprestados = Agendamento.objects.filter(emprestado=True)
@@ -779,7 +780,7 @@ def historico_agendamentos(request):
     )
 
 
-@login_required
+@staff_member_required
 def obter_dados_equipamento(request):
     equipamento_id = request.GET.get("equipamento_id")
     equipamento = Equipamento.objects.get(pk=equipamento_id)

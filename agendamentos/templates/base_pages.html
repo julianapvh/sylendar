@@ -96,9 +96,9 @@
       <div class="logout-button">
         <form action="{% url 'logout' %}" method="post">
           {% csrf_token %}
-          <button type="submit" class="btn" title="Logout">
+          <a class="btn"><button type="submit" class="btn_dor" title="Logout">
             <i class="fas fa-sign-out-alt"></i> Logout
-          </button>
+          </button></a>
         </form>
       </div>
     </li>

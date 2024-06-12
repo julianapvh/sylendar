@@ -605,9 +605,11 @@ header
   color: #33ccc5;
 }
 
-
-
-
+button, input{
+  background: transparent;
+  color: white;
+  border: none;
+}
 
 @media (max-width: 767px) {
   .background-header .main-nav .nav {
@@ -712,11 +714,13 @@ header
   .header-area .main-nav .nav li.submenu:hover ul, .header-area .main-nav .nav li.submenu:focus ul {
     height: 0px;
   }
+  
 }
 
 @media (min-width: 767px) {
   .header-area .main-nav .nav {
     display: flex !important;
+    align-items: baseline;
   }
 }
 

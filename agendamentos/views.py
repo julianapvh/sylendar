@@ -52,6 +52,8 @@ from django.template.loader import render_to_string
 from .forms import UserProfileForm
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 #################  ------- Views de login, cadastro e homes ---------  ###########################
@@ -881,3 +883,21 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, "500.html", status=500)
+
+
+
+######################################### cookies ###################################################
+
+@csrf_exempt
+def register_cookie_consent(request):
+    if request.method == 'POST':
+        consent = request.POST.get('consent')
+        if consent == 'accepted':
+            # Salvar consentimento no banco de dados, se necessário
+            # Por exemplo: Consent.objects.create(user=request.user, consent=True)
+            return JsonResponse({'status': 'success'})
+    return JsonResponse({'status': 'error'}, status=400)
+    
+    
+def privacy_policy(request):
+    return render(request, 'privacy_policy.html')

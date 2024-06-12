@@ -16,6 +16,7 @@ from .views import logged_out
 from agendamentos.views import logged_out
 from django.conf.urls import handler404, handler500
 from .views import erro_500_view
+from .views import privacy_policy, register_cookie_consent
 
 
 tcc_django = "agendamentos"
@@ -142,6 +143,8 @@ urlpatterns = [
         views.agendamentos_emprestados,
         name="agendamentos_emprestados",
     ),
+    path('register-consent/', register_cookie_consent, name='register_cookie_consent'),
+    path('privacy-policy/', privacy_policy, name='privacy_policy'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 # Configurações para páginas de erro personalizadas

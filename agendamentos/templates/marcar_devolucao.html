@@ -72,9 +72,11 @@
             <h1>Buscar agendamentos para devolução</h1>
             <form method="post" onsubmit="return validarBusca()">
                 {% csrf_token %}
-                <label for="cliente_nome">Nome do Cliente:</label>
-                <input type="text" name="cliente_nome" id="cliente_nome">
-                <button type="submit">Buscar</button>
+                <div class="form-group">
+                    <label for="cliente_nome">Nome do Cliente:</label>
+                    <input type="text" name="cliente_nome" id="cliente_nome" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
             </form>
 
             {% if agendamentos %}
@@ -84,7 +86,7 @@
                 <li>
                     {{ agendamento }}
                     {% if not agendamento.devolvido %}
-                    <button class="confirm-devolucao" onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
+                    <button class="confirm-devolucao btn btn-success" onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
                     {% endif %}
                 </li>
                 {% endfor %}
@@ -92,7 +94,7 @@
             {% else %}
             <p>Nenhum agendamento encontrado para o cliente.</p>
             {% endif %}
-            <a href="{% url 'administrador' %}" class="btn btn-primary">Voltar</a>
+            <a href="{% url 'administrador' %}" class="btn btn-secondary">Voltar</a>
         </div>
     </div>
 </body>

@@ -132,10 +132,13 @@ urlpatterns = [
         "agendamentos_emprestados/",
         views.agendamentos_emprestados,
         name="agendamentos_emprestados",
-        
     ),
-    path('privacy-policy/', views.privacy_policy, name='privacy_policy'),
-    path('register-cookie-consent/', views.register_cookie_consent, name='register_cookie_consent'),
+    path("privacy-policy/", views.privacy_policy, name="privacy_policy"),
+    path(
+        "register-cookie-consent/",
+        views.register_cookie_consent,
+        name="register_cookie_consent",
+    ),
 ]
 
 if settings.DEBUG:

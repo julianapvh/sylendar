@@ -885,19 +885,19 @@ def custom_500_view(request):
     return render(request, "500.html", status=500)
 
 
-
 ######################################### cookies ###################################################
+
 
 @csrf_exempt
 def register_cookie_consent(request):
-    if request.method == 'POST':
-        consent = request.POST.get('consent')
-        if consent == 'accepted':
+    if request.method == "POST":
+        consent = request.POST.get("consent")
+        if consent == "accepted":
             # Salvar consentimento no banco de dados, se necessário
             # Por exemplo: Consent.objects.create(user=request.user, consent=True)
-            return JsonResponse({'status': 'success'})
-    return JsonResponse({'status': 'error'}, status=400)
-    
-    
+            return JsonResponse({"status": "success"})
+    return JsonResponse({"status": "error"}, status=400)
+
+
 def privacy_policy(request):
-    return render(request, 'privacy_policy.html')
+    return render(request, "privacy_policy.html")

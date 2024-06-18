@@ -57,6 +57,7 @@
             </div>
         </div>
     </div>
+    
 
     <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
@@ -85,10 +86,10 @@
                         // Exibir mensagem de sucesso com o SweetAlert2
                         Swal.fire({
                             icon: 'success',
-                            title: 'Sucesso!',
+                            title: 'Sucesso! As informações do seu agendamento foram enviadas para o seu endereço de e-mail.',
                             text: data.message,
                             showConfirmButton: false,
-                            timer: 5000 // Fecha automaticamente após 5 segundos
+                            timer: 7000 // Fecha automaticamente após 5 segundos
                         }).then((result) => {
                             // Após a mensagem de sucesso, perguntar ao cliente se deseja fazer outro agendamento
                             Swal.fire({

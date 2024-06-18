@@ -27,6 +27,30 @@
       height: 3rem;
       border-width: 0.25em;
     }
+
+    .login-container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .login-heading {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .login-form {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .login-form input {
+      margin-bottom: 15px;
+    }
   </style>
 </head>
 <body>
@@ -61,68 +85,50 @@
 
 <div id="contact" class="contact-us section">
   <div class="container">
-    <div class="row">
-      <div class="col-lg-12 wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
-        <form id="contact" action="{% url 'login' %}" method="post">
-          {% csrf_token %}
-          <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-              <div class="section-heading">
-                <h2>Login<span></span></h2>
-              </div>
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8 col-sm-10">
+        <div class="login-container wow fadeInUp" data-wow-duration="0.5s" data-wow-delay="0.25s">
+          <div class="login-heading">
+            <h2>Login<span></span></h2>
+          </div>
+          <form id="contact" action="{% url 'login' %}" method="post" class="login-form">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              Seu nome de usuário ou senha não correspondem. Por favor, tente novamente.
             </div>
-            <div class="col-lg-9 offset-lg-3">
-              <div class="row">
-                <div class="col-lg-8">
-                  {% if form.errors %}
-                  <div class="alert alert-danger" role="alert">
-                    Seu nome de usuário ou senha não correspondem. Por favor, tente novamente.
-                  </div>
-                  {% endif %}
+            {% endif %}
         
-                  {% if next %}
-                  {% if user.is_authenticated %}
-                  <div class="alert alert-warning" role="alert">
-                    Sua conta não tem acesso a esta página. Para prosseguir, faça login com uma conta que tenha acesso.
-                  </div>
-                  {% else %}
-                  <div class="alert alert-info" role="alert">
-                    Faça login para ver esta página.
-                  </div>
-                  {% endif %}
-                  {% endif %}
+            {% if next %}
+            {% if user.is_authenticated %}
+            <div class="alert alert-warning" role="alert">
+              Sua conta não tem acesso a esta página. Para prosseguir, faça login com uma conta que tenha acesso.
+            </div>
+            {% else %}
+            <div class="alert alert-info" role="alert">
+              Faça login para ver esta página.
+            </div>
+            {% endif %}
+            {% endif %}
          
-                                    <!-- Spinner de carregamento -->
-                  <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
-                    <span class="sr-only"></span>
-                  </div>
+            <!-- Spinner de carregamento -->
+            <div id="loading-spinner" class="spinner-border text-primary" role="status" style="display: none;">
+              <span class="sr-only"></span>
+            </div>
                                   
-                  <fieldset>
-                    <input type="text" name="username" id="username" class="form-control" placeholder="Nome de Usuário" required="">
-                  </fieldset>
-                </div>
-                <div class="col-lg-8">
-                  <fieldset>
-                    <input type="password" name="password" id="password" class="form-control" placeholder="Senha" required="">
-                  </fieldset>
-                </div>
-              </div>
-            </div>
+            <fieldset>
+              <input type="text" name="username" id="username" class="form-control" placeholder="Nome de Usuário" required="">
+            </fieldset>
+            <fieldset>
+              <input type="password" name="password" id="password" class="form-control" placeholder="Senha" required="">
+            </fieldset>
+            <button type="submit" class="btn btn-primary">Login</button>
+            <input type="hidden" name="next" value="{{ next }}" />
+          </form>
+          <div class="text-center mt-4">
+            <p>Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-link">Cadastre-se</a></p>
+            <p><a href="{% url 'reset_password' %}" class="btn btn-link">Esqueceu a senha?</a></p>
           </div>
-          <div class="row">
-            <div class="col-lg-6 offset-lg-3">
-              <button type="submit" class="btn btn-primary">Login</button>
-              <input type="hidden" name="next" value="{{ next }}" />
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col-lg-6 offset-lg-3">
-        <div class="text-center mt-4">
-          <p>Não tem uma conta? <a href="{% url 'register' %}" class="btn btn-link">Cadastre-se</a></p>
-          <p><a href="{% url 'reset_password' %}" class="btn btn-link">Esqueceu a senha?</a></p>
         </div>
       </div>
     </div>
@@ -145,16 +151,6 @@
       });
   });
   </script>
-     <!-- ***** Footer ***** -->
-   <footer class="footer">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <p>&copy; 2024 Sylendar</p>
-        </div>
-      </div>
-    </div>
-  </footer>
   
 </body>
 </html>

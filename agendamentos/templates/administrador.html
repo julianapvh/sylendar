@@ -18,7 +18,15 @@
 </head>
 
 <body>
+    <div class="container_home" style="margin-top: 100px;">
+        <div class="home-form">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
           <h1 class="mb-4">Painel Administrativo</h1>
+          <p>Logado como: {{ request.user.username }}</p>
           
           <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">

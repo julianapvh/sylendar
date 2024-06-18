@@ -143,7 +143,11 @@ urlpatterns = [
         views.agendamentos_emprestados,
         name="agendamentos_emprestados",
     ),
-    path("register-consent/", register_cookie_consent, name="register_cookie_consent"),
+    path(
+        "register-cookie-consent/",
+        views.register_cookie_consent,
+        name="register_cookie_consent",
+    ),
     path("privacy-policy/", privacy_policy, name="privacy_policy"),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 

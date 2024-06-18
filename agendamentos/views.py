@@ -888,15 +888,28 @@ def custom_500_view(request):
 ######################################### cookies ###################################################
 
 
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
+
 @csrf_exempt
 def register_cookie_consent(request):
     if request.method == "POST":
-        consent = request.POST.get("consent")
-        if consent == "accepted":
-            # Salvar consentimento no banco de dados, se necessário
-            # Por exemplo: Consent.objects.create(user=request.user, consent=True)
-            return JsonResponse({"status": "success"})
-    return JsonResponse({"status": "error"}, status=400)
+        try:
+            data = json.loads(request.body)
+            consent = data.get("consent", False)
+            if consent:
+                # Registre o consentimento no banco de dados, se necessário
+                return JsonResponse({"message": "Consentimento registrado com sucesso"})
+            else:
+                return JsonResponse(
+                    {"message": "Consentimento não fornecido"}, status=400
+                )
+        except json.JSONDecodeError:
+            return JsonResponse({"message": "Dados inválidos"}, status=400)
+    else:
+        return JsonResponse({"message": "Método não permitido"}, status=405)
 
 
 def privacy_policy(request):

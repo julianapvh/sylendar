@@ -1,7 +1,6 @@
 from django import forms
 from .models import Agendamento, Equipamento, User
 from django.contrib.auth.forms import UserCreationForm
-from django.db import models
 
 
 class AgendamentoForm(forms.ModelForm):
@@ -52,10 +51,7 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     email = forms.EmailField(label="E-mail")
     first_name = forms.CharField(label="Nome")
     last_name = forms.CharField(label="Sobrenome")
-    telefone = models.CharField(
-        max_length=20,
-        blank=True,
-        null=True,)
+    telefone = forms.CharField(label="Telefone", required=True)
 
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + (

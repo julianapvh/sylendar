@@ -36,8 +36,6 @@ class User(AbstractUser):
         max_length=20,
         blank=True,
         null=True,
-        verbose_name="telefone",
-        help_text="Número de telefone do usuário",
     )
     is_admin = models.BooleanField(
         default=False

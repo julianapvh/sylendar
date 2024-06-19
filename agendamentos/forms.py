@@ -55,10 +55,7 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     telefone = models.CharField(
         max_length=20,
         blank=True,
-        null=True,
-        verbose_name="telefone",
-        help_text="Número de telefone do usuário",
-    )
+        null=True,)
 
     class Meta(UserCreationForm.Meta):
         fields = UserCreationForm.Meta.fields + (

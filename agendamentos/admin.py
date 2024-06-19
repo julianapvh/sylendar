@@ -25,7 +25,7 @@ csrf_protect_m = method_decorator(csrf_protect)
 sensitive_post_parameters_m = method_decorator(sensitive_post_parameters())
 
 
-@admin.register(Group)
+'''@admin.register(Group)
 class GroupAdmin(admin.ModelAdmin):
     search_fields = ("name",)
     ordering = ("name",)
@@ -37,7 +37,7 @@ class GroupAdmin(admin.ModelAdmin):
             # Avoid a major performance hit resolving permission names which
             # triggers a content_type load:
             kwargs["queryset"] = qs.select_related("content_type")
-        return super().formfield_for_manytomany(db_field, request=request, **kwargs)
+        return super().formfield_for_manytomany(db_field, request=request, **kwargs)'''
 
 
 @admin.register(User)

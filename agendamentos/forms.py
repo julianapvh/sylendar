@@ -53,13 +53,9 @@ class UserCreationFormWithExtraFields(UserCreationForm):
     last_name = forms.CharField(label="Sobrenome")
     telefone = forms.CharField(label="Telefone", required=True)
 
-    class Meta(UserCreationForm.Meta):
-        fields = UserCreationForm.Meta.fields + (
-            "email",
-            "first_name",
-            "last_name",
-            "telefone",
-        )
+    class Meta:
+        model = User
+        fields = ("username", "email", "first_name", "last_name", "telefone", "password1", "password2")
 
 
 class UserProfileForm(forms.ModelForm):

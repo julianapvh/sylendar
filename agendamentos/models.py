@@ -35,7 +35,7 @@ class User(AbstractUser):
     telefone = models.CharField(
         max_length=20,
         blank=True,
-        null=True,
+        null=False,
     )
     is_admin = models.BooleanField(
         default=False

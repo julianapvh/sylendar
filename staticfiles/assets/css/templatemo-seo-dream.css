@@ -605,11 +605,13 @@ header
   color: #33ccc5;
 }
 
-button, input{
-  background: transparent;
-  color: white;
-  border: none;
-}
+@media (max-width: 768px){
+  button, input{
+    background: transparent;
+    color: black;
+    border: none;
+  }
+  }
 
 @media (max-width: 767px) {
   .background-header .main-nav .nav {

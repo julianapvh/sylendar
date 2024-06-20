@@ -605,10 +605,12 @@ header
   color: #33ccc5;
 }
 
+@media (max-width: 768px){
 button, input{
   background: transparent;
-  color: white;
+  color: black;
   border: none;
+}
 }
 
 @media (max-width: 767px) {

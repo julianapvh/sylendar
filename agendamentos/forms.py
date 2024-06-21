@@ -65,4 +65,4 @@ class UserCreationFormWithExtraFields(UserCreationForm):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ["first_name", "last_name", "email", "telefone"]
+        fields = ["first_name", "last_name", "email"]

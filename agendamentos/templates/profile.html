@@ -8,9 +8,8 @@
 <head>
     <title>Editar Perfil</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}"> <!-- Adicione o link para o seu novo arquivo CSS -->
+    <link rel="stylesheet" type="text/css" href="{% static 'profile.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Adicione o link para o CSS do SweetAlert2 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 
@@ -18,7 +17,7 @@
     <div class="container_home container">
         <div class="home-form">
             <h2>Meu Perfil</h2>
-            <form method="post" id="profile-form">
+            <form method="post" id="profile-form" action="{% url 'perfil' %}">
                 {% csrf_token %}
                 <div class="form-group">
                     <label for="id_first_name">Nome: </label>
@@ -34,13 +33,12 @@
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-primary">Atualizar Perfil</button>
-                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button> <!-- Botão de cancelar -->
+                    <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Adicione o script do SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
@@ -51,7 +49,6 @@
                 event.preventDefault();
                 const formData = new FormData(form);
                 try {
-                    // Mostrar a mensagem de carregamento
                     Swal.showLoading();
                     const response = await fetch(form.action, {
                         method: 'POST',
@@ -61,7 +58,6 @@
                         }
                     });
                     if (response.ok) {
-                        // Fechar a mensagem de carregamento
                         Swal.close();
                         Swal.fire({
                             icon: 'success',
@@ -69,8 +65,7 @@
                             showConfirmButton: false,
                             timer: 1500
                         }).then(() => {
-                            // Redirecionar o usuário para a página anterior
-                            window.history.back();
+                            window.location.href = "{% url 'cliente' %}";
                         });
                     } else {
                         throw new Error('Erro ao atualizar perfil');
@@ -86,9 +81,7 @@
                 }
             });
 
-            // Event listener para o botão de cancelar
             cancelBtn.addEventListener('click', function () {
-                // Redirecionar o usuário para a página anterior
                 window.history.back();
             });
         });

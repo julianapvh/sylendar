@@ -859,11 +859,8 @@ def profile(request):
                 "cliente"
             )  # Redireciona de volta para a página de perfil após a atualização
     else:
-        form = UserProfileForm(
-            instance=request.user
-        )  # Preenche o formulário com as informações atuais do usuário
-
-    return render(request, "profile.html", {"form": form})
+        form = UserProfileForm(instance=request.user)
+    return render(request, "profile.html", {"form": form})  # Preenche o formulário com as informações atuais do usuário
 
 
 ################ Configurações para páginas de erro personalizadas #############################################

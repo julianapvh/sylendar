@@ -1,4 +1,4 @@
-# Sistema de Agendamentos para Equipamentos
+# Sylendar - Sistema de Agendamentos para Equipamentos
 
 Este é um sistema de agendamentos desenvolvido para auxiliar na gestão e organização do uso de equipamentos em ambientes como escolas, empresas, laboratórios e outros. Com este sistema, os usuários podem facilmente agendar equipamentos, verificar disponibilidade, gerenciar reservas e receber notificações sobre seus agendamentos.
 
@@ -6,7 +6,7 @@ Este é um sistema de agendamentos desenvolvido para auxiliar na gestão e organ
 
 - **Agendamento de Equipamentos:** Os usuários podem agendar equipamentos para uso em datas e horários específicos.
 - **Verificação de Disponibilidade:** O sistema permite aos usuários verificar a disponibilidade dos equipamentos antes de fazer um agendamento.
-- **Notificações Automáticas:** Os usuários recebem notificações automáticas para lembrá-los de seus agendamentos e quaisquer alterações nos mesmos.
+- **Notificações Automáticas:** Os usuários recebem notificações automáticas de seus agendamentos e quaisquer alterações nos mesmos.
 - **Gerenciamento de Reservas:** Os administradores podem visualizar e gerenciar todas as reservas de equipamentos, garantindo um uso eficiente dos recursos.
 - **Interface Intuitiva:** O sistema possui uma interface amigável e fácil de usar, tornando o processo de agendamento simples e acessível para todos os usuários.
 

@@ -1,4 +1,6 @@
+{% extends 'base_pages.html' %}
 {% load static %}
+{% block content %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -13,140 +15,18 @@
   <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
 
   <title>Administrador - SYLENDAR</title>
-
-  <!-- Bootstrap core CSS -->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <!-- Additional CSS Files -->
-  <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
-  <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
-  <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
-  <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
-  
-  <style>
-    /* Estilo para o contêiner dos botões de perfil e logout */
-    .profile-logout-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column; /* Muda para coluna */
-      gap: 10px; /* Adiciona um espaço entre os botões */
-    }
-
-    /* Estilo para cada botão de perfil e logout */
-    .profile-button,
-    .logout-button {
-      font-size: 14px;
-      border: none; /* Remover a borda */
-      background-color: transparent; /* Remover a cor de fundo */
-      color: #ffffff; /* Cor do texto */
-      transition: all 0.3s ease; /* Transição suave */
-    }
-
-    /* Estilo para alterar a cor do botão ao passar o mouse */
-    .profile-button:hover,
-    .logout-button:hover {
-      background-color: rgba(255, 255, 255, 0.1); /* Cor do fundo ao passar o mouse */
-      color: #ffffff; /* Cor do texto ao passar o mouse */
-      text-decoration: none; /* Remover sublinhado ao passar o mouse */
-    }
-
-    /* Estilo para o ícone de desligamento */
-    .logout-button i {
-      margin-right: 5px; /* Espaçamento entre o ícone e o texto */
-    }
-
-    /* Estilo para o botão "Voltar" */
-    .btn-voltar {
-      background-color: #007bff; /* Cor azul padrão do Bootstrap */
-      color: #ffffff;
-      border: none;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-voltar:hover {
-      background-color: #0056b3; /* Cor azul mais escura ao passar o mouse */
-      color: #ffffff;
-    }
-
-    .main-green-button {
-      text-align: center;
-      margin-top: 10px;
-    }
-
-  </style>
-
 </head>
 
 <body>
-<!-- ***** Preloader Start ***** -->
-<div id="js-preloader" class="js-preloader">
-  <div class="preloader-inner">
-    <span class="dot"></span>
-    <div class="dots">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-</div>
-<!-- ***** Preloader End ***** -->
-
-<!-- ***** Header Area Start ***** -->
-<header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
-          <nav class="main-nav">
-            <!-- ***** Logo Start ***** -->
-            <a href="{% url 'home' %}" class="logo">
-              <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
-            </a>
-            <!-- ***** Logo End ***** -->
-            <!-- ***** Menu Start ***** -->
-  
-            <a class='menu-trigger'>
-              <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
-  
-  <!-- Your content area -->
-  <div class="container_home" style="margin-top: 100px;">
-      <div class="home-form">
-          {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                  {{ message }}
-              </div>
-          {% endfor %}
-          
-          <!-- Contêiner para os botões de perfil e logout -->
-          <div class="profile-logout-container">
-            <!-- Botão de perfil -->
-            <div class="profile-button">
-                <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
-                    <i class="fas fa-user"></i> Perfil
-                </a>
+    <div class="container_home" style="margin-top: 100px;">
+        <div class="home-form">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
             </div>
-            <!-- Botão de logout -->
-            <div class="logout-button">
-                <form action="{% url 'logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" class="btn"> <i class="fas fa-sign-out-alt"></i> Logout</button>
-                </form>
-            </div>
-          </div>
-
+            {% endfor %}
           <h1 class="mb-4">Painel Administrativo</h1>
+          <p>Logado como: {{ request.user.username }}</p>
           
           <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
@@ -184,33 +64,21 @@
               </div>
           </div>
           
-          <div class="col-lg-12">
+          
+          {% comment %} <div class="col-lg-12">
             <div class="main-green-button scroll-to-section">
                 <a href="{% url 'agendamentos_emprestados' %}" class="btn btn-primary btn-block">Emprestados</a>
             </div>
-        </div>
-        
-          <!--Botão para o logout-->
+        </div>    {% endcomment %}
         
           <div class="row justify-content-center mt-5">
               <div class="col-md-6">
                   <a href="{% url 'home' %}" class="btn btn-primary btn-block btn-voltar">Voltar</a>
               </div>
           </div>
-        
-          <footer class="mt-5">
-              <p class="text-center">&copy; 2024 Sylendar</p>
-          </footer>
       </div>
   </div>
-  
-  <!-- Scripts -->
-<script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-<script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-<script src="{% static 'assets/js/owl-carousel.js' %}"></script>
-<script src="{% static 'assets/js/animation.js' %}"></script>
-<script src="{% static 'assets/js/imagesloaded.js' %}"></script>
-<script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
-
 </html>
+
+{% endblock %}

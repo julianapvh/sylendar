@@ -17,6 +17,8 @@
   <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  
+  
 
   <!-- Additional CSS Files -->
   <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
@@ -25,40 +27,6 @@
   <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
 
   <style>
-    /* Estilo para o contêiner dos botões de perfil e logout */
-    .profile-logout-container {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 9999;
-      display: flex;
-      flex-direction: column; /* Muda para coluna */
-      gap: 10px; /* Adiciona um espaço entre os botões */
-    }
-
-    /* Estilo para cada botão de perfil e logout */
-    .profile-button,
-    .logout-button {
-      font-size: 14px;
-      border: none; /* Remover a borda */
-      background-color: transparent; /* Remover a cor de fundo */
-      color: #ffffff; /* Cor do texto */
-      transition: all 0.3s ease; /* Transição suave */
-    }
-
-    /* Estilo para alterar a cor do botão ao passar o mouse */
-    .profile-button:hover,
-    .logout-button:hover {
-      background-color: rgba(255, 255, 255, 0.1); /* Cor do fundo ao passar o mouse */
-      color: #ffffff; /* Cor do texto ao passar o mouse */
-      text-decoration: none; /* Remover sublinhado ao passar o mouse */
-    }
-
-    /* Estilo para o ícone de desligamento */
-    .logout-button i {
-      margin-right: 5px; /* Espaçamento entre o ícone e o texto */
-    }
-
     /* Estilo para o botão "Voltar" */
     .btn-voltar {
       background-color: #007bff; /* Cor azul padrão do Bootstrap */
@@ -77,29 +45,27 @@
       margin-top: 10px;
     }
     
-    ./* Estilos do footer */
-    .footer {
-      background-color: #333;
-      color: #fff;
-      padding: 20px 0;
-      text-align: center;
-    }
-
-    .footer p {
-      margin-bottom: 0;
-    }
-    
-    
-    
-    
   </style>
+
 </head>
 
 <body>
+
+  <!-- ***** Preloader Start ***** -->
+  <div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+      <span class="dot"></span>
+      <div class="dots">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </div>
   <!-- ***** Preloader End ***** -->
 
   <!-- ***** Header Area Start ***** -->
-  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
+  <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s">
     <div class="container">
       <div class="row">
         <div class="col-12">
@@ -110,38 +76,15 @@
             </a>
             <!-- ***** Logo End ***** -->
             <!-- ***** Menu Start ***** -->
-            <a class='menu-trigger'>
-              <span>Menu</span>
-            </a>
-            <!-- ***** Menu End ***** -->
-          </nav>
-        </div>
-      </div>
-    </div>
-  </header>
-  
-  <!-- Espaço adicional -->
-<div style="height: 100px;"></div>
-
- <!--<div id="contact" class="contact-us section"> Fundo Background-->
-  <!-- ***** Header Area End ***** -->
-
-  <!-- Contêiner para os botões de perfil e logout -->
-  <div class="profile-logout-container">
-    <!-- Botão de perfil -->
+<ul class="nav">
+  <li class="scroll-to-section">
     <div class="profile-button">
       <a href="{% url 'perfil' %}" class="btn" title="Editar Perfil">
         <i class="fas fa-user"></i> Perfil
       </a>
     </div>
-    <!-- Botão de logout -->
-    <div class="logout-button">
-      <form action="{% url 'logout' %}" method="post">
-        {% csrf_token %}
-        <button type="submit" class="btn"> <i class="fas fa-sign-out-alt"></i> Logout</button>
-      </form>
-    </div>
-    <!-- Botão de administrador, visível apenas para superusuários -->
+  </li>
+  <li class="scroll-to-section">
     {% if request.user.is_superuser %}
     <div class="admin-button">
       <a href="{% url 'administrador' %}" class="btn" title="Página do administrador">
@@ -149,7 +92,33 @@
       </a>
     </div>
     {% endif %}
-  </div>
+    <li class="scroll-to-section">
+      <div class="logout-button">
+        <form action="{% url 'logout' %}" method="post">
+          {% csrf_token %}
+          <a class="btn"><button type="submit" class="btn_dor" title="Logout">
+            <i class="fas fa-sign-out-alt"></i> Logout
+          </button></a>
+        </form>
+      </div>
+    </li>
+</ul>
+            <a class='menu-trigger'>
+                <span>Menu</span>
+            </a>
+            <!-- ***** Menu End ***** -->
+          </nav>
+        </div>
+      </div>
+    </div>
+  </header>
+  <!-- ***** Header Area End ***** -->
+
+    
+  
+  <!-- Espaço adicional -->
+<div style="height: 100px;"></div>
+
 
   <!-- Conteúdo principal da página -->
   <div class="container mt-5">
@@ -163,7 +132,6 @@
     {% block content %}
     {% endblock %}
   </div>
-
 
    <!-- ***** Footer ***** -->
    <footer class="footer">
@@ -183,7 +151,8 @@
   <script src="{% static 'assets/js/animation.js' %}"></script>
   <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
   <script src="{% static 'assets/js/custom.js' %}"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-f0fnxvbelzZJSnX63YIg+BsCVZcJ3qT67TbwqO4xOzjCk2vQnrqAM+fwA6aIG0gd" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
+
 </body>
 
 </html>

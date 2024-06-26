@@ -13,17 +13,6 @@
   
     <title>Editar - SYLENDAR</title>
   
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
   
     <title>Sistema de Agendamentos</title>
     <link rel="stylesheet" type="text/css" href="{% static 'styles.css' %}">
@@ -31,38 +20,10 @@
     <!-- Adicione o SweetAlert2 -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
 
-    <style>
-        /* Adiciona espaço superior ao conteúdo principal */
-        .main-content {
-            margin-top: 100px; /* Altere conforme necessário */
-        }
-    </style>
+
 </head>
 
 <body>
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s" style="position: absolute; top: 0; width: 100%;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="{% url 'home' %}" class="logo">
-                            <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
-
-    <!-- Conteúdo principal -->
     <div class="container main-content">
         <div class="row justify-content-center">
             <div class="col-md-8">
@@ -217,19 +178,6 @@
 
 
     </script>
-    
-
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
-    <script src="{% static 'assets/js/animation.js' %}"></script>
-    <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
-    <script src="{% static 'assets/js/custom.js' %}"></script>
-</body>
 </html>
 {% endblock %}
 

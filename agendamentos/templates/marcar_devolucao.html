@@ -10,93 +10,6 @@
     <meta charset="UTF-8">
     <title>Devolução</title>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    <style>
-        .container_home {
-            max-width: 800px; /* Ajuste da largura máxima */
-            margin: 50px auto;
-            padding: 20px;
-            border-radius: 10px;
-            background-color: #fff;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .home-form {
-            text-align: center;
-        }
-
-        .home-form h1 {
-            margin-bottom: 20px;
-            color: #2c3e50; /* Alteração para um tom mais claro de preto */
-            white-space: nowrap; /* Impede a quebra de linha */
-        }
-
-        .home-form label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 10px;
-        }
-
-        .home-form input[type="text"] {
-            width: calc(100% - 40px);
-            padding: 10px;
-            margin: 0 auto;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box;
-        }
-
-        .home-form button {
-            padding: 8px 16px; /* Redução do tamanho do botão */
-            background-color: #f0f0f0; /* Alteração para cinza claro */
-            color: #555; /* Alteração da cor do texto para um tom mais escuro */
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-            margin-top: 10px;
-        }
-
-        .home-form button:hover {
-            background-color: #e5e5e5; /* Alteração para um tom mais escuro de cinza */
-        }
-
-        .home-form ul {
-            list-style-type: none;
-            padding: 0;
-            margin: 0;
-            text-align: left;
-        }
-
-        .home-form li {
-            margin-bottom: 10px;
-        }
-
-        .home-form button.confirm-devolucao {
-            background-color: #5F9EA0; /* Verde claro */
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            padding: 8px 16px; /* Consistência com outros botões */
-            transition: background-color 0.3s ease;
-        }
-
-        .home-form button.confirm-devolucao:hover {
-            background-color: #66CDAA; /* Verde um pouco mais escuro para hover */
-        }
-
-        .btn-primary {
-            background-color: #007bff;
-            border-color: #007bff;
-        }
-
-        .btn-primary:hover {
-            background-color: #0056b3;
-            border-color: #0056b3;
-        }
-    </style>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
         function confirmarDevolucao(agendamentoId) {
             // Confirmar a devolução com o usuário
@@ -159,9 +72,11 @@
             <h1>Buscar agendamentos para devolução</h1>
             <form method="post" onsubmit="return validarBusca()">
                 {% csrf_token %}
-                <label for="cliente_nome">Nome do Cliente:</label>
-                <input type="text" name="cliente_nome" id="cliente_nome">
-                <button type="submit">Buscar</button>
+                <div class="form-group">
+                    <label for="cliente_nome">Nome do Cliente:</label>
+                    <input type="text" name="cliente_nome" id="cliente_nome" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Buscar</button>
             </form>
 
             {% if agendamentos %}
@@ -171,7 +86,7 @@
                 <li>
                     {{ agendamento }}
                     {% if not agendamento.devolvido %}
-                    <button class="confirm-devolucao" onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
+                    <button class="confirm-devolucao btn btn-success" onclick="confirmarDevolucao({{ agendamento.id }})">Confirmar Devolução</button>
                     {% endif %}
                 </li>
                 {% endfor %}
@@ -179,7 +94,7 @@
             {% else %}
             <p>Nenhum agendamento encontrado para o cliente.</p>
             {% endif %}
-            <a href="{% url 'administrador' %}" class="btn btn-primary">Voltar</a>
+            <a href="{% url 'administrador' %}" class="btn btn-secondary">Voltar</a>
         </div>
     </div>
 </body>

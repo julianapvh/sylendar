@@ -113,7 +113,7 @@ def register(request):
 
             messages.success(
                 request,
-                "Usuário cadastrado com sucesso! Faça o login para acessar sua conta.",
+                "",
             )
             return redirect("login")
         else:

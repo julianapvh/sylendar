@@ -98,18 +98,6 @@ WSGI_APPLICATION = "tcc_django.wsgi.application"
 
 DATABASES = {
     "default": {
-        "ENGINE": "mysql.connector.django",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-        "OPTIONS": {
-            "ssl_ca": "https://github.com/julianapvh/sslsegure/blob/main/ssl/ca-certificate.crt",
-        },
-        
-        
-    'database2': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
 
@@ -117,7 +105,7 @@ DATABASES = {
 
     },
 }
-}
+
 
 
 # Password validation

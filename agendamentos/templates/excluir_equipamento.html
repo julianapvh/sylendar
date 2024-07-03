@@ -1,7 +1,5 @@
 {% extends 'base_pages.html' %}
 {% load static %}
-
-
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -13,77 +11,9 @@
     <!-- Adicione o link para o seu arquivo CSS aqui -->
     <link rel="stylesheet" href="{% static 'styles.css' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <!-- Adicione o link para o CSS do SweetAlert2 -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
-    <!-- Bootstrap core CSS -->
-    <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Additional CSS Files -->
-    <link rel="stylesheet" href="{% static 'assets/css/fontawesome.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/templatemo-seo-dream.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/animated.css' %}">
-    <link rel="stylesheet" href="{% static 'assets/css/owl.css' %}">
-    <!-- Estilos adicionais -->
-   
-    <style>
-        body {
-            padding-top: 80px; /* Adiciona espaço extra acima do conteúdo para compensar a altura do cabeçalho */
-        }
-        
-        .equipamento-card {
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            padding: 10px;
-        }
-        
-        .equipamento-card h3 {
-            margin-top: 0;
-        }
-
-        /* Estilos para centralizar a barra de pesquisa */
-        .search-form {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px; /* Adiciona espaço abaixo da barra de pesquisa */
-        }
-
-        .search-form .form-group {
-            margin-bottom: 0; /* Remove o espaçamento inferior da barra de pesquisa */
-            margin-right: 10px; /* Adiciona espaço entre a barra de pesquisa e o botão */
-        }
-
-        .search-form .btn-primary {
-            height: calc(100% - 6px); /* Ajusta a altura do botão para corresponder à altura da barra de pesquisa */
-        }
-    </style>
 </head>
 
 <body>
-    <!-- ***** Preloader End ***** -->
-    <!-- ***** Header Area Start ***** -->
-    <header class="header-area header-sticky wow slideInDown" data-wow-duration="0.75s" data-wow-delay="0s"
-        style="position: absolute; top: 0; width: 100%;">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
-                    <nav class="main-nav">
-                        <!-- ***** Logo Start ***** -->
-                        <a href="{% url 'home' %}" class="logo">
-                            <h4>Sylendar <img src="{% static 'assets/images/logo-iconn.png' %}" alt=""></h4>
-                        </a>
-                        <!-- ***** Logo End ***** -->
-                        <!-- ***** Menu Start ***** -->
-                        <a class='menu-trigger'>
-                            <span>Menu</span>
-                        </a>
-                        <!-- ***** Menu End ***** -->
-                    </nav>
-                </div>
-            </div>
-        </div>
-    </header>
     <div class="container">
         <h1 class="mt-4 text-center">Excluir Equipamento</h1>
         <div class="row justify-content-center">
@@ -145,14 +75,6 @@
             });
         }
     </script>
-   
-    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
-    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/js/owl-carousel.js' %}"></script>
-    <script src="{% static 'assets/js/animation.js' %}"></script>
-    <script src="{% static 'assets/js/imagesloaded.js' %}"></script>
-    <script src="{% static 'assets/js/custom.js' %}"></script>
 </body>
-
 </html>
 {% endblock %}

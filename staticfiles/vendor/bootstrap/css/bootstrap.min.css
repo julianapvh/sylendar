@@ -1385,7 +1385,6 @@ progress {
   .col-lg-12 {
     flex: 0 0 auto;
     width: 100%;
-    margin-top: 20px;
   }
 
   .offset-lg-0 {
@@ -2729,6 +2728,12 @@ textarea.form-control-lg {
   color: #198754;
 }
 
+button, input{
+  background: transparent;
+  color: white;
+  border: none;
+}
+
 .valid-tooltip {
   position: absolute;
   top: 100%;
@@ -2897,9 +2902,18 @@ textarea.form-control-lg {
     transition: none;
   }
 }
-.btn:hover {
-  color: #212529;
+
+@media (max-width: 768px){
+  button, input{
+    color: black;
+    border: none;
+    
+  }
+  li div form{
+      background: #f7f7f7;
+    }
 }
+
 .btn-check:focus + .btn, .btn:focus {
   outline: 0;
   box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);

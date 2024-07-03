@@ -52,6 +52,8 @@ from django.template.loader import render_to_string
 from .forms import UserProfileForm
 from django.contrib.auth import logout
 from django.core.exceptions import PermissionDenied
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
 
 
 #################  ------- Views de login, cadastro e homes ---------  ###########################
@@ -111,7 +113,7 @@ def register(request):
 
             messages.success(
                 request,
-                "Usuário cadastrado com sucesso! Faça o login para acessar sua conta.",
+                "",
             )
             return redirect("login")
         else:
@@ -134,6 +136,7 @@ def home(request):
 
 
 # função de visualização para o template base
+@staff_member_required
 def base(request):
     return render(request, "base_pages.html")
 
@@ -699,12 +702,10 @@ def devolucao_equipamento(request, agendamento_id):
         raise Http404("O agendamento não foi encontrado.")
 
 
-@login_required
+@staff_member_required
 def marcar_como_emprestado(request):
     if not request.user.is_superuser:
-        return redirect(
-            "login"
-        )  # Redirecionar para a página de login se não for um superusuário
+        return redirect("login")
 
     agendamentos = Agendamento.objects.filter(
         cancelado=False, data_emprestimo__isnull=True
@@ -712,31 +713,42 @@ def marcar_como_emprestado(request):
 
     if request.method == "POST":
         agendamento_ids = request.POST.getlist("agendamento")
+        if not agendamento_ids:
+            return render(
+                request,
+                "marcar_como_emprestado.html",
+                {
+                    "agendamentos": agendamentos,
+                    "error_message": "Nenhum agendamento foi selecionado.",
+                },
+            )
+
         for agendamento_id in agendamento_ids:
-            agendamento = Agendamento.objects.get(pk=agendamento_id)
+            agendamento = get_object_or_404(Agendamento, pk=agendamento_id)
             agendamento.situacao = "Emprestado"
             agendamento.data_emprestimo = timezone.now()
             agendamento.emprestado = True
             agendamento.save()
 
             # Decrementar o estoque do equipamento associado ao agendamento
-            agendamento.equipamento.quantidade_disponivel -= 1
-            agendamento.equipamento.save()
+            equipamento = agendamento.equipamento
+            equipamento.quantidade_disponivel -= 1
+            equipamento.save()
 
-        return redirect("emprestimo_sucesso", agendamento_id=agendamento.id)
-    # Redirecione para a página desejada após marcar os agendamentos como emprestados
+        return redirect("emprestimo_sucesso", agendamento_id=agendamento_ids[-1])
 
     context = {"agendamentos": agendamentos}
     return render(request, "marcar_como_emprestado.html", context)
-    
-@login_required
+
+
+@staff_member_required
 def agendamentos_emprestados(request):
     # Filtrar apenas os agendamentos que estão marcados como emprestados
     agendamentos_emprestados = Agendamento.objects.filter(emprestado=True)
     context = {
-        'agendamentos_emprestados': agendamentos_emprestados,
+        "agendamentos_emprestados": agendamentos_emprestados,
     }
-    return render(request, 'agendamentos_emprestados.html', context)
+    return render(request, "agendamentos_emprestados.html", context)
 
 
 def emprestimo_sucesso(request, agendamento_id):
@@ -770,7 +782,7 @@ def historico_agendamentos(request):
     )
 
 
-@login_required
+@staff_member_required
 def obter_dados_equipamento(request):
     equipamento_id = request.GET.get("equipamento_id")
     equipamento = Equipamento.objects.get(pk=equipamento_id)
@@ -847,11 +859,10 @@ def profile(request):
                 "cliente"
             )  # Redireciona de volta para a página de perfil após a atualização
     else:
-        form = UserProfileForm(
-            instance=request.user
-        )  # Preenche o formulário com as informações atuais do usuário
-
-    return render(request, "profile.html", {"form": form})
+        form = UserProfileForm(instance=request.user)
+    return render(
+        request, "profile.html", {"form": form}
+    )  # Preenche o formulário com as informações atuais do usuário
 
 
 ################ Configurações para páginas de erro personalizadas #############################################
@@ -871,3 +882,34 @@ def custom_404_view(request, exception):
 
 def custom_500_view(request):
     return render(request, "500.html", status=500)
+
+
+######################################### cookies ###################################################
+
+
+from django.views.decorators.csrf import csrf_exempt
+from django.http import JsonResponse
+import json
+
+
+@csrf_exempt
+def register_cookie_consent(request):
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            consent = data.get("consent", False)
+            if consent:
+                # Registre o consentimento no banco de dados, se necessário
+                return JsonResponse({"message": "Consentimento registrado com sucesso"})
+            else:
+                return JsonResponse(
+                    {"message": "Consentimento não fornecido"}, status=400
+                )
+        except json.JSONDecodeError:
+            return JsonResponse({"message": "Dados inválidos"}, status=400)
+    else:
+        return JsonResponse({"message": "Método não permitido"}, status=405)
+
+
+def privacy_policy(request):
+    return render(request, "privacy_policy.html")

@@ -5,17 +5,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cancelamento de Agendamento</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            background-color: #f2f2f2;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            background-color: #dc3545;
+            color: #ffffff;
+            text-align: center;
+            padding: 10px;
+            border-radius: 10px 10px 0 0;
+        }
+        .content {
+            padding: 20px;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        ul li {
+            margin-bottom: 10px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #6c757d;
+        }
+    </style>
 </head>
 <body>
-    <p>Olá {{ usuario.first_name }},</p>
-    <p>Agendamento cancelado com sucesso!</p>
-    <p>Detalhes do Agendamento Cancelado:</p>
-<ul>
-    <li>Equipamento: {{ equipamento_nome }}</li>
-    <li>Data: {{ data }}</li>
-    <li>Hora: {{ hora }}</li>
-</ul>
-
-    <p>Sylendar agradece!</p>
+    <div class="container">
+        <div class="header">
+            <h2>Cancelamento de Agendamento</h2>
+        </div>
+        <div class="content">
+            <p>Olá {{ usuario.first_name }},</p>
+            <p>Seu agendamento foi cancelado com sucesso!</p>
+            <p>Detalhes do Agendamento Cancelado:</p>
+            <ul>
+                <li><strong>Equipamento:</strong> {{ equipamento_nome }}</li>
+                <li><strong>Data:</strong> {{ data }}</li>
+                <li><strong>Hora:</strong> {{ hora }}</li>
+            </ul>
+            <p>Obrigado por utilizar nossos serviços.</p>
+            <p>Atenciosamente,</p>
+            <p>Sylendar</p>
+        </div>
+        <div class="footer">
+            <p>Este é um e-mail automático. Por favor, não responda.</p>
+        </div>
+    </div>
 </body>
 </html>

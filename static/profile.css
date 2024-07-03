@@ -1,0 +1,53 @@
+/* profile.css */
+
+body {
+    background-color: #f8f9fa; /* Cor de fundo para o corpo da página */
+}
+
+
+.home-form {
+    background-color: #33ccc5; /* Cor de fundo para o formulário */
+    padding: 20px;
+    border-radius: 10px;
+    color: #fff; /* Cor do texto dentro do formulário */
+    width: 100%;
+    max-width: 600px; /* Define a largura máxima do formulário */
+    margin: auto; /* Centraliza o formulário na tela */
+}
+
+.home-form h2 {
+    color: #fff; /* Cor do título do formulário */
+    margin-bottom: 20px;
+}
+
+.home-form label {
+    color: white; /* Cor do rótulo dentro do formulário */
+    display: block;
+    margin-bottom: 5px; /* Espaçamento entre os rótulos e os campos */
+    text-align: left; /* Alinha o texto dos rótulos à esquerda */
+}
+
+.home-form .form-group {
+    margin-bottom: 20px; /* Espaçamento entre os grupos de formulário */
+}
+
+.home-form input[type="text"],
+.home-form input[type="email"],
+.home-form input[type="tel"] {
+    width: calc(100% - 20px); /* Calcula a largura do input considerando o padding */
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.home-form .btn-primary {
+    background-color: #007bff; /* Cor de fundo para o botão de enviar */
+    border-color: #007bff;
+}
+
+.home-form .btn-secondary {
+    background-color: #6c757d; /* Cor de fundo para o botão de cancelar */
+    border-color: #6c757d;
+    margin-left: 10px;
+}

@@ -107,11 +107,16 @@ DATABASES = {
         "OPTIONS": {
             "ssl_ca": "https://github.com/julianapvh/sslsegure/blob/main/ssl/ca-certificate.crt",
         },
+        
+        
+    'database2': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+
+
+
     },
-    # banco SQLITE3 para testes off-line
-    #'sqlite3': {
-    #'ENGINE': 'django.db.backends.sqlite3',
-    #'NAME': BASE_DIR / 'db.sqlite3',
+}
 }
 
 
